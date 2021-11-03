@@ -1,0 +1,4374 @@
+
+ 	<?xml version="1.0" encoding="iso-8859-1" ?>
+    <?mso-application progid="Excel.Sheet"?>
+    <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+     xmlns:o="urn:schemas-microsoft-com:office:office"
+     xmlns:x="urn:schemas-microsoft-com:office:excel"
+     xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+     xmlns:html="http://www.w3.org/TR/REC-html40">
+     <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+      <Author>ECLAC-Statisticas and Economic Projections Division</Author>
+     </DocumentProperties>
+
+	 <Styles>
+
+      <Style ss:ID="titulo_CEPALSTAT">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Size="14" ss:Bold="1" ss:Color="#000000"/>
+      </Style>
+
+      <Style ss:ID="titulo_area">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Color="#000000"/>
+      </Style>
+
+      <Style ss:ID="titulo_tema">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Color="#000000"/>
+      </Style>
+
+      <Style ss:ID="titulo_indicador">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Color="#000000"/>
+      </Style>
+
+      <Style ss:ID="titulo_fuente">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Color="#000000"/>
+      </Style>
+
+      <Style ss:ID="titulo_llamada">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Color="#000000"/>
+      </Style>
+
+      <Style ss:ID="descripcion_fuente">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Color="#000000"/>
+      </Style>
+	  
+      <Style ss:ID="descripcion_llamada">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Color="#000000"/>
+      </Style>
+	  
+      <Style ss:ID="titulo_unidad_medida">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Italic="1" ss:Color="#000000"/>
+      </Style>
+
+      <Style ss:ID="rotuloDimension">
+       <Alignment ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Italic="1" ss:Color="#496978"/>
+      </Style>
+
+      <Style ss:ID="rotuloTituloTabla">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Color="#000000"/>
+       <Interior ss:Color="#E6EEF4" ss:Pattern="Solid"/>
+      </Style>
+
+      <Style ss:ID="rotuloColumna">
+       <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Color="#000000"/>
+       <Interior ss:Color="#EFDFD2" ss:Pattern="Solid"/>
+      </Style>
+
+      <Style ss:ID="rotuloFila">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Bold="1" ss:Color="#000000"/>
+       <Interior ss:Color="#EFDFD2" ss:Pattern="Solid"/>
+      </Style>
+
+      <Style ss:ID="fuenteYLlamadas">
+       <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Color="#FF0000"/>
+      </Style>
+
+      <Style ss:ID="tituloColumna_SGEEA">
+       <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+       <Interior ss:Color="#C0C0C0" ss:Pattern="Solid"/>
+      </Style>
+
+      <Style ss:ID="dato">
+       <Font ss:FontName="Calibri" ss:Color="#4F4F4F"/>
+       <Interior ss:Color="#DCE7E1" ss:Pattern="Solid"/>
+       <Alignment ss:Horizontal="Right" ss:Vertical="Top"/>
+	   	
+	       <NumberFormat ss:Format="0.0"/>
+	   	
+      </Style>
+
+      <Style ss:ID="tres_puntos">
+       <Alignment ss:Horizontal="Right" ss:Vertical="Bottom"/>
+       <Font ss:FontName="Calibri" ss:Color="#000000"/>
+      </Style>
+
+     </Styles>
+
+<Worksheet ss:Name="Nivel">
+<Table>
+<Column ss:Index="1" ss:AutoFitWidth="0" ss:Width="300"/>
+
+	
+		<Column ss:Index="2" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="4" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="6" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="8" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="10" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="12" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="14" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="16" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="18" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="20" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="22" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="24" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="26" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="28" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="30" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="32" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="34" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="36" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="38" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="40" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="42" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="44" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="46" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="48" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="50" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="52" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="54" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="56" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="58" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="60" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="62" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="64" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="66" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="68" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="70" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="72" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="74" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="76" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="78" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="80" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="82" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="84" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="86" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="88" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="90" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="92" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="94" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="96" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="98" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="100" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="102" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="104" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="106" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="108" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="110" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="112" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="114" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="116" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="118" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="120" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="122" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="124" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="126" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="128" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="130" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="132" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="134" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="136" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="138" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="140" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="142" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="144" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="146" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="148" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="150" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="152" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="154" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="156" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="158" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="160" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="162" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="164" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="166" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="168" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="170" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="172" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="174" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="176" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="178" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="180" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="182" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="184" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="186" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="188" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="190" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="192" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="194" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="196" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="198" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="200" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="202" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="204" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="206" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="208" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="210" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="212" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="214" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="216" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="218" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="220" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="222" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="224" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="226" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="228" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="230" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="232" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="234" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="236" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="238" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="240" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="242" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="244" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="246" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="248" ss:AutoFitWidth="0" ss:Width="15"/>
+		
+		<Column ss:Index="250" ss:AutoFitWidth="0" ss:Width="15"/>
+	
+	<Row>
+		<Cell ss:StyleID="titulo_CEPALSTAT"><Data ss:Type="String">CEPAL - CEPALSTAT</Data></Cell>
+	</Row>   
+	
+<Row>
+	<Cell ss:StyleID="titulo_area"><Data ss:Type="String">ESTADÍSTICAS E INDICADORES ECONÓMICOS</Data></Cell>
+</Row>   
+
+<Row>
+	<Cell ss:StyleID="titulo_tema"><Data ss:Type="String">Cuentas nacionales anuales en dólares</Data></Cell>
+</Row>   
+
+	<Row>
+		<Cell ss:StyleID="titulo_indicador"><Data ss:Type="String">Grado de Apertura de la Economía, a precios corrientes</Data></Cell>
+	</Row>   
+	
+	<Row>
+		<Cell ss:StyleID="titulo_unidad_medida"><Data ss:Type="String">(Sobre la base de cifras en millones de dólares)</Data></Cell>
+	</Row>   
+	
+	<Row>
+	
+						<Cell><Data ss:Type="String">~</Data></Cell> 
+						
+						<Cell ss:StyleID="fuenteYLlamadas"><Data ss:Type="String">[A]</Data></Cell>
+						
+						<Cell ss:StyleID="rotuloDimension"><Data ss:Type="String">A&ntilde;os</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+				<Cell><Data ss:Type="String"></Data></Cell>
+				
+					<Cell><Data ss:Type="String"></Data></Cell>
+					
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloDimension"><Data ss:Type="String">Pa&iacute;s</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1990</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1991</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1992</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1993</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1994</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1995</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1996</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1997</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1998</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">1999</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2000</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2001</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2002</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2003</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2004</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2005</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2006</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2007</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2008</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2009</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2010</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2011</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2012</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2013</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2014</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2015</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2016</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2017</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2018</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2019</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="rotuloColumna"><Data ss:Type="String">2020</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Argentina</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">15.630498626327</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">14.39958651889</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">15.51294835272</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">14.9501148784</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">16.709271152312</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">18.23342478288</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">19.832428361962</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">21.511646970096</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">21.522774951095</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">19.712540690788</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">20.861717770987</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">20.161819299356</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.589786744175</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.547600479853</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.692646122883</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.551270979163</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.433479864701</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.945170615131</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.402673374279</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">34.057126901625</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">34.971013261473</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.206155000288</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.52654237283</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">29.333929000909</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.40679364509</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">22.486226089114</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">26.093887848452</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">25.289601137635</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.762535955309</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.214447185509</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.148141556435</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Bahamas</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.258141720399</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.194043309302</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">70.331123656756</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.833899424009</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.223400463861</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.906315197502</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.363532668389</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">74.442300185614</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.406375067537</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">70.855361097173</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">74.507319595327</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.753787079408</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.065731820965</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.709102009278</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.335042951442</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.129645197748</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">81.468718610767</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">82.093140122826</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">81.507849823567</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.293072991635</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.275496999808</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">82.047279495959</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.250734573947</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.303946791683</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">83.894677328164</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.27636956924</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">70.107399563064</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.983138749322</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">75.57603327673</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.343167937772</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.90966439566</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Barbados</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">85.190216840143</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">81.725070211407</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">75.420398274925</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">79.969335205153</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">82.612486882077</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.197065130319</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">90.659428022065</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">92.939626096516</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">85.449424173945</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">85.589084641948</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.973970309139</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">83.934712282367</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">81.04140269763</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.534564476363</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.459833790134</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">94.880019396163</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">96.51683423406</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">91.143414795569</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">94.543800065352</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">88.45730251281</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">86.923009312716</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">86.592104827524</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.225949334181</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">92.198440578146</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.763435045977</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.522046791971</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">78.702636437661</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.379397188859</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">75.085742241551</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">74.82209759402</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Belice</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">100.241628725236</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.617556069706</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">102.57523574412</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">96.815105589222</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">102.198708592793</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">97.027880775588</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">100.226136518532</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">108.44194514792</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">109.485721162168</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">121.675784136743</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">126.645259769623</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">120.446496442963</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">119.635763007736</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">119.945109771918</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">109.744178402034</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">118.594105724796</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">123.479259574805</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">124.132142545371</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">133.713086439684</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">109.455766649743</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">117.702407778628</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">126.947887585573</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">128.25657884077</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">131.952879339703</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">127.241271319982</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">125.229298434788</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">113.307524637074</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">112.072903817084</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">113.010630444892</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">110.022795949125</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Bolivia (Estado Plurinacional de)</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.70327322119</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.444966498238</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.110856969876</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.467127498301</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.860851410798</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.737985702716</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.856291106662</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.469663407331</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">52.281161768854</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.168254642317</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.597775109664</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.227821351597</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.350260466538</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.967835138957</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.464266316289</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.641942491632</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">74.537849111251</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.061911645896</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">82.867021199206</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">68.627074518422</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">75.511626541404</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">82.480395134106</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.948761254095</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">81.230907317286</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">85.264469812741</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.932844941466</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.401034545295</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.704652844172</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.109964724836</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.397306637392</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.933637280458</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Brasil</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">14.686847186614</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">16.085327611742</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">18.648081246838</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">18.995221021743</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">18.109813025309</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">16.715020602103</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">15.576641337054</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">16.529870878657</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">16.550803843519</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">21.07916781559</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">22.639760602617</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">26.936284796289</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.618357392104</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.14038451556</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">29.678252419145</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.086795062944</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">26.041700307646</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">25.292611108949</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.257569384946</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">22.105975892591</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">22.772178112005</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">23.93440517761</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">25.114273608653</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">25.785957323657</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">24.68540581659</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">26.953625937679</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">24.533682078845</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">24.319734373156</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.876203377402</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.455937315237</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.354295879896</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Chile</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.8213819021</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.026498624935</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.238360094244</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">52.900389100292</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">52.799491297748</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">54.63682482957</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">54.767974803142</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">54.946613604372</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">54.321163679897</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.347267112365</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">59.315822107117</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.143126213058</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.393725493704</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.316286621355</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.733663353142</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.616760872993</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.098651080119</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.407415499717</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.789773429257</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.337202917883</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.063715995949</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.205665946524</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">68.271846399908</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">64.973476605527</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">65.272587837817</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.9722752972</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.688041494207</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.654021402391</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.32162275912</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.874463004941</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.841836197074</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Colombia</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">29.026204345042</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.807716856288</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.386196217474</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.058577682322</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.850425414991</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.545718925037</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.930267267383</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.579645504726</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.840575081627</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.416238054321</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">34.268427270785</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.655059043116</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">34.701685622264</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.405327015019</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.678686921724</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.422697494955</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.641355960629</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.09889709829</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.167649416435</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.156128507459</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">34.264603168768</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.470423554537</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.835151018669</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.986648797846</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.48746564111</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.360764118445</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">36.202652984202</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.282914942459</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">36.534752796897</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.521333611028</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.65364723014</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Costa Rica</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.545486911192</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.439675709861</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.096235483936</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">79.352336825141</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.997307999644</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">79.774374546463</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.057164004907</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.613198096908</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">92.038021237119</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.53861379095</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">86.52492353248</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.852758718446</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.413944336283</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">83.32770753429</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">85.256477195723</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.222663892977</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.814554614147</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">86.456595843602</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">86.401512711006</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.759317724653</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.512089683773</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">68.639146507318</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.048539295074</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">64.066410587921</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">65.191242053223</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.753561939576</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.178478176606</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">65.071953743727</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.945342016601</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.136926551187</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">61.328345599405</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Cuba</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">68.331871725194</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.009079714588</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.838598616682</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.814898251456</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">26.737568095937</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.193494268081</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.625292796214</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.754209391348</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.504672388805</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.868949324158</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.075987881722</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">29.361096381587</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">24.729313347524</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">26.587207634306</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.311579255971</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.361223149798</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.188014288206</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.967609664203</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.917220748508</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.914724236693</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.291816030916</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.960333752041</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.866203634077</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.32389692539</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.274152853907</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.613812479342</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.269113252912</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">26.218409562373</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.061059702156</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">22.886522965937</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Ecuador</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.594912294028</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.196639984556</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.806543652207</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.171218423468</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.7777474952</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.911270731824</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.215702683215</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.017186318076</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.395107949805</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.201250798938</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">59.464699296633</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.745057160433</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.376549641326</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.241630694403</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.665240367197</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.099829703772</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">59.709783188102</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.58713842793</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">68.056947376031</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">52.104849023074</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.303238713412</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">64.490238892999</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">61.751112408385</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">59.606156056966</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.708168989207</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.243877148583</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.521340335883</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.421721391017</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.36213094869</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.076821190926</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.28601800603</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">El Salvador</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.615627788535</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.753431405783</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.675245350021</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">53.52729079389</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.148649259223</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">59.360754818399</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.281856944377</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.557092296141</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.872290559833</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.990489717135</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">68.710088857742</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">65.890739141889</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">65.919091242196</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">68.236983084885</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.78226398154</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.715811675058</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.455567507027</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.621056034799</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.665973939908</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.071191174449</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.53728767254</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">79.276643702505</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.648571622288</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.451194490827</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">78.104425747793</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.560270737052</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.819093373149</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">74.304651191652</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">75.633616887996</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">75.976831324038</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.426983219908</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Guatemala</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">61.185458678769</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.243016260156</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.313928664096</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.227269923121</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">59.878044045433</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.926726484129</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.86507651889</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.507692957499</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.5813364909</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">65.308400250362</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.230404056083</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.329267002221</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.961618583862</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.925688703854</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.94914115399</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">64.063594531357</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">64.838419389746</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">65.870931979026</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.171033652701</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.231227369271</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.09440229759</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">61.8998925073</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">59.03075004543</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.685221249922</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.083279297914</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.893453258132</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.372737897215</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.069420515824</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.088430508635</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.596522331042</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">41.840624637773</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Hait&iacute;</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.607286717157</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">23.675608833217</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">19.370593739913</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">29.036082783644</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">18.551759330406</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">22.524036440473</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">23.902076909873</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">21.924282987272</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">21.710770328524</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">24.917982318237</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.406844383616</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.818608319039</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.586219144097</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.08866619346</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">34.463182494242</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">34.214022096444</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.651667352003</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.222235140535</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.96486874304</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.096499821483</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.721870443746</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.424892910438</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.258241507043</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.325326770915</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.37588449108</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.059523464377</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.07415776515</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.756641784602</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.26434583986</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.161997042954</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.060047100414</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Honduras</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">96.620056643333</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">90.27029069094</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">85.637323358916</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">97.851185942871</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">111.989221916603</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">114.883666828368</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">123.677749886098</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">122.62797181915</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">125.659366927538</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">120.893929607625</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">120.392164584236</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">115.943071737954</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">117.997454450299</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">122.248277175534</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">135.461758741854</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">136.489768018486</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">133.13183510432</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">135.070634917917</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">135.748955193054</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">96.90500601889</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">109.441838241682</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">122.216902597337</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">121.188215808285</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">116.306049247436</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">112.97509728471</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">107.26440535424</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">99.815716950592</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">101.813111079622</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">103.551162215452</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">98.027589708346</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">85.753745388689</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Jamaica</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">78.408442632847</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">79.515692037743</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">94.538610058449</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">82.842133184008</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">111.406683924325</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">107.651807499957</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">97.724241960519</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">88.984831825258</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.474985366097</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.23174689177</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.513006052872</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.827734599442</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">81.846755427102</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">88.150630842409</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.318104072682</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">90.48789334491</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">100.745598824993</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">101.244422062437</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">113.577403844226</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">86.885124333884</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.920400318881</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">83.821820227581</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">82.040078348651</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">83.259571984001</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.740943664456</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.117521662348</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.455158957305</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">83.523172517513</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.977906041235</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">90.110607633599</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">M&eacute;xico</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.959875880684</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.807897061831</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.710175990473</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.827911182998</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.709971850248</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.321019294566</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.419200080038</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.777361677294</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.996121626778</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.617971444279</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">52.432681748739</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.166073017584</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.697914708391</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.205689455196</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">53.486145239206</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">53.938132105771</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.092724631803</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.795279361515</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.777030929614</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.967769759144</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.760318469993</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.469677920752</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">65.767245823391</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.764876610826</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">64.925357901862</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.089090113461</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.062209137811</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.115744504443</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.559384228778</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.882859096907</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">78.195821627274</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Nicaragua</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.708456102049</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">36.792803250237</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">34.786208566051</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.814597755629</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.081215937706</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.039794241026</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.482837743527</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.005529971481</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.013714556291</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.537643937635</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">61.298496654108</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.98013081718</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.091283693233</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.175065167492</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.195316122974</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.645722896254</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.309670840895</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">93.025730262089</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">96.793984746803</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">86.993610408834</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">100.36405845369</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">111.827453906467</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">115.177288518774</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">110.984207910013</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">106.698200184249</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">98.194164590527</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">93.81372781497</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">96.380586434366</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">93.984740490746</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">94.566607060366</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.474774646654</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Panam&aacute;</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">142.840096785976</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">164.305238311501</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">169.929325750066</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">164.185101604599</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">168.605389405218</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">172.233976727834</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">160.237835531472</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">169.835751744529</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">155.363429424776</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">130.116843021196</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">137.627136572853</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">133.641090513614</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">125.167086060434</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">117.814281517966</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">127.012950192532</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">139.387799975932</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">140.910382686896</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">149.57011845849</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">166.698579672481</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">138.980105754272</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">148.274291736742</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">162.487500802912</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">158.058436046715</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">137.633938077618</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">119.090592357039</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">99.936672377954</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.408312705102</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">87.427876867518</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.690928278152</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.163527985913</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">75.700906305166</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Paraguay</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">95.603984864994</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.139319221498</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">89.497557559861</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">113.60376354813</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">123.07932946649</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">118.064074196292</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">103.035267205627</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">95.93427624792</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">101.606320138417</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.555275690803</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">78.644729760968</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.605699011615</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">79.441565648308</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">81.127363770288</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.104446615611</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">85.021963654005</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">84.73353130486</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">79.001137420326</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.777574657259</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">70.841981862433</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">81.257523374679</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">78.49212384899</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">74.764957456109</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.369871384133</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.083725102375</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">66.940141046792</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.788387981475</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.48221272124</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.528586068527</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.362266880351</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.781446272299</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Per&uacute;</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">29.546230898218</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">26.687420162165</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.988553745463</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.77556699082</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.92299576989</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.927217847551</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.654204091264</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.469545850683</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.953021785394</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.205776555849</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.538032162318</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.064401431021</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">35.24918133177</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.6246103251</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">41.936078267927</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.357317476839</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.785056033844</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.688113283682</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.433767389905</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.111929615352</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.672808937003</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.988280283861</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">52.619895263229</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.787142447144</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.85312109129</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.162768689115</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.388841196415</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.513550361997</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.636389734168</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.789275990326</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.436729837682</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Rep&uacute;blica Dominicana</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">98.916356896512</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.310356124709</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">75.350467249479</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.230124482414</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.747687633459</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.790913588269</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">68.181853253617</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">71.02701689736</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">73.778926378221</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">74.256517403924</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.064389173734</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.450700384151</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">67.676411015934</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">80.396492954444</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">77.969790779811</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.911697375264</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">63.170677888983</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">61.947230677744</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">61.392053091654</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.612282609278</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.999936070425</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.989665900817</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.388673884427</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.681756117759</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.496423250346</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">52.171077718113</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.585971256498</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.225085424437</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">52.055966385079</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.011144919801</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.293656553183</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Suriname</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">90.93111611099</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">93.174550907245</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">94.871328069416</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">106.8559388241</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">105.415297811649</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Uruguay</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.548332933148</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">41.262763568149</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.890977803858</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">41.407286124888</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.974437392195</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.778141011229</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.309699442609</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.977407686438</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">41.553507149213</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.877569653081</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.768449995964</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.347106690327</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.04266656198</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.959052178254</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.323505908304</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.206122667518</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">72.551991697315</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">69.343833673092</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">76.055011642438</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.680215270537</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.707773322289</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">62.404448284191</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">64.291247451479</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.043492283706</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">57.390572066937</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">53.121249356296</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.573185320041</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.80470512187</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.82535033795</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.607043580772</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.368307935534</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Venezuela (Rep&uacute;blica Bolivariana de)</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">61.04812245</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.82023015</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.38240595</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.25863402</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">54.34313028</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.98546191</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">59.18037181</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.24503641</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.59939293</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.07023048</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.85722155</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.14126802</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.57571065</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.57700738</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">55.3674556</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">60.12732976</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">58.66559156</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">56.19909548</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.82901238</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.52092966</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.13689352</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.6381216</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">50.40356738</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">54.27776125</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.09081353</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+						<Cell ss:StyleID="tres_puntos"><Data ss:Type="String">...</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Am&eacute;rica Latina y el Caribe</Data></Cell> 
+						
+						<Cell ss:StyleID="fuenteYLlamadas"><Data ss:Type="String">/a</Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.613192100654</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.936430771725</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.950719492892</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.330938499742</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.745507521768</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.799946042263</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.534402820852</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.547470055172</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.226423443544</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">36.693395885795</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.268647643595</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.150637140963</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.465520280175</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.077384741494</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.410360768082</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.620041342657</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.880334488154</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.991814583254</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.671882855878</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.798727917307</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.403489392454</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.228390267231</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.155327905288</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.879883439645</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.170137936756</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.235411485809</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.967448890711</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.597530936082</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.288233545677</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.050834320792</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.435146952377</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">Am&eacute;rica Latina</Data></Cell> 
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.324093361118</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">27.725818116646</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.779394144219</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.263686703957</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">28.423534119663</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">30.488486338964</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.262558968049</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">32.29865829889</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">33.002990607437</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">36.489508764798</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.095125402643</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">39.024449408313</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.410824987232</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.076752797035</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.457056030586</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.640134303597</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.872731443991</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.003873436601</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.712778937313</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.80237604992</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.454201751561</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.284660219061</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.224051115584</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.948081696584</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.237968013403</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.287906492332</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.017592642386</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.61017886843</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.315864077912</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.083119823432</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">47.026912934048</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+	<Row>
+	
+						<Cell ss:StyleID="rotuloFila"><Data ss:Type="String">El Caribe</Data></Cell> 
+						
+						<Cell ss:StyleID="fuenteYLlamadas"><Data ss:Type="String">/a</Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.741915444981</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.895405085539</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.244842045462</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">31.402288387723</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">53.879995868311</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">53.823994193321</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.408970318228</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">51.217395253781</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.95533459016</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">48.932845652592</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">49.965852016307</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.532608932571</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.156409378216</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.106989376537</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.094014533116</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.547298658294</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">46.316250829417</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.256771064994</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">43.119364330284</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">38.548806591879</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">36.440884100776</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.47486221124</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.490624961404</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">37.202281532746</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">36.677339820376</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">41.563917705322</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">40.359768677083</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">42.625031099085</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">45.303983278689</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">44.804684536463</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+                        <Cell ss:StyleID="dato"><Data ss:Type="Number">7.362380327992</Data></Cell>
+						
+						<Cell><Data ss:Type="String"></Data></Cell>
+						
+	</Row>   
+	
+		<Row>
+			<Cell ss:StyleID="descripcion_llamada"><Data ss:Type="String">Información revisada al 25/AGO/2021</Data></Cell>
+		</Row>   
+		
+		<Row>
+			<Cell ss:StyleID="titulo_fuente"><Data ss:Type="String">Fuentes</Data></Cell>
+		</Row>   
+		
+		<Row>
+			<Cell ss:StyleID="descripcion_fuente"><Data ss:Type="String">[A] CEPAL: Comisión Económica para América Latina y el Caribe - Estimaciones propias con base en fuentes oficiales</Data></Cell>
+		</Row>   
+		
+		<Row>
+			<Cell ss:StyleID="titulo_llamada"><Data ss:Type="String">Notas</Data></Cell>
+		</Row>   
+		
+		<Row>
+			<Cell ss:StyleID="descripcion_llamada"><Data ss:Type="String">a/ Comprende los País que figuran en el presente cuadro.</Data></Cell>
+		</Row>   
+		
+<Row>
+	<Cell ss:StyleID="descripcion_llamada"><Data ss:Type="String">Process time ~0.6640625 seg.</Data></Cell>
+</Row>   
+
+</Table>
+</Worksheet>   
+</Workbook>
+
+
+
+
