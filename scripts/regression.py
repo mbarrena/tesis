@@ -100,12 +100,19 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True):
     for var in resultados.names:
       for var_res in var_respuesta: #Grafica los impulso-respuesta de todas las variables contra ipc y contra E
         if var != var_res:
-          plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, figsize=(3,2))
-          
-    vars_contra_emae = ["Psoja_USA","Pmaíz_USA","Ptrigo_USA","tot_04","TOTfmi","impp_usa","E","Ebc", "ipc"]
-    for var_contra in vars_contra_emae: #Para todas las variables de la lista anterior
+          sigma = resultados.sigma_u.loc[var,var]
+          print(f"Sigma {var}: {sigma}")
+          plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=False, figsize=(3,2))
+          plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
+        
+    vars_contra_emae_o_pbi = ["Psoja_USA","Pmaíz_USA","Ptrigo_USA","tot_04","TOTfmi","impp_usa","E","Ebc", "ipc"]
+    emae_o_pbi = "emae" if "emae" in resultados.names else "pbird"
+    for var_contra in vars_contra_emae_o_pbi: #Para todas las variables de la lista anterior
       if var_contra in resultados.names: #Si son variables del dataset sobre el que estamos trabajando
-        plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
+        sigma = resultados.sigma_u.loc[var_contra,var_contra]
+        print(f"Sigma {var_contra}: {sigma}")
+        plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var_contra, response=emae_o_pbi, var_results=resultados, periods=10, orth=True, cumulative=False, figsize=(3,2))
+        plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var_contra, response=emae_o_pbi, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
         
     printmd(bold("Resultados descomposición de varianza (FEVD)"))
     try:
