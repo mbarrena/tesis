@@ -1,6 +1,7 @@
 from utilities import printmd, bold
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 from statsmodels.tsa.vector_ar.irf import IRAnalysis
 import statsmodels.tsa.vector_ar.plotting as plotting
 
@@ -9,6 +10,7 @@ import statsmodels.tsa.vector_ar.plotting as plotting
 def getNormalizedIRFs(var_results, impulse, periods, orth, cumulative):
   # Basado en https://stackoverflow.com/questions/62269621/statsmodels-vector-ar-and-iranalysis
   sigma = var_results.sigma_u.loc[impulse,impulse]
+  sigma = math.sqrt(sigma)
   if orth:
     J = var_results.orth_ma_rep(periods)
   else:
@@ -20,6 +22,7 @@ def getNormalizedIRFs(var_results, impulse, periods, orth, cumulative):
 
 def getNormalizedIRFerrband(var_results, impulse, periods, signif, orth, cum=False, stderr='asym'):
   sigma = var_results.sigma_u.loc[impulse,impulse]
+  sigma = math.sqrt(sigma)
   if stderr == "mc":
     G,H = var_results.irf_errband_mc(orth=orth, repl=100, steps=periods, signif=signif, seed=None, burn=100, cum=cum)
     G = G/sigma
