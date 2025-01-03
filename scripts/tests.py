@@ -197,5 +197,5 @@ def ChowTest(datos, last_index, first_index, y_vars=None, variables=None):
     printmd(f"{bold(var)}:")
     ct = chowtest.ChowTest(datos.drop(var, axis=1), datos[var],
           last_index_in_model_1=last_index,
-          first_index_in_model_2=first_index
+          first_index_in_model_2=first_index)
   print(f"ChowTest value: {ct[0]}, p_value: {ct[1]}")
