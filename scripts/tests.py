@@ -159,7 +159,7 @@ def PP(datos, variables=None):
 # https://www.statology.org/chow-test-in-python/
 # Tampoco estoy segura si hice bien en hacer que y sea cada una de las variables y x sean todas las demas.
 
-def ChowTest(datos, last_index, first_index, significance, variables=None):
+def ChowTest(datos, last_index, first_index, significance, y_vars=None, variables=None):
   """The chow test is computed and assessed against the significance argument. The chow_test value and p_value are returned
     from the function.
     
@@ -182,6 +182,8 @@ def ChowTest(datos, last_index, first_index, significance, variables=None):
       last_index (int): the final index value to be included before the data split.
       first_index (int): the first index value to be included after the data split.
       significance_level (float): the significance level against which the p-value is assessed.
+      y_vars (list[str]): una lista de columnas que representa las variables (y) contra las cuales evaluar. Por defecto se hace contra todas las variables. 
+      variables (list[str]): subset of variables of the dataframe to use.
 
   Returns:
       chow_value (float): the chow test output value.
@@ -189,8 +191,10 @@ def ChowTest(datos, last_index, first_index, significance, variables=None):
   """
   from chow_test import chow_test
   variables = datos.columns[2:] if variables is None else variables
+  datos = datos[variables]
+  y_vars = variables if y_vars is None else y_vars
   printmd(f"{bold('Test de Chow:')} idx before break {last_index}, idx after break {first_index}")
-  for var in variables:
+  for var in y_vars:
     printmd(f"{bold(var)}:")
     ct = chow_test(y_series=datos[var], X_series=datos.drop(var, axis=1),
           last_index=last_index,
