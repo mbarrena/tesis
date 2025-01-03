@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import range_unit_root_test, zivot_andrews, kpss
 from arch.unitroot import PhillipsPerron
-from chowtest import ChowTest
+import chowtest
 
 # Funciones para hacer que el resultado de los tests RUR, Zivot-Andrews y KPSS sea más legible.
 def formatInterpolationWarning(fun):
@@ -195,7 +195,7 @@ def ChowTest(datos, last_index, first_index, y_vars=None, variables=None):
   printmd(f"{bold('Test de Chow:')} idx before break {last_index}, idx after break {first_index}")
   for var in y_vars:
     printmd(f"{bold(var)}:")
-    ct = ChowTest(datos.drop(var, axis=1), datos[var],
+    ct = chowtest.ChowTest(datos.drop(var, axis=1), datos[var],
           last_index_in_model_1=last_index,
           first_index_in_model_2=first_index
   print(f"ChowTest value: {ct[0]}, p_value: {ct[1]}")
