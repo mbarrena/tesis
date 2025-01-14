@@ -1,0 +1,7 @@
+matplotlib
+seaborn
+xlrd>=1.2.0
+scikit-learn
+statsmodels
+arch
+ipykernel
