@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import range_unit_root_test, zivot_andrews, kpss
 from arch.unitroot import PhillipsPerron
-from chowtest import chowtest
+import chowtest
 
 # Funciones para hacer que el resultado de los tests RUR, Zivot-Andrews y KPSS sea más legible.
 def formatInterpolationWarning(fun):
