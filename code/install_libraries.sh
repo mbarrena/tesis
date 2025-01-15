@@ -6,4 +6,5 @@ pip install scikit-learn
 pip3 uninstall statsmodels -y
 pip install statsmodels --upgrade
 pip install arch
+rm -rf chowtest
 git clone https://github.com/mbarrena/chowtest.git && cd chowtest && pip install .
