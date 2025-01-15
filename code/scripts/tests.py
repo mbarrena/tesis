@@ -180,8 +180,8 @@ def ChowTest(datos, last_index, first_index, y_vars=None, variables=None):
 
   Args:
       datos: los datos. Se realiza test de chow sobre cada una de las variables especificadas de a una (y), contra todas las demas (x).
-      last_index (int): the final index value to be included before the data split.
-      first_index (int): the first index value to be included after the data split.
+      last_index (int): el último índice (número de fila) a incluir PREVIO al quiebre estructural.
+      first_index (int): el último índice (número de fila) a incluir POSTERIOR al quiebre estructural.
       y_vars (list[str]): una lista de columnas que representa las variables (y) contra las cuales evaluar. Por defecto se hace contra todas las variables. 
       variables (list[str]): subset of variables of the dataframe to use.
 
