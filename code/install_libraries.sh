@@ -10,3 +10,4 @@ pip install statsmodels --upgrade
 pip install arch
 rm -rf chowtest
 git clone https://github.com/mbarrena/chowtest.git && cd chowtest && pip install .
+pip install --upgrade nbformat

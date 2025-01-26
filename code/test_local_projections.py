@@ -7,19 +7,8 @@ sys.path.insert(0, sh_path)
 
 from utilities import renameColumnOfDataframe
 from variable_preprocessing import makeLogColumns, makeDiffColumns
-from regression import run_irf
+from regression import run_irf, LPResults
 from visualization import plotIrfWithSignifLP
-
-class LPResults(list):
-        names: list[str]
-        signifs: list[float]
-        sigma_u = None #LocalProjection results are already normalised
-        def plotIrfWithSignif(signifs: list, impulse: str, response: str, var_results, periods: int, orth: bool, cumulative: bool=False, **kwargs):
-            """Abstract interface for specific plotIrf functions for VAR or LocalProjections"""
-            return plotIrfWithSignifLP(signifs=signifs, impulse=impulse, response=response, var_results=var_results, periods=periods, orth=orth, cumulative=cumulative, **kwargs)
-        def __repr__(self):
-            return f"LPResults([{', '.join([f'irf_df (signif {s})' for s in self.signifs])}])"
-
 
 df_trimestral_crudo = pd.read_excel("https://github.com/mbarrena/tesis/blob/main/data/Data%20trimestral%201950%20a%202023%20con%20DUMMIES%20outliers%20(por%20trimestre).xlsx?raw=true")
 df_Arg = df_trimestral_crudo[['año', 'trimestre', 'ipc_ajust', 'E', 'Ebc', 'pbird', 'impp_usa', 'Psoja_USA', 'Pmaíz_USA', 'Ptrigo_USA', 'TOTfmi', "D1", "D2"]].copy()
@@ -45,7 +34,8 @@ lp_results.names = endog+exog
 lp_results.signifs = signifs
 
 for signif in signifs:
-    opt_ci = 1-signif # 95% confidence intervals
+    opt_ci = 1-signif
+    print(f"Signif. {opt_ci}")
 
     if len(exog) == 0:
         irf = lp.TimeSeriesLP(data=df, 

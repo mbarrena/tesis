@@ -8,6 +8,7 @@ from scipy import stats
 from variable_preprocessing import *
 from utilities import *
 from visualization import *
+from LocalProjection import LPResults
 
 # Para elegir que modelo usar para regresión, descomentar la línea con el modelo
 # que se quiera usar y comentar las otras dos. Despues correr la celda
@@ -74,7 +75,7 @@ def run_test_whiteness(resultados):
     tryrun(lambda: print(resultados.test_whiteness(nlags=6, signif=0.05, adjusted=True).summary()))
     print("")
 
-def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, max_horizon=10, lags=1, signifs=[0.05, 0.32], run_other_tests_on=False):
+def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, max_horizon=10, signifs=[0.05, 0.32], run_other_tests_on=False):
     """
     Funcion que realiza la regresion OLS
     - `endog`: la lista de variables endogenas
@@ -176,55 +177,78 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
         display(resultados.pvalues[[resultados.names[0]]].T)
         # Saco esto porque para normalizar tengo que calcular los irf a mano
         resultados.plotIrfWithSignif = plotIrfWithSignifVAR
-        run_irf(resultados, signifs=[0.05, 0.32])
+        run_irf(resultados, signifs=signifs)
         fevd(resultados)
         run_test_whiteness(resultados)
         if run_other_tests_on:
             run_other_tests(resultados)  
 
     elif rModel == "LocalProjections":
-            lp_results = []
-            for signif in signifs:
-                ci_width = 1-signif
-                #run irf
-                #irf = algo
-                irf.names = endog+exog
-                irf.plotIrfWithSignif = plotIrfWithSignifLP
-                irf.sigma_u = None
-                lp_results.append(irf)
-                
-            printmd(bold("Pvalues:"))
-            display(resultados.pvalues[[resultados.names[0]]].T)
+        response = endog+exog 
+        # estimate the responses of all variables to shocks from all variables save the ones we don't have control over
+        response = [x for x in response if x not in ["impp_usa","Psoja_USA","Pmaiz_USA","Ptrigo_USA"]] 
+        irf_horizon = 10 # estimate IRFs up to 10 periods ahead
+        opt_lags = 5 # include 5 lags in the local projections model
+        
+        lp_results = LPResults([])
+        lp_results.names = endog+exog
+        lp_results.signifs = signifs
+        for signif in signifs:
+            opt_ci = 1-signif
+            print(f"Signif. {opt_ci}")
+            if len(exog) == 0:
+                irf = lp.TimeSeriesLP(data=datos, 
+                                Y=endog, 
+                                response=response, 
+                                horizon=irf_horizon, 
+                                lags=opt_lags, 
+                                newey_lags=None, 
+                                ci_width=opt_ci
+                                )
+            else:
+                irf = lp.TimeSeriesLPX(data=datos, 
+                                Y=endog, 
+                                X=exog, 
+                                response=response, 
+                                horizon=irf_horizon, 
+                                lags=opt_lags, 
+                                newey_lags=None, 
+                                ci_width=opt_ci
+                                )
+            lp_results.append(irf)
             
-            run_irf(lp_results, signifs=[0.05, 0.32])
-            # Saco esto porque para normalizar tengo que calcular los irf a mano
-            fevd(resultados)
-            run_test_whiteness(resultados)
-            if run_other_tests_on:
-                run_other_tests(resultados)  
-                
-                
+        printmd(bold("Pvalues:"))
+        display(lp_results.pvalues)
+            
+        # Saco esto porque para normalizar tengo que calcular los irf a mano
+        fevd(lp_results)
+        run_test_whiteness(lp_results)
+        if run_other_tests_on:
+            run_other_tests(lp_results)  
+            
+        run_irf(lp_results, signifs=signifs)
+            
 
-            # Extraer coeficientes y calcular intervalos de confianza
-            for var in exog:
-                coef_h = [res.params[var] for res in resultados_h if var in res.params]
-                se_h = [res.bse[var] for res in resultados_h if var in res.params]
+        # Extraer coeficientes y calcular intervalos de confianza
+        for var in exog:
+            coef_h = [res.params[var] for res in resultados_h if var in res.params]
+            se_h = [res.bse[var] for res in resultados_h if var in res.params]
 
-                coef_dict[var].append(np.mean(coef_h))
-                ci_width_std = stats.norm.ppf(1 - (1 - ci_widht) / 2) * np.std(se_h)
-                ci_dict[f"{var}_ci"].append((np.mean(coef_h) - ci_width_std, np.mean(coef_h) + ci_width_std))
+            coef_dict[var].append(np.mean(coef_h))
+            ci_width_std = stats.norm.ppf(1 - (1 - ci_widht) / 2) * np.std(se_h)
+            ci_dict[f"{var}_ci"].append((np.mean(coef_h) - ci_width_std, np.mean(coef_h) + ci_width_std))
 
-            # Convertir resultados a DataFrames
-            coef_df = pd.DataFrame(coef_dict, index=range(1, max_horizon + 1))
-            conf_df = {var: pd.DataFrame(ci, columns=["lower", "upper"]) for var, ci in ci_dict.items()}
+        # Convertir resultados a DataFrames
+        coef_df = pd.DataFrame(coef_dict, index=range(1, max_horizon + 1))
+        conf_df = {var: pd.DataFrame(ci, columns=["lower", "upper"]) for var, ci in ci_dict.items()}
 
-            print("\nLocal projections - resultados finales")
-            print("Coeficientes estimados:")
-            print(coef_df)
-            print("\nIntervalos de confianza:")
-            for var, ci_df in conf_df.items():
-                print(f"\n{var}:")
-                print(ci_df)    
+        print("\nLocal projections - resultados finales")
+        print("Coeficientes estimados:")
+        print(coef_df)
+        print("\nIntervalos de confianza:")
+        for var, ci_df in conf_df.items():
+            print(f"\n{var}:")
+            print(ci_df)    
 
     return modelo, resultados
 
