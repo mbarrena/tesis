@@ -14,4 +14,5 @@ df_Arg = df_trimestral_crudo[['año', 'trimestre', 'ipc_ajust', 'E', 'Ebc', 'pbi
 df_Arg = renameColumnOfDataframe(df_Arg, "ipc_ajust", "ipc")
 df_Arg59 = df_Arg.copy().iloc[36:].reset_index(drop=True)[['año', 'trimestre', 'ipc', 'E', 'Ebc', 'pbird', 'impp_usa', 'Psoja_USA', 'Pmaíz_USA', 'Ptrigo_USA', 'TOTfmi', "D1", "D2"]].copy()
 
-ChowTest(df_Arg59,19,21,y_vars=["ipc"],variables=removeInplace(df_Arg59.columns[2:-4],"tot"))
+#ChowTest(df_Arg59,19,21,y_vars=["ipc"],variables=removeInplace(df_Arg59.columns[2:-4],"tot"))
+#BaiPerron(df_Arg59, variables=['ipc'])
