@@ -16,7 +16,7 @@ REGRESS_MODEL = "VAR"
 #REGRESS_MODEL = "VECM"
 #REGRESS_MODEL = "LocalProjections"
 
-def run_irf(resultados):
+def run_irf(resultados, signifs):
     printmd(bold("Impulso-respuesta:"))
     var_respuesta = ["ipc"] if "ipc" in resultados.names else []
     var_respuesta += ["E" if "E" in resultados.names else "Ebc"]
@@ -27,19 +27,21 @@ def run_irf(resultados):
     for var in resultados.names:
         for var_res in var_respuesta: #Grafica los impulso-respuesta de todas las variables contra ipc y contra E
             if var != var_res:
-                sigma = resultados.sigma_u.loc[var,var]
-                print(f"Sigma {var}: {sigma}")
-                plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=False, figsize=(3,2))
-                plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
+                if resultados.sigma_u is not None:
+                    sigma = resultados.sigma_u.loc[var,var]
+                    print(f"Sigma {var}: {sigma}")
+                resultados.plotIrfWithSignif(signifs=signifs, impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=False, figsize=(3,2))
+                resultados.plotIrfWithSignif(signifs=signifs, impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
             
     vars_contra_emae_o_pbi = ["Psoja_USA","Pmaíz_USA","Ptrigo_USA","tot_04","TOTfmi","impp_usa","E","Ebc", "ipc"]
     emae_o_pbi = "emae" if "emae" in resultados.names else "pbird"
     for var_contra in vars_contra_emae_o_pbi: #Para todas las variables de la lista anterior
         if var_contra in resultados.names: #Si son variables del dataset sobre el que estamos trabajando
-            sigma = resultados.sigma_u.loc[var_contra,var_contra]
-            print(f"Sigma {var_contra}: {sigma}")
-            plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var_contra, response=emae_o_pbi, var_results=resultados, periods=10, orth=True, cumulative=False, figsize=(3,2))
-            plotIrfWithSignif(signifs=[0.05, 0.32], impulse=var_contra, response=emae_o_pbi, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
+            if resultados.sigma_u is not None:
+                sigma = resultados.sigma_u.loc[var_contra,var_contra]
+                print(f"Sigma {var_contra}: {sigma}")
+            resultados.plotIrfWithSignif(signifs=signifs, impulse=var_contra, response=emae_o_pbi, var_results=resultados, periods=10, orth=True, cumulative=False, figsize=(3,2))
+            resultados.plotIrfWithSignif(signifs=signifs, impulse=var_contra, response=emae_o_pbi, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
 
 def fevd(resultados):
     printmd(bold("Resultados descomposición de varianza (FEVD)"))
@@ -72,7 +74,7 @@ def run_test_whiteness(resultados):
     tryrun(lambda: print(resultados.test_whiteness(nlags=6, signif=0.05, adjusted=True).summary()))
     print("")
 
-def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, max_horizon=10, lags=1, ci_widht=0.95, run_other_tests_on=False):
+def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, max_horizon=10, lags=1, signifs=[0.05, 0.32], run_other_tests_on=False):
     """
     Funcion que realiza la regresion OLS
     - `endog`: la lista de variables endogenas
@@ -173,53 +175,35 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
         printmd(bold("Pvalues:"))
         display(resultados.pvalues[[resultados.names[0]]].T)
         # Saco esto porque para normalizar tengo que calcular los irf a mano
-        irf(resultados)
+        resultados.plotIrfWithSignif = plotIrfWithSignifVAR
+        run_irf(resultados, signifs=[0.05, 0.32])
         fevd(resultados)
         run_test_whiteness(resultados)
         if run_other_tests_on:
             run_other_tests(resultados)  
 
     elif rModel == "LocalProjections":
-        coef_dict = {var: [] for var in exog}
-        ci_dict = {f"{var}_ci": [] for var in exog}
-
-        for h in range(1, max_horizon + 1):
-            resultados_h = []
-            sigma_u = []
-            for dep in endog:
-                print(f"Local projections: var dep. {dep}, horizonte {h}")
-                # Construir las variables dependiente e independientes
-                y_h = datos[dep].shift(-h).dropna()
-                X = datos[exog].join(datos[endog].shift(range(1, lags + 1)))
-                X = X.loc[y_h.index].dropna()
-
-                # Asegurarse de que las dimensiones coincidan
-                y_h = y_h.loc[X.index]
-
-                # Agregar constante
-                X = sm.add_constant(X)
-
-                # Ajustar el modelo
-                resultados = sm.OLS(y_h, X).fit()
-
-                # Guardar coeficientes y errores estándar
-                resultados_h.append(resultados)
+            lp_results = []
+            for signif in signifs:
+                ci_width = 1-signif
+                #run irf
+                #irf = algo
+                irf.names = endog+exog
+                irf.plotIrfWithSignif = plotIrfWithSignifLP
+                irf.sigma_u = None
+                lp_results.append(irf)
+                
+            printmd(bold("Pvalues:"))
+            display(resultados.pvalues[[resultados.names[0]]].T)
             
-                residuals = resultados.resid  # Get residuals from the OLS results object
-                sigma_u.append(residuals.var(axis=0))
-
-                resultados.names = resultados.params.index
-                printmd(bold("Pvalues:"))
-                display(resultados.pvalues[[resultados.names]].T)
-                # Saco esto porque para normalizar tengo que calcular los irf a mano
-                fevd(resultados)
-                run_test_whiteness(resultados)
-                if run_other_tests_on:
-                    run_other_tests(resultados)  
-            
-            resultados.sigma_u = np.diag(sigma_u)
-            run_irf(resultados)
-            
+            run_irf(lp_results, signifs=[0.05, 0.32])
+            # Saco esto porque para normalizar tengo que calcular los irf a mano
+            fevd(resultados)
+            run_test_whiteness(resultados)
+            if run_other_tests_on:
+                run_other_tests(resultados)  
+                
+                
 
             # Extraer coeficientes y calcular intervalos de confianza
             for var in exog:
@@ -227,7 +211,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                 se_h = [res.bse[var] for res in resultados_h if var in res.params]
 
                 coef_dict[var].append(np.mean(coef_h))
-                ci_width_std = stats.norm.ppf(1 - (1 - ci_width) / 2) * np.std(se_h)
+                ci_width_std = stats.norm.ppf(1 - (1 - ci_widht) / 2) * np.std(se_h)
                 ci_dict[f"{var}_ci"].append((np.mean(coef_h) - ci_width_std, np.mean(coef_h) + ci_width_std))
 
             # Convertir resultados a DataFrames
