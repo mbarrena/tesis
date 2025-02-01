@@ -190,15 +190,16 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
             run_other_tests(resultados)  
 
     elif rModel == "LocalProjections":
+        modelo = rModel
         response = endog+exog 
         # estimate the responses of all variables to shocks from all variables save the ones we don't have control over
         response = [x for x in response if x not in ["impp_usa","Psoja_USA","Pmaiz_USA","Ptrigo_USA"]] 
         irf_horizon = 10 # estimate IRFs up to 10 periods ahead
         opt_lags = 5 # include 5 lags in the local projections model
         
-        lp_results = LPResults([])
-        lp_results.names = endog+exog
-        lp_results.signifs = signifs
+        resultados = LPResults([])
+        resultados.names = endog+exog
+        resultados.signifs = signifs
         for signif in signifs:
             opt_ci = 1-signif
             print(f"Signif. {opt_ci}")
@@ -234,44 +235,23 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     ci_width=opt_ci
                                     )
                     pd.options.mode.chained_assignment = "warn"
-            lp_results.append([irf_on, irf_off])
+            resultados.append([irf_on, irf_off])
         
         if lp_threshold is None:
-            lp_results.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLP(*args, **kwargs)
+            resultados.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLP(*args, **kwargs)
         else:
-            lp_results.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLPthr(*args, **kwargs)
+            resultados.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLPthr(*args, **kwargs)
 
         printmd(bold("Pvalues:"))
-        display(lp_results.pvalues)
+        display(resultados.pvalues)
 
         # Saco esto porque para normalizar tengo que calcular los irf a mano
-        fevd(lp_results)
-        run_test_whiteness(lp_results)
+        fevd(resultados)
+        run_test_whiteness(resultados)
         if run_other_tests_on:
-            run_other_tests(lp_results)        
+            run_other_tests(resultados)        
 
-        run_irf(lp_results, signifs=signifs)
-
-        # Extraer coeficientes y calcular intervalos de confianza
-        for var in exog:
-            coef_h = [res.params[var] for res in resultados_h if var in res.params]
-            se_h = [res.bse[var] for res in resultados_h if var in res.params]
-
-            coef_dict[var].append(np.mean(coef_h))
-            ci_width_std = stats.norm.ppf(1 - (1 - ci_widht) / 2) * np.std(se_h)
-            ci_dict[f"{var}_ci"].append((np.mean(coef_h) - ci_width_std, np.mean(coef_h) + ci_width_std))
-
-        # Convertir resultados a DataFrames
-        coef_df = pd.DataFrame(coef_dict, index=range(1, max_horizon + 1))
-        conf_df = {var: pd.DataFrame(ci, columns=["lower", "upper"]) for var, ci in ci_dict.items()}
-
-        print("\nLocal projections - resultados finales")
-        print("Coeficientes estimados:")
-        print(coef_df)
-        print("\nIntervalos de confianza:")
-        for var, ci_df in conf_df.items():
-            print(f"\n{var}:")
-            print(ci_df)    
+        run_irf(resultados, signifs=signifs)
 
     return modelo, resultados
 

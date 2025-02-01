@@ -80,13 +80,16 @@ def plotIrfWithSignifLP(var_results, signifs: list, impulse: str, response: str,
     
     for signif, irf in zip(signifs, var_results):
         title_s = title.format(signif=(1-signif)*100)
+        print(title_s)
         df = irf[(irf["Shock"] == impulse) & (irf["Response"] == response)]
+        if df.empty:
+            print("Not present")
+            return
         if cumulative:
             df.loc[:,"Mean"] = df.loc[:,"Mean"].cumsum(axis=0)
             df.loc[:,"LB"] = df.loc[:,"LB"].cumsum(axis=0)
             df.loc[:,"UB"] = df.loc[:,"UB"].cumsum(axis=0)
         
-        print(f"{'Cumulative ' if cumulative else ''}IRF values for significance {(1-signif)*100}")
         print(irf)
         
         lp.IRFPlot(irf=df, # take output from the estimated model
@@ -108,15 +111,18 @@ def plotIrfWithSignifLPthr(var_results, signifs: list, impulse: str, response: s
 
     for signif, irf in zip(signifs, var_results):
         title_s = title.format(signif=(1-signif)*100)
+        print(title_s)
         df_on = irf[0][(irf[0]["Shock"] == impulse) & (irf[0]["Response"] == response)]
         df_off = irf[1][(irf[1]["Shock"] == impulse) & (irf[1]["Response"] == response)] 
+        if df_on.empty:
+            print("Not present")
+            return
         
         if cumulative:
             df_off.loc[:,"Mean"] = df_off.loc[:,"Mean"].cumsum(axis=0)
             df_off.loc[:,"LB"] = df_off.loc[:,"LB"].cumsum(axis=0)
             df_off.loc[:,"UB"] = df_off.loc[:,"UB"].cumsum(axis=0)
 
-        print(f"{'Cumulative ' if cumulative else ''}IRF values for significance {(1-signif)*100}")
         print(pd.concat([df_off, df_on], keys=["Pre-threshold", "Post-threshold"]))
         
         fig1 = lp.IRFPlot(irf=df_off, # take output from the estimated model
