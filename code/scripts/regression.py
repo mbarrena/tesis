@@ -31,8 +31,8 @@ def run_irf(resultados, signifs):
                 if resultados.sigma_u is not None:
                     sigma = resultados.sigma_u.loc[var,var]
                     print(f"Sigma {var}: {sigma}")
-                resultados.plotIrfWithSignif(signifs=signifs, impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=False, figsize=(3,2))
-                resultados.plotIrfWithSignif(signifs=signifs, impulse=var, response=var_res, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
+                resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var, response=var_res, periods=10, orth=True, cumulative=False, figsize=(3,2))
+                resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var, response=var_res, periods=10, orth=True, cumulative=True, figsize=(3,2))
             
     vars_contra_emae_o_pbi = ["Psoja_USA","Pmaíz_USA","Ptrigo_USA","tot_04","TOTfmi","impp_usa","E","Ebc", "ipc"]
     emae_o_pbi = "emae" if "emae" in resultados.names else "pbird"
@@ -41,8 +41,8 @@ def run_irf(resultados, signifs):
             if resultados.sigma_u is not None:
                 sigma = resultados.sigma_u.loc[var_contra,var_contra]
                 print(f"Sigma {var_contra}: {sigma}")
-            resultados.plotIrfWithSignif(signifs=signifs, impulse=var_contra, response=emae_o_pbi, var_results=resultados, periods=10, orth=True, cumulative=False, figsize=(3,2))
-            resultados.plotIrfWithSignif(signifs=signifs, impulse=var_contra, response=emae_o_pbi, var_results=resultados, periods=10, orth=True, cumulative=True, figsize=(3,2))
+            resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=emae_o_pbi, periods=10, orth=True, cumulative=False, figsize=(3,2))
+            resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=emae_o_pbi, periods=10, orth=True, cumulative=True, figsize=(3,2))
 
 def fevd(resultados):
     printmd(bold("Resultados descomposición de varianza (FEVD)"))
@@ -176,7 +176,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
         printmd(bold("Pvalues:"))
         display(resultados.pvalues[[resultados.names[0]]].T)
         # Saco esto porque para normalizar tengo que calcular los irf a mano
-        resultados.plotIrfWithSignif = plotIrfWithSignifVAR
+        resultados.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifVAR(*args, **kwargs)
         run_irf(resultados, signifs=signifs)
         fevd(resultados)
         run_test_whiteness(resultados)
@@ -217,17 +217,18 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                 )
             lp_results.append(irf)
             
+        lp_results.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLP(*args, **kwargs)
+        
         printmd(bold("Pvalues:"))
         display(lp_results.pvalues)
-            
+
         # Saco esto porque para normalizar tengo que calcular los irf a mano
         fevd(lp_results)
         run_test_whiteness(lp_results)
         if run_other_tests_on:
-            run_other_tests(lp_results)  
-            
+            run_other_tests(lp_results)        
+
         run_irf(lp_results, signifs=signifs)
-            
 
         # Extraer coeficientes y calcular intervalos de confianza
         for var in exog:

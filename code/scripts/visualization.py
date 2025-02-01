@@ -42,11 +42,11 @@ def getNormalizedIRFerrband(var_results, impulse, periods, signif, orth, cum=Fal
         cov = cov/sigma
         return cov
 
-def plotIrfWithSignif(signifs: list, impulse: str, response: str, var_results, periods: int, orth: bool, cumulative: bool=False, **kwargs):
+def plotIrfWithSignif(var_results, signifs: list, impulse: str, response: str, periods: int, orth: bool, cumulative: bool=False, **kwargs):
     """Abstract interface for specific plotIrf functions for VAR or LocalProjections"""
-    raise NotImplementedError
+    raise NotImplementedErrorpl
 
-def plotIrfWithSignifVAR(signifs: list, impulse: str, response: str, var_results, periods: int, orth: bool, cumulative: bool=False, **kwargs):
+def plotIrfWithSignifVAR(var_results, signifs: list, impulse: str, response: str, periods: int, orth: bool, cumulative: bool=False, **kwargs):
     stderr_type = 'mc'
     # Basado en la función plot de https://www.statsmodels.org/dev/_modules/statsmodels/tsa/vector_ar/irf.html#IRAnalysis
     irfs = getNormalizedIRFs(var_results, impulse, periods, orth, cumulative)
@@ -69,7 +69,7 @@ def plotIrfWithSignifVAR(signifs: list, impulse: str, response: str, var_results
         print(f"Cum effect {impulse} (impulso) - {response} (respuesta): {vals}")
     return fig
 
-def plotIrfWithSignifLP(signifs: list, impulse: str, response: str, var_results: list, periods: int, orth: bool, cumulative: bool=False, **kwargs):
+def plotIrfWithSignifLP(var_results, signifs: list, impulse: str, response: str, periods: int, orth: bool, cumulative: bool=False, **kwargs):
     # Afaik los resultados de LP ya vienen normalizados (ya son porcentajes) así que normalizar no haría falta.
     title = f'{impulse} -> {response} ({{signif:.0f}}%)'
     title += '\nCumulative impulse responses' if cumulative else '\nImpulse responses'
