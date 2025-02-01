@@ -206,6 +206,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                 # Suppress FutureWarnings
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", category=FutureWarning)
+                    pd.options.mode.chained_assignment = None
                     irf = lp.TimeSeriesLPX(data=datos, 
                                     Y=endog, 
                                     X=exog, 
@@ -215,11 +216,13 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     newey_lags=None, 
                                     ci_width=opt_ci
                                     )
+                    pd.options.mode.chained_assignment = "warn"
             else:
                 datos["lp_threshold"] = 0
                 datos.iloc[lp_threshold:, datos.columns.get_loc("lp_threshold")] = 1
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", category=FutureWarning)
+                    pd.options.mode.chained_assignment = None
                     irf_on, irf_off = lp.ThresholdTimeSeriesLPX(data=datos, 
                                     Y=endog, 
                                     X=exog, 
@@ -230,6 +233,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     newey_lags=None, 
                                     ci_width=opt_ci
                                     )
+                    pd.options.mode.chained_assignment = "warn"
             lp_results.append([irf_on, irf_off])
         
         if lp_threshold is None:
