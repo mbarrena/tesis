@@ -122,9 +122,13 @@ def plotIrfWithSignifLPthr(var_results, signifs: list, impulse: str, response: s
             df_off.loc[:,"Mean"] = df_off.loc[:,"Mean"].cumsum(axis=0)
             df_off.loc[:,"LB"] = df_off.loc[:,"LB"].cumsum(axis=0)
             df_off.loc[:,"UB"] = df_off.loc[:,"UB"].cumsum(axis=0)
-
-        print(pd.concat([df_off, df_on], keys=["Pre-threshold", "Post-threshold"]))
         
+            df_on.loc[:,"Mean"] = df_on.loc[:,"Mean"].cumsum(axis=0)
+            df_on.loc[:,"LB"] = df_on.loc[:,"LB"].cumsum(axis=0)
+            df_on.loc[:,"UB"] = df_on.loc[:,"UB"].cumsum(axis=0)
+        
+        print(pd.concat([df_off, df_on], keys=["Pre-threshold", "Post-threshold"]))
+
         fig1 = lp.IRFPlot(irf=df_off, # take output from the estimated model
                     response=[response], # plot only response of invest ...
                     shock=[impulse], # ... to shocks from all variables
@@ -135,12 +139,7 @@ def plotIrfWithSignifLPthr(var_results, signifs: list, impulse: str, response: s
                     save_pic=False, # don't save any figures on local drive
                     font_size=16
                     )
-        
-        if cumulative:
-            df_on.loc[:,"Mean"] = df_on.loc[:,"Mean"].cumsum(axis=0)
-            df_on.loc[:,"LB"] = df_on.loc[:,"LB"].cumsum(axis=0)
-            df_on.loc[:,"UB"] = df_on.loc[:,"UB"].cumsum(axis=0)
-        
+
         fig2 = lp.IRFPlot(irf=df_on, # take output from the estimated model
                     response=[response], # plot only response of invest ...
                     shock=[impulse], # ... to shocks from all variables
