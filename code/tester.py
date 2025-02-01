@@ -23,4 +23,4 @@ df_ERPT_Arg = makeDiffColumns(['ipc', 'Ebc', 'E', 'emae', 'impp_usa', 'Psoja_USA
 
 import regression
 regression.REGRESS_MODEL = 'LocalProjections'
-regress(["ipc", "Ebc", "impp_usa", "emae"], df_ERPT_Arg, maxlags=2)
+regress(["ipc", "Ebc", "impp_usa", "emae"], df_ERPT_Arg, maxlags=2, run_other_tests_on=False, lp_threshold=121)

@@ -1,10 +1,13 @@
 #from utilities import printmd, bold
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import math
 #from statsmodels.tsa.vector_ar.irf import IRAnalysis
 import statsmodels.tsa.vector_ar.plotting as plotting
 import localprojections as lp
+import plotly.subplots as sp
+import plotly.graph_objects as go
 
 #NOTA: svar no está implementado
 
@@ -74,7 +77,7 @@ def plotIrfWithSignifLP(var_results, signifs: list, impulse: str, response: str,
     title = f'{impulse} -> {response} ({{signif:.0f}}%)'
     title += '\nCumulative impulse responses' if cumulative else '\nImpulse responses'
     title += ' (orthogonalized)' if orth else ""
-
+    
     for signif, irf in zip(signifs, var_results):
         title_s = title.format(signif=(1-signif)*100)
         df = irf[(irf["Shock"] == impulse) & (irf["Response"] == response)]
@@ -82,6 +85,10 @@ def plotIrfWithSignifLP(var_results, signifs: list, impulse: str, response: str,
             df.loc[:,"Mean"] = df.loc[:,"Mean"].cumsum(axis=0)
             df.loc[:,"LB"] = df.loc[:,"LB"].cumsum(axis=0)
             df.loc[:,"UB"] = df.loc[:,"UB"].cumsum(axis=0)
+        
+        print(f"{'Cumulative ' if cumulative else ''}IRF values for significance {(1-signif)*100}")
+        print(irf)
+        
         lp.IRFPlot(irf=df, # take output from the estimated model
                     response=[response], # plot only response of invest ...
                     shock=[impulse], # ... to shocks from all variables
@@ -89,5 +96,76 @@ def plotIrfWithSignifLP(var_results, signifs: list, impulse: str, response: str,
                     n_rows=1, # max 2 rows in the figure
                     maintitle=title_s, # self-defined title of the IRF plot
                     show_fig=True, # display figure (from plotly)
-                    save_pic=False # don't save any figures on local drive
+                    save_pic=False, # don't save any figures on local drive
+                    font_size=16
                     )
+
+def plotIrfWithSignifLPthr(var_results, signifs: list, impulse: str, response: str, periods: int, orth: bool, cumulative: bool=False, **kwargs):
+    # Afaik los resultados de LP ya vienen normalizados (ya son porcentajes) así que normalizar no haría falta.
+    title = f'{impulse} -> {response} ({{signif:.0f}}%)'
+    title += '\nCumulative impulse responses' if cumulative else '\nImpulse responses'
+    title += ' (orthogonalized)' if orth else ""
+
+    for signif, irf in zip(signifs, var_results):
+        title_s = title.format(signif=(1-signif)*100)
+        df_on = irf[0][(irf[0]["Shock"] == impulse) & (irf[0]["Response"] == response)]
+        df_off = irf[1][(irf[1]["Shock"] == impulse) & (irf[1]["Response"] == response)] 
+        
+        if cumulative:
+            df_off.loc[:,"Mean"] = df_off.loc[:,"Mean"].cumsum(axis=0)
+            df_off.loc[:,"LB"] = df_off.loc[:,"LB"].cumsum(axis=0)
+            df_off.loc[:,"UB"] = df_off.loc[:,"UB"].cumsum(axis=0)
+
+        print(f"{'Cumulative ' if cumulative else ''}IRF values for significance {(1-signif)*100}")
+        print(pd.concat([df_off, df_on], keys=["Pre-threshold", "Post-threshold"]))
+        
+        fig1 = lp.IRFPlot(irf=df_off, # take output from the estimated model
+                    response=[response], # plot only response of invest ...
+                    shock=[impulse], # ... to shocks from all variables
+                    n_columns=1, # max 2 columns in the figure
+                    n_rows=1, # max 2 rows in the figure
+                    maintitle=title_s + ", pre-threshold", # self-defined title of the IRF plot
+                    show_fig=False, # display figure (from plotly)
+                    save_pic=False, # don't save any figures on local drive
+                    font_size=16
+                    )
+        
+        if cumulative:
+            df_on.loc[:,"Mean"] = df_on.loc[:,"Mean"].cumsum(axis=0)
+            df_on.loc[:,"LB"] = df_on.loc[:,"LB"].cumsum(axis=0)
+            df_on.loc[:,"UB"] = df_on.loc[:,"UB"].cumsum(axis=0)
+        
+        fig2 = lp.IRFPlot(irf=df_on, # take output from the estimated model
+                    response=[response], # plot only response of invest ...
+                    shock=[impulse], # ... to shocks from all variables
+                    n_columns=1, # max 2 columns in the figure
+                    n_rows=1, # max 2 rows in the figure
+                    maintitle=title_s + ", post-threshold", # self-defined title of the IRF plot
+                    show_fig=False, # display figure (from plotly)
+                    save_pic=False, # don't save any figures on local drive
+                    font_size=16
+                    )
+        
+        fig = sp.make_subplots(rows=1, cols=2, subplot_titles=["Pre-threshold", "Post-threshold"], 
+            horizontal_spacing=0.05  # Reduce the spacing between subplots
+            )
+
+        # Add traces from fig1 to the left subplot (col=1)
+        for trace in fig1.data:
+            trace.line.color = 'black'  # Set line color to black for the left plot
+            fig.add_trace(trace, row=1, col=1)
+
+        # Add traces from fig2 to the right subplot (col=2)
+        for trace in fig2.data:
+            trace.line.color = 'crimson'  # Set line color to crimson for the right plot
+            fig.add_trace(trace, row=1, col=2)
+
+        # Update the layout
+        fig.update_layout(
+            title=title_s,
+            plot_bgcolor="white",
+            hovermode="x unified",
+            showlegend=False,
+            font=dict(color="black", size=16),
+        )
+        fig.show()

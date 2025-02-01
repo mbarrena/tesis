@@ -4,6 +4,7 @@ import pandas as pd
 import statsmodels.api as sm
 from statsmodels.tsa.stattools import adfuller
 from scipy import stats
+import warnings
 
 from variable_preprocessing import *
 from utilities import *
@@ -75,7 +76,7 @@ def run_test_whiteness(resultados):
     tryrun(lambda: print(resultados.test_whiteness(nlags=6, signif=0.05, adjusted=True).summary()))
     print("")
 
-def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, max_horizon=10, signifs=[0.05, 0.32], run_other_tests_on=False):
+def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, max_horizon=10, signifs=[0.05, 0.32], run_other_tests_on=False, lp_threshold=None):
     """
     Funcion que realiza la regresion OLS
     - `endog`: la lista de variables endogenas
@@ -85,6 +86,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
     - `rModel`: parámetro opcional, permite cambiar el modelo de regresión (se usa
     el valor de REGRESS_MODEL elegido al principio de la notebook por defecto)
     - `run_other_tests_on`: falso por defecto, si se corren tests normality, causality, raices
+    - `lp_threshold` (int): primer índice que pertenecerá al segundo set (posterior al quiebre). Solo usado con LocalProjections 
 
     Parámetros opcionales, para Local Projections
     - max_horizon (int): Horizonte máximo de las proyecciones locales (por defecto 10).
@@ -196,29 +198,41 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
         for signif in signifs:
             opt_ci = 1-signif
             print(f"Signif. {opt_ci}")
-            if len(exog) == 0:
-                irf = lp.TimeSeriesLP(data=datos, 
-                                Y=endog, 
-                                response=response, 
-                                horizon=irf_horizon, 
-                                lags=opt_lags, 
-                                newey_lags=None, 
-                                ci_width=opt_ci
-                                )
+            if lp_threshold is None:
+                # Suppress FutureWarnings
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", category=FutureWarning)
+                    irf = lp.TimeSeriesLPX(data=datos, 
+                                    Y=endog, 
+                                    X=exog, 
+                                    response=response, 
+                                    horizon=irf_horizon, 
+                                    lags=opt_lags, 
+                                    newey_lags=None, 
+                                    ci_width=opt_ci
+                                    )
             else:
-                irf = lp.TimeSeriesLPX(data=datos, 
-                                Y=endog, 
-                                X=exog, 
-                                response=response, 
-                                horizon=irf_horizon, 
-                                lags=opt_lags, 
-                                newey_lags=None, 
-                                ci_width=opt_ci
-                                )
-            lp_results.append(irf)
-            
-        lp_results.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLP(*args, **kwargs)
+                datos["lp_threshold"] = 0
+                datos.iloc[lp_threshold:, datos.columns.get_loc("lp_threshold")] = 1
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", category=FutureWarning)
+                    irf_on, irf_off = lp.ThresholdTimeSeriesLPX(data=datos, 
+                                    Y=endog, 
+                                    X=exog, 
+                                    threshold_var="lp_threshold",
+                                    response=response, 
+                                    horizon=irf_horizon, 
+                                    lags=opt_lags, 
+                                    newey_lags=None, 
+                                    ci_width=opt_ci
+                                    )
+            lp_results.append([irf_on, irf_off])
         
+        if lp_threshold is None:
+            lp_results.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLP(*args, **kwargs)
+        else:
+            lp_results.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLPthr(*args, **kwargs)
+
         printmd(bold("Pvalues:"))
         display(lp_results.pvalues)
 

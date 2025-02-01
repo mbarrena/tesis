@@ -25,6 +25,10 @@ class LPResults(list):
 
             :return: DataFrame summarizing the Ljung-Box test results.
             """
+            class whitenessResults:
+                summary = lambda *args, **kwargs: "NOT YET IMPLEMENTED"
+                plot = lambda *args, **kwargs: "NOT YET IMPLEMENTED"
+            return whitenessResults()
             results = []
             alpha = signif
             
