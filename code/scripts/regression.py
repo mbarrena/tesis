@@ -107,15 +107,19 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
         Y_endog=datos[endog].astype(float)
         X_exog=datos[exog] # MA; 25 de febrero 2024, aca podes agregar los nombres de las dmmies que quieras. Asi:  datos[exog] + ["D1","D2", "D3"]
         X_exog = X_exog.astype(float)
-    elif len(endog) >=2:
-        Y_endog=datos[endog].astype(float)
-        if len(exog)==0:
-            X_exog=None
+    elif rModel == "VAR" or rModel == "VECM":
+        if len(endog) >=2:
+            Y_endog=datos[endog].astype(float)
+            if len(exog)==0:
+                X_exog=None
+            else:
+                X_exog= datos[exog].astype(float)
         else:
-            X_exog= datos[exog]
-            X_exog = X_exog.astype(float)
+            raise Exception(f"VAR y VEC requieren al menos dos variables endógenas, pero sólo se está pasando {len(endog)}.")
     else:
-        raise Exception(f"VAR y VEC requieren al menos dos variables endógenas, pero sólo se está pasando {len(endog)}.")
+        assert rModel == "LocalProjections"
+        Y_endog=datos[endog].astype(float)
+        X_exog= datos[exog].astype(float)
 
     print(f"Realizando regresión con modelo {rModel}")
     if rModel == "OLS":
