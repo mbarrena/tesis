@@ -82,7 +82,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
     - `endog`: la lista de variables endogenas
     - `data`: es la base de datos
     - `exog`: la lista de variables exogenas
-    - `maxlags`: máximo número de lags para la selección de orden al hacer modelo.fit()
+    - `maxlags`: máximo número de lags para la selección de orden al hacer modelo.fit() - tanto para VAR como LP
     - `rModel`: parámetro opcional, permite cambiar el modelo de regresión (se usa
     el valor de REGRESS_MODEL elegido al principio de la notebook por defecto)
     - `run_other_tests_on`: falso por defecto, si se corren tests normality, causality, raices
@@ -194,8 +194,6 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
         response = endog+exog 
         # estimate the responses of all variables to shocks from all variables save the ones we don't have control over
         response = [x for x in response if x not in ["impp_usa","Psoja_USA","Pmaiz_USA","Ptrigo_USA"]] 
-        irf_horizon = 10 # estimate IRFs up to 10 periods ahead
-        opt_lags = 5 # include 5 lags in the local projections model
         
         resultados = LPResults([])
         resultados.names = endog+exog
@@ -208,16 +206,27 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", category=FutureWarning)
                     pd.options.mode.chained_assignment = None
-                    irf = lp.TimeSeriesLPX(data=datos, 
+                    if len(exog) == 0:
+                        irf = lp.TimeSeriesLP(data=datos, 
+                                    Y=endog, 
+                                    response=response, 
+                                    horizon=max_horizon, 
+                                    lags=maxlags, 
+                                    newey_lags=None, 
+                                    ci_width=opt_ci
+                                    )
+                    else:
+                        irf = lp.TimeSeriesLPX(data=datos, 
                                     Y=endog, 
                                     X=exog, 
                                     response=response, 
-                                    horizon=irf_horizon, 
-                                    lags=opt_lags, 
+                                    horizon=max_horizon, 
+                                    lags=maxlags, 
                                     newey_lags=None, 
                                     ci_width=opt_ci
                                     )
                     pd.options.mode.chained_assignment = "warn"
+                resultados.append(irf)
             else:
                 datos["lp_threshold"] = 0
                 datos.iloc[lp_threshold:, datos.columns.get_loc("lp_threshold")] = 1
@@ -229,13 +238,13 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     X=exog, 
                                     threshold_var="lp_threshold",
                                     response=response, 
-                                    horizon=irf_horizon, 
-                                    lags=opt_lags, 
+                                    horizon=max_horizon, 
+                                    lags=maxlags, 
                                     newey_lags=None, 
                                     ci_width=opt_ci
                                     )
                     pd.options.mode.chained_assignment = "warn"
-            resultados.append([irf_on, irf_off])
+                resultados.append([irf_on, irf_off])
         
         if lp_threshold is None:
             resultados.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifLP(*args, **kwargs)
