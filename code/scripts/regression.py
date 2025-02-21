@@ -193,7 +193,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
         modelo = rModel
         response = endog+exog 
         # estimate the responses of all variables to shocks from all variables save the ones we don't have control over
-        response = [x for x in response if x not in ["impp_usa","Psoja_USA","Pmaiz_USA","Ptrigo_USA"]] 
+        response = [x for x in response if x not in ["impp_usa","Psoja_USA","Pmaíz_USA","Ptrigo_USA"]] 
         
         resultados = LPResults([])
         resultados.names = endog+exog

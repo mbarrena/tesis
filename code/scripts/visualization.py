@@ -90,7 +90,7 @@ def plotIrfWithSignifLP(var_results, signifs: list, impulse: str, response: str,
             df.loc[:,"LB"] = df.loc[:,"LB"].cumsum(axis=0)
             df.loc[:,"UB"] = df.loc[:,"UB"].cumsum(axis=0)
         
-        print(irf)
+        print(df)
         
         lp.IRFPlot(irf=df, # take output from the estimated model
                     response=[response], # plot only response of invest ...
