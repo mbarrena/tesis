@@ -6,4 +6,3 @@ statsmodels
 arch
 ipykernel
 ruptures
-localprojections
