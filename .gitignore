@@ -3,3 +3,4 @@ chowtest/
 .vscode/
 __pycache__/
 .python-version
+localprojections/

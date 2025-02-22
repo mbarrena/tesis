@@ -212,7 +212,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     response=response, 
                                     horizon=max_horizon, 
                                     lags=maxlags, 
-                                    newey_lags=None, 
+                                    newey_lags="horizon",
                                     ci_width=opt_ci
                                     )
                     else:
@@ -222,7 +222,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     response=response, 
                                     horizon=max_horizon, 
                                     lags=maxlags, 
-                                    newey_lags=None, 
+                                    newey_lags="horizon", 
                                     ci_width=opt_ci
                                     )
                     pd.options.mode.chained_assignment = "warn"
@@ -240,7 +240,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     response=response, 
                                     horizon=max_horizon, 
                                     lags=maxlags, 
-                                    newey_lags=None, 
+                                    newey_lags="horizon", 
                                     ci_width=opt_ci
                                     )
                     pd.options.mode.chained_assignment = "warn"
