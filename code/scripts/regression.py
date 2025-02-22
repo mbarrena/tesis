@@ -76,7 +76,7 @@ def run_test_whiteness(resultados):
     tryrun(lambda: print(resultados.test_whiteness(nlags=6, signif=0.05, adjusted=True).summary()))
     print("")
 
-def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, max_horizon=10, signifs=[0.05, 0.32], run_other_tests_on=False, lp_threshold=None):
+def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, estacionalidad=True, max_horizon=10, signifs=[0.05, 0.32], run_other_tests_on=False, lp_threshold=None):
     """
     Funcion que realiza la regresion OLS
     - `endog`: la lista de variables endogenas
@@ -212,7 +212,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     response=response, 
                                     horizon=max_horizon, 
                                     lags=maxlags, 
-                                    newey_lags="horizon",
+                                    newey_lags=newey_lags,
                                     ci_width=opt_ci
                                     )
                     else:
@@ -222,7 +222,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     response=response, 
                                     horizon=max_horizon, 
                                     lags=maxlags, 
-                                    newey_lags="horizon", 
+                                    newey_lags=newey_lags, 
                                     ci_width=opt_ci
                                     )
                     pd.options.mode.chained_assignment = "warn"
@@ -240,7 +240,7 @@ def regress(endog, data, exog=[], maxlags=3, rModel=None, estacionalidad=True, m
                                     response=response, 
                                     horizon=max_horizon, 
                                     lags=maxlags, 
-                                    newey_lags="horizon", 
+                                    newey_lags=newey_lags, 
                                     ci_width=opt_ci
                                     )
                     pd.options.mode.chained_assignment = "warn"
