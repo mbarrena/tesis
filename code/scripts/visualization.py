@@ -20,12 +20,14 @@ def getNormalizedIRFs(var_results, impulse, periods, orth, cumulative):
     else:
         J = var_results.ma_rep(periods)
 
-    if J=="LocalProjections":
+    if isinstance(J, list) or isinstance(J, np.ndarray) or isinstance(J, pd.Series):
+        J = np.array(J)/sigma
+    elif J=="LocalProjections":
         impulse_coeff = var_results.params[impulse]
         J = np.zeros(periods)
         J[:] = impulse_coeff / sigma
     else:
-        J = np.array(J)/sigma
+        raise NotImplementedError(f"{J} not recognised as a valid orthogonal representation")
         
     if cumulative:
         J = J.cumsum(axis=0)
