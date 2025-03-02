@@ -49,7 +49,7 @@ def getNormalizedIRFerrband(var_results, impulse, periods, signif, orth, cum=Fal
 
 def plotIrfWithSignif(var_results, signifs: list, impulse: str, response: str, periods: int, orth: bool, cumulative: bool=False, **kwargs):
     """Abstract interface for specific plotIrf functions for VAR or LocalProjections"""
-    raise NotImplementedErrorpl
+    raise NotImplementedError
 
 def plotIrfWithSignifVAR(var_results, signifs: list, impulse: str, response: str, periods: int, orth: bool, cumulative: bool=False, **kwargs):
     stderr_type = 'mc'

@@ -18,7 +18,7 @@ REGRESS_MODEL = "VAR"
 #REGRESS_MODEL = "VECM"
 #REGRESS_MODEL = "LocalProjections"
 
-def run_irf(resultados, signifs):
+def run_irf(resultados, signifs, periods):
     printmd(bold("Impulso-respuesta:"))
     var_respuesta = ["ipc"] if "ipc" in resultados.names else []
     var_respuesta += ["E" if "E" in resultados.names else "Ebc"]
@@ -32,8 +32,8 @@ def run_irf(resultados, signifs):
                 if resultados.sigma_u is not None:
                     sigma = resultados.sigma_u.loc[var,var]
                     print(f"Sigma {var}: {sigma}")
-                resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var, response=var_res, periods=10, orth=True, cumulative=False, figsize=(3,2))
-                resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var, response=var_res, periods=10, orth=True, cumulative=True, figsize=(3,2))
+                resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var, response=var_res, periods=periods, orth=True, cumulative=False, figsize=(3,2))
+                resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var, response=var_res, periods=periods, orth=True, cumulative=True, figsize=(3,2))
             
     vars_contra_emae_o_pbi = ["Psoja_USA","Pmaíz_USA","Ptrigo_USA","tot_04","TOTfmi","impp_usa","E","Ebc", "ipc"]
     emae_o_pbi = "emae" if "emae" in resultados.names else "pbird"
@@ -42,8 +42,8 @@ def run_irf(resultados, signifs):
             if resultados.sigma_u is not None:
                 sigma = resultados.sigma_u.loc[var_contra,var_contra]
                 print(f"Sigma {var_contra}: {sigma}")
-            resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=emae_o_pbi, periods=10, orth=True, cumulative=False, figsize=(3,2))
-            resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=emae_o_pbi, periods=10, orth=True, cumulative=True, figsize=(3,2))
+            resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=emae_o_pbi, periods=periods, orth=True, cumulative=False, figsize=(3,2))
+            resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=emae_o_pbi, periods=periods, orth=True, cumulative=True, figsize=(3,2))
 
 def fevd(resultados):
     printmd(bold("Resultados descomposición de varianza (FEVD)"))
@@ -76,25 +76,7 @@ def run_test_whiteness(resultados):
     tryrun(lambda: print(resultados.test_whiteness(nlags=6, signif=0.05, adjusted=True).summary()))
     print("")
 
-def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, estacionalidad=True, max_horizon=10, signifs=[0.05, 0.32], run_other_tests_on=False, lp_threshold=None):
-    """
-    Funcion que realiza la regresion OLS
-    - `endog`: la lista de variables endogenas
-    - `data`: es la base de datos
-    - `exog`: la lista de variables exogenas
-    - `maxlags`: máximo número de lags para la selección de orden al hacer modelo.fit() - tanto para VAR como LP
-    - `rModel`: parámetro opcional, permite cambiar el modelo de regresión (se usa
-    el valor de REGRESS_MODEL elegido al principio de la notebook por defecto)
-    - `run_other_tests_on`: falso por defecto, si se corren tests normality, causality, raices
-    - `lp_threshold` (int): primer índice que pertenecerá al segundo set (posterior al quiebre). Solo usado con LocalProjections 
-
-    Parámetros opcionales, para Local Projections
-    - max_horizon (int): Horizonte máximo de las proyecciones locales (por defecto 10).
-    - lags (int): Número de rezagos a incluir en las variables explicativas (por defecto 1).
-    - ci_width (float): Nivel de confianza para los intervalos (por defecto 95%).
-    """
-    if rModel is None:
-        rModel = REGRESS_MODEL
+def prepare_vars(endog, data, exog, rModel):
     print(f"!!!! Modelo seleccionado: {rModel}")
     datos=data[exog+endog].copy().reset_index(drop=True)
     # el metodo dropna() me permite eliminar las filas que tienen algun valor missing
@@ -121,6 +103,60 @@ def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, 
         Y_endog=datos[endog].astype(float)
         X_exog= datos[exog].astype(float)
 
+    return datos, X_exog, Y_endog
+
+
+def run_test_select_order(endog, data, exog=[], rModel=None, estacionalidad=True):
+    if rModel is None:
+        rModel = REGRESS_MODEL
+    print(f"!!!! Modelo seleccionado: {rModel}")
+    datos, X_exog, Y_endog = prepare_vars(endog, data, exog, rModel)
+
+    if estacionalidad:
+        print("Creando modelo con estacionalidad...")
+        dates, freq = generatePeriodIndex(data) #primera original
+        dummies = generatePeriodDummies(data, index=dates)
+        data_exog = pd.concat([X_exog, dummies], axis=1, ignore_index=True)
+        #MA NUEVO 18/06
+        if X_exog is not None:
+            data_exog.columns = np.concatenate((X_exog.columns.values, dummies.columns.values))
+        else:
+            data_exog.columns = dummies.columns.values
+        #MA NUEVO 18/06 ES HASTA ACA
+    else:
+        data_exog = X_exog
+        dates=None
+        freq=None
+
+    print(data_exog)
+    modelo=VAR(Y_endog,data_exog,dates=dates,freq=freq) #ultima original
+    lor = modelo.select_order(maxlags=6)
+    print(f"Selected orders are: {lor.selected_orders}")
+    display(lor.summary()) #Imprime tabla VAR Order Selection
+
+
+def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, estacionalidad=True, max_horizon=10, signifs=[0.05, 0.32], run_other_tests_on=False, lp_threshold=None):
+    """
+    Funcion que realiza la regresion OLS
+    - `endog`: la lista de variables endogenas
+    - `data`: es la base de datos
+    - `exog`: la lista de variables exogenas
+    - `maxlags`: máximo número de lags para la selección de orden al hacer modelo.fit() - tanto para VAR como LP
+    - `rModel`: parámetro opcional, permite cambiar el modelo de regresión (se usa
+    el valor de REGRESS_MODEL elegido al principio de la notebook por defecto)
+    - `run_other_tests_on`: falso por defecto, si se corren tests normality, causality, raices
+    - `lp_threshold` (int): primer índice que pertenecerá al segundo set (posterior al quiebre). Solo usado con LocalProjections 
+    - max_horizon (int): Horizonte máximo de las proyecciones locales de irf (por defecto 10).
+
+    Parámetros opcionales, para Local Projections
+    - lags (int): Número de rezagos a incluir en las variables explicativas (por defecto 1).
+    - ci_width (float): Nivel de confianza para los intervalos (por defecto 95%).
+    """
+    if rModel is None:
+        rModel = REGRESS_MODEL
+    print(f"!!!! Modelo seleccionado: {rModel}")
+    datos, X_exog, Y_endog = prepare_vars(endog, data, exog, rModel)
+
     print(f"Realizando regresión con modelo {rModel}")
     if rModel == "OLS":
         modelo=sm.OLS(Y_endog,X_exog)
@@ -141,7 +177,7 @@ def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, 
         printRes += f"\n                Loading coefficients (alpha){str(resultados.summary()).split('                Loading coefficients (alpha)')[1]}"
         printRes += f"\n          Cointegration relations {str(resultados.summary()).split('          Cointegration relations')[1]}"
         print(printRes)
-        irf = resultados.irf(periods=10)
+        irf = resultados.irf(periods=max_horizon)
 
         for var in resultados.names:
                 for var_res in ['ipc', 'E']:
@@ -151,7 +187,6 @@ def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, 
         #fevd.summary()
 
     elif rModel == "VAR":
-        #27 de febrero- copiar desde aca
         if estacionalidad:
             dates, freq = generatePeriodIndex(data) #primera original
             dummies = generatePeriodDummies(data, index=dates)
@@ -170,7 +205,7 @@ def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, 
         modelo=VAR(Y_endog,data_exog,dates=dates,freq=freq) #ultima original
         # 27 de ferero - HASTA LA ANTERIOR A ACA
 
-        lor = modelo.select_order(6)
+        lor = modelo.select_order(maxlags=6)
 
         print(f"Selected orders are: {lor.selected_orders}")
         display(lor.summary()) #Imprime tabla VAR Order Selection
@@ -183,7 +218,7 @@ def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, 
         display(resultados.pvalues[[resultados.names[0]]].T)
         # Saco esto porque para normalizar tengo que calcular los irf a mano
         resultados.plotIrfWithSignif = lambda *args, **kwargs: plotIrfWithSignifVAR(*args, **kwargs)
-        run_irf(resultados, signifs=signifs)
+        run_irf(resultados, signifs=signifs, periods=max_horizon)
         fevd(resultados)
         run_test_whiteness(resultados)
         if run_other_tests_on:
@@ -260,7 +295,7 @@ def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, 
         if run_other_tests_on:
             run_other_tests(resultados)        
 
-        run_irf(resultados, signifs=signifs)
+        run_irf(resultados, signifs=signifs, periods=max_horizon)
 
     return modelo, resultados
 
