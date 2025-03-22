@@ -45,6 +45,13 @@ run_lp_model <- function(data, endog, exog, max_lags, newey_lags = NULL, horizon
     lags_exog = lags_exog
   )
 
+  title_text <- paste0(
+    "LocalProjection ", 
+    if (!is.null(exog)) "(with exog)" else "(without exog)", 
+    " - signif ", 1-signif
+  )
+
+  print(title_text)
   pretty_results(results_lin, endog)
 
   # Generate and return plots
@@ -52,7 +59,9 @@ run_lp_model <- function(data, endog, exog, max_lags, newey_lags = NULL, horizon
   
   # Show all plots
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  final_plot <- marrangeGrob(lin_plots_all, nrow = length(endog), ncol = length(endog), top = NULL)
+
+  final_plot <- marrangeGrob(lin_plots_all, nrow = length(endog), ncol = length(endog), top = grid::textGrob(title_text, gp = grid::gpar(fontsize = 14, fontface = "bold")))
+
   grid::grid.draw(final_plot)
 }
 
