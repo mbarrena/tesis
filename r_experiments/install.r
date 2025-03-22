@@ -1,0 +1,7 @@
+install.packages("lpirfs")
+install.packages("gridExtra")
+install.packages("ggplot2")
+install.packages("readxl")
+install.packages("httr")
+install.packages("reshape2")
+install.packages("purrr")
