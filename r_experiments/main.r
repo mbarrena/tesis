@@ -53,6 +53,7 @@ run_lp_model <- function(data, endog, exog, max_lags, newey_lags = NULL, horizon
 
   print(title_text)
   pretty_results(results_lin, endog)
+  print(results_lin$irf_lin_low)
 
   # Generate and return plots
   linear_plots <- plot_lin(results_lin)
@@ -66,6 +67,7 @@ run_lp_model <- function(data, endog, exog, max_lags, newey_lags = NULL, horizon
 }
 
 melt_irf_data <- function(irf_array, value_name, endog_vars) {
+  # Melt the irf_array and ensure it has all the necessary columns
   df <- melt(irf_array)
   colnames(df) <- c("Horizon", "Shock_Index", "Response_Index", value_name)
 
@@ -73,11 +75,13 @@ melt_irf_data <- function(irf_array, value_name, endog_vars) {
   df$Shock_Variable <- endog_vars[df$Shock_Index]
   df$Response_Variable <- endog_vars[df$Response_Index]
 
-  # Keep only meaningful columns
+  # Keep only meaningful columns (with value_name handled properly)
   df <- df %>% dplyr::select(all_of(c("Horizon", "Shock_Variable", "Response_Variable", value_name)))
 
+  # Ensure no NA values are dropped prematurely by keeping rows with missing data
   return(df)
 }
+
 
 pretty_results <- function(results_lin, endog_vars) {
   # Melt IRF mean, lower bound, and upper bound
@@ -108,4 +112,10 @@ GET(url, write_disk(temp_file, overwrite = TRUE))
 data <- read_excel(temp_file)
 
 run_lp_model(data, endog=c("E", "ipc_ajust", "pbird"), exog=c("impp_usa"), max_lags = 3, newey_lags = 4, signif = 0.05)
-run_lp_model(data, endog=c("E", "ipc_ajust", "pbird"), exog=c("impp_usa"), max_lags = 3, newey_lags = 4, signif = 0.32)
+#run_lp_model(data, endog=c("E", "ipc_ajust", "pbird"), exog=c("impp_usa"), max_lags = 3, newey_lags = 4, signif = 0.32)
+#run_lp_model(data, endog=c("E", "ipc_ajust", "pbird"), exog=c("impp_usa"), max_lags = 3, signif = 0.05)
+#run_lp_model(data, endog=c("E", "ipc_ajust", "pbird"), exog=c("impp_usa"), max_lags = 3, signif = 0.32)
+#run_lp_model(data, endog=c("impp_usa", "E", "ipc_ajust", "pbird"), max_lags = 3, newey_lags = 4, signif = 0.05)
+#run_lp_model(data, endog=c("impp_usa", "E", "ipc_ajust", "pbird"), max_lags = 3, newey_lags = 4, signif = 0.32)
+#run_lp_model(data, endog=c("impp_usa", "E", "ipc_ajust", "pbird"), max_lags = 3, signif = 0.05)
+#run_lp_model(data, endog=c("impp_usa", "E", "ipc_ajust", "pbird"), max_lags = 3, signif = 0.32)
