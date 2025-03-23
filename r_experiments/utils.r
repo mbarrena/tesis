@@ -83,6 +83,7 @@ plotlp <- function(results_lin, endog, title_text) {
                              top = grid::textGrob(title_text, gp = grid::gpar(fontsize = 14, fontface = "bold")))
 
   print(final_plot)
+  return(final_plot)
 }
 
 pretty_results <- function(results_lin, endog_vars) {
