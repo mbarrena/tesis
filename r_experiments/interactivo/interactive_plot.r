@@ -58,13 +58,19 @@ server <- function(input, output) {
     num_cols <- length(endog)  # Number of columns
     num_rows <- ceiling(length(plots) / num_cols)  # Number of rows
     
+    top_title <- if (input$cumulative) {
+      "Cumulative Local Projection Results"
+    } else {
+      "Local Projection Results"
+    }
+
     # Arrange plots with titles
     grid.arrange(
       grobs = mapply(function(p, title) arrangeGrob(p, top = textGrob(title, gp = gpar(fontsize = 12, fontface = "bold"))), 
                      plots, plot_titles, SIMPLIFY = FALSE),
       ncol = num_cols, 
       nrow = num_rows,
-      top = textGrob("Local Projection Results", gp = gpar(fontsize = 16, fontface = "bold"))
+      top = textGrob(top_title, gp = gpar(fontsize = 16, fontface = "bold"))
     )
   })
 }

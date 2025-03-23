@@ -7,7 +7,7 @@ library(httr)
 library(reshape2)
 library(purrr) 
 
-run_lp_model <- function(data, endog, exog, max_lags, newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, cumulative = FALSE) {
+run_lp_model <- function(data, endog, exog=NULL, max_lags, newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, cumulative = FALSE) {
   # Map confidence levels to the corresponding values
   confint_map <- c("0.95" = 1.96, "0.68" = 1)
 
