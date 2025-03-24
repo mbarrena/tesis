@@ -15,8 +15,9 @@ library(purrr)
 #'
 #' @param data A data frame containing the time series data.
 #' @param endog A character vector specifying the names of endogenous variables.
-#' @param max_lags An integer indicating the number of lags for endogenous variables.
+#' @param max_lags An integer indicating the maximum number of lags for lags_crterion.
 #' @param signif A numeric value (0.95 or 0.68) specifying the confidence level.
+#' @param lags_criterion (optional) A string indicating the lag length criterion ('AICc', 'AIC' or 'BIC') (default: 'AIC')
 #' @param exog (optional) A character vector specifying the names of exogenous variables (default: NULL).
 #' @param newey_lags (optional) An integer specifying the Newey-West lag selection (default: NULL).
 #' @param horizons (optional) An integer defining the forecast horizons (default: 10).
@@ -40,6 +41,7 @@ library(purrr)
 #'   endog = c("GDP", "Inflation"),
 #'   exog = c("InterestRate"),
 #'   max_lags = 3,
+#'   lags_criterion = 'AIC',
 #'   newey_lags = 4,
 #'   horizons = 10,
 #'   signif = 0.95,
@@ -50,7 +52,7 @@ library(purrr)
 #' }
 #'
 #' @export
-run_lp_model <- function(data, endog, exog=NULL, max_lags, newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, trend = 0, cumulative = FALSE) {
+run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC', newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, trend = 0, cumulative = FALSE) {
   # Map confidence levels to the corresponding values
   confint_map <- c("0.95" = 1.96, "0.68" = 1)
 
@@ -77,8 +79,9 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, newey_lags = NULL, ho
   # Run the local projections model
   results_lin <- lp_lin(
     endog_data, 
-    exog_data = exog_data,
-    lags_endog_lin = max_lags,  
+    exog_data      = exog_data,
+    lags_criterion = lags_criterion,
+    max_lags       = max_lags,  
     trend          = trend,  
     shock_type     = 1,  
     confint        = confint_map[as.character(signif)], 
