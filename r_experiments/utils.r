@@ -25,6 +25,7 @@ library(purrr)
 #' @param lags_exog (optional) An integer indicating the number of lags for exogenous variables (default: NULL, which sets it to match `max_lags`).
 #' @param trend (optional) An integer indicating the trend types to include: 0 = no trend, 1 = include linear trend, 2 = include linear and quadratic trend (default: 0).
 #' @param cumulative (optional) A logical value indicating whether to compute cumulative impulse responses (default: FALSE).
+#' @param threshold_var (optional) A character vector specifying the name of the threshold column. If it has only 0 and 1 values, the threshold variable can be decomposed via the Hodrick-Prescott filter. Otherwise, it is decomposed via a logistic function. (default: NULL)
 #'
 #' @return A list containing impulse response function (IRF) results from the `lp_lin()` function.
 #'         The function also generates plots and prints formatted results.
@@ -77,6 +78,7 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
   # Convert to numeric (ensure proper model fitting)
   endog_data <- data.frame(lapply(endog_data, as.numeric))
   results_lin <- NULL
+  unique_count <- NULL
 
   if(is_null(threshold_var)) {
     # Run the local projections model
@@ -90,8 +92,38 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
       shock_type     = 1,  
       confint        = confint_map[as.character(signif)], 
       nw_lag         = newey_lags,
+      nw_prewhite    = TRUE, 
       hor            = horizons,
       lags_exog = lags_exog
+    )
+  } else {
+    switching <- data[, threshold_var, drop = TRUE]
+    use_logistic <- TRUE
+    if (all(switching %in% c(0, 1))) {
+      display_html("Threshold var is binary: will not use logistic decomposition")
+      use_logistic <- FALSE
+    } else {
+      display_html("Threshold var is not binary: using logistic decomposition")
+    }
+    unique_count <- length(unique(switching))
+
+    results_lin <- lp_nl(
+      endog_data, 
+      exog_data      = exog_data,
+      lags_criterion = 'AIC',
+      max_lags = max_lags,
+      lags_endog_lin = NA,
+      lags_endog_nl = NA,
+      trend          = trend,  
+      shock_type     = 1,  
+      confint        = confint_map[as.character(signif)], 
+      nw_lag         = newey_lags,
+      nw_prewhite    = TRUE, 
+      hor            = horizons,
+      lags_exog = lags_exog,
+      switching = switching,
+      use_logistic = use_logistic,
+      use_hp = FALSE
     )
   }
 
@@ -124,15 +156,20 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
     display(df_chosen_lags_list[[shock]])  # Print corresponding dataframe
   }
 
-  plotlp(results_lin, endog = endog, title_text = title_text)
-  
-  # Process and print results with cumulative option
-  pretty_results(results_lin = results_lin, endog_vars = endog)
+  if (is_null(threshold_var)) {
+    plotlp_lin(results_lin, endog = endog, title_text = title_text)
+    # Process and print results with cumulative option
+    pretty_results_lin(results_lin = results_lin, endog_vars = endog)
+  } else {
+    plotlp_nl(results_lin, endog = endog, title_text = title_text, unique_count = unique_count, horizon_count = horizons+1)
+    # Process and print results with cumulative option
+    #pretty_results_nl(results_lin = results_lin, endog_vars = endog, unique_count)
+  }
 
   return(results_lin)
 }
 
-plotlp <- function(results_lin, endog, title_text) {
+plotlp_lin <- function(results_lin, endog, title_text) {
   # Generate plots
   linear_plots <- plot_lin(results_lin)
 
@@ -148,7 +185,59 @@ plotlp <- function(results_lin, endog, title_text) {
   return(final_plot)
 }
 
-pretty_results <- function(results_lin, endog_vars) {
+plotlp_nl <- function(results_lin, endog, title_text, unique_count, horizon_count) {
+  # Generate plots
+  linear_plots <- plot_nl(results_lin)
+  display_html(title_text)
+  
+  # Flatten the linear_plots object manually using lapply to avoid unlist() confusion
+  lin_plots_all <- lapply(1:unique_count, function(j) {
+    # Extract all horizons for each gg_sN
+    plot_list <- linear_plots[[paste0("gg_s", j)]]
+    
+    # Ensure that each gg_sN has horizons, e.g., gg_s1h1, gg_s1h2, etc.
+    print(paste("Structure of gg_s", j, ":", str(plot_list)))
+    
+    # Return the list of plots for each group (e.g., gg_s1, gg_s2, ...)
+    return(plot_list)
+  })
+  
+  # Create a list to hold the plots for each impulse-response pair
+  final_plots <- list()
+  
+  # Arrange the plots for each impulse-response pair side by side
+  for (i in 1:length(endog)) {
+    # Collect the ith plot from each gg_sN for all horizons
+    plots_for_pair <- lapply(1:unique_count, function(j) {
+      # Loop over horizons (h1, h2, ...) for each gg_sN
+      plots_for_horizon <- lin_plots_all[[j]]
+      
+      # Ensure that the index i corresponds to the correct horizon (e.g., i = 1, 2, ...)
+      plot <- plots_for_horizon[[i]]  # Extract the ith plot for this group
+      
+      return(plot)  # Return the plot for the ith index
+    })
+    
+    # Flatten the list of plots for each impulse-response pair to avoid nested lists
+    plots_for_pair <- unlist(plots_for_pair, recursive = TRUE)
+    
+    # Dynamically set ncol to the unique_count for side-by-side plots
+    final_plots[[i]] <- do.call(marrangeGrob, c(list(grobs = plots_for_pair), 
+                                               list(nrow = 1, ncol = unique_count, 
+                                                    top = grid::textGrob(paste(title_text, "Impulse-Response Pair", i), 
+                                                                         gp = grid::gpar(fontsize = 14, fontface = "bold")))))
+  }
+  
+  # Print each final plot (side-by-side layout for each impulse-response pair)
+  for (plot in final_plots) {
+    print(plot)
+  }
+  
+  return(final_plots)
+}
+
+
+pretty_results_lin <- function(results_lin, endog_vars) {
   # Extract IRF values, lower and upper bounds
   irf_array <- results_lin$irf_lin_mean
   lower_bound_array <- results_lin$irf_lin_low
@@ -249,6 +338,7 @@ specs_summary <- function(res) {
     hor = specs$hor,
     use_nw = specs$use_nw,
     nw_prewhite = specs$nw_prewhite,
+    nw_lag = ifelse(is.null(specs$nw_lag), NA, specs$nw_lag),
     adjust_se = specs$adjust_se,
     use_twosls = specs$use_twosls,
     model_type = specs$model_type,
