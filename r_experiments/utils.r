@@ -7,7 +7,50 @@ library(httr)
 library(reshape2)
 library(purrr) 
 
-run_lp_model <- function(data, endog, exog=NULL, max_lags, newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, cumulative = FALSE) {
+#' Run Local Projection Model
+#'
+#' This function estimates a local projection (LP) model using the `lpirfs` package, 
+#' allowing for endogenous and exogenous variables, different lag structures, 
+#' and cumulative impulse responses.
+#'
+#' @param data A data frame containing the time series data.
+#' @param endog A character vector specifying the names of endogenous variables.
+#' @param max_lags An integer indicating the number of lags for endogenous variables.
+#' @param signif A numeric value (0.95 or 0.68) specifying the confidence level.
+#' @param exog (optional) A character vector specifying the names of exogenous variables (default: NULL).
+#' @param newey_lags (optional) An integer specifying the Newey-West lag selection (default: NULL).
+#' @param horizons (optional) An integer defining the forecast horizons (default: 10).
+#' @param lags_exog (optional) An integer indicating the number of lags for exogenous variables (default: NULL, which sets it to match `max_lags`).
+#' @param trend (optional) An integer indicating the trend types to include: 0 = no trend, 1 = include linear trend, 2 = include linear and quadratic trend (default: 0).
+#' @param cumulative (optional) A logical value indicating whether to compute cumulative impulse responses (default: FALSE).
+#'
+#' @return A list containing impulse response function (IRF) results from the `lp_lin()` function.
+#'         The function also generates plots and prints formatted results.
+#'
+#' @details 
+#' - The function runs the `lp_lin()` function from the `lpirfs` package to estimate a local projection model.
+#' - If `cumulative = TRUE`, the cumulative impulse responses are computed.
+#' - The function generates plots using `plotlp()` and formats results using `pretty_results()`.
+#'
+#' @examples
+#' \dontrun{
+#' data <- your_dataframe
+#' results <- run_lp_model(
+#'   data = data,
+#'   endog = c("GDP", "Inflation"),
+#'   exog = c("InterestRate"),
+#'   max_lags = 3,
+#'   newey_lags = 4,
+#'   horizons = 10,
+#'   signif = 0.95,
+#'   lags_exog = 2,
+#'   trend = 2,
+#'   cumulative = FALSE
+#' )
+#' }
+#'
+#' @export
+run_lp_model <- function(data, endog, exog=NULL, max_lags, newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, trend = 0, cumulative = FALSE) {
   # Map confidence levels to the corresponding values
   confint_map <- c("0.95" = 1.96, "0.68" = 1)
 
@@ -36,7 +79,7 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, newey_lags = NULL, ho
     endog_data, 
     exog_data = exog_data,
     lags_endog_lin = max_lags,  
-    trend          = 0,  
+    trend          = trend,  
     shock_type     = 1,  
     confint        = confint_map[as.character(signif)], 
     nw_lag         = newey_lags,
