@@ -3,6 +3,7 @@ library(gridExtra)
 library(ggplot2)
 library(readxl)
 library(httr)
+library(IRdisplay)
 
 library(reshape2)
 library(purrr) 
@@ -52,7 +53,7 @@ library(purrr)
 #' }
 #'
 #' @export
-run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC', newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, trend = 0, cumulative = FALSE) {
+run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC', newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, trend = 0, cumulative = FALSE, threshold_var = NULL) {
   # Map confidence levels to the corresponding values
   confint_map <- c("0.95" = 1.96, "0.68" = 1)
 
@@ -75,20 +76,24 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
   
   # Convert to numeric (ensure proper model fitting)
   endog_data <- data.frame(lapply(endog_data, as.numeric))
-  
-  # Run the local projections model
-  results_lin <- lp_lin(
-    endog_data, 
-    exog_data      = exog_data,
-    lags_criterion = lags_criterion,
-    max_lags       = max_lags,  
-    trend          = trend,  
-    shock_type     = 1,  
-    confint        = confint_map[as.character(signif)], 
-    nw_lag         = newey_lags,
-    hor            = horizons,
-    lags_exog = lags_exog
-  )
+  results_lin <- NULL
+
+  if(is_null(threshold_var)) {
+    # Run the local projections model
+    results_lin <- lp_lin(
+      endog_data, 
+      exog_data      = exog_data,
+      lags_criterion = 'AIC',
+      max_lags = max_lags,
+      lags_endog_lin = NA,
+      trend          = trend,  
+      shock_type     = 1,  
+      confint        = confint_map[as.character(signif)], 
+      nw_lag         = newey_lags,
+      hor            = horizons,
+      lags_exog = lags_exog
+    )
+  }
 
   title_text <- paste0(
     "LocalProjection ", 
@@ -108,6 +113,17 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
     }
   }
 
+  df_specs_summary <- specs_summary(results_lin)
+  display_html("Run configurations:")
+  display(df_specs_summary)
+
+  df_chosen_lags_list <- lag_summary(results_lin, endog)
+
+  for (shock in names(df_chosen_lags_list)) {
+    display_html(paste0("Lags for ", shock))  # Print title
+    display(df_chosen_lags_list[[shock]])  # Print corresponding dataframe
+  }
+
   plotlp(results_lin, endog = endog, title_text = title_text)
   
   # Process and print results with cumulative option
@@ -120,7 +136,7 @@ plotlp <- function(results_lin, endog, title_text) {
   # Generate plots
   linear_plots <- plot_lin(results_lin)
 
-  print(title_text)
+  display_html(title_text)
   
   # Show all plots
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
@@ -185,8 +201,65 @@ pretty_results <- function(results_lin, endog_vars) {
   irf_list <- split(irf_named_df, list(irf_named_df$impulse, irf_named_df$response), drop = TRUE)
 
   # Print all dataframes in the list
-  lapply(irf_list, print)
+  lapply(irf_list, display)
   return(irf_named_df)
+}
+
+lag_summary <- function(res, endog_vars) {
+  # Get all shocks (names of the elements in chosen_lags)
+  shock_names <- names(res$specs$chosen_lags)
+
+  # Iterate over each shock and create a dataframe
+  df_list <- lapply(shock_names, function(shock) {
+    chosen_lags_list <- res$specs$chosen_lags[[shock]]  # Extract the list of matrices
+
+    # Convert matrices to a dataframe
+    df_chosen_lags <- do.call(cbind, chosen_lags_list)
+    df_chosen_lags <- as.data.frame(df_chosen_lags)  # Ensure it's a dataframe
+
+    # Rename columns to indicate horizons
+    colnames(df_chosen_lags) <- paste0("H_", seq_along(chosen_lags_list))
+
+    # Add endogenous variable names
+    df_chosen_lags$Variable <- endog_vars  
+
+    # Reorder to have 'Variable' as the first column
+    df_chosen_lags <- df_chosen_lags[, c("Variable", colnames(df_chosen_lags)[1:(ncol(df_chosen_lags) - 1)])]
+
+    return(df_chosen_lags)
+  })
+
+  # Assign shock names to the list elements
+  names(df_list) <- shock_names
+
+  return(df_list)
+}
+
+specs_summary <- function(res) {
+  specs <- res$specs  # Extract specs
+  
+  # Create a one-row dataframe
+  df_specs <- data.frame(
+    lags_endog_lin = if (!is.null(specs$lags_endog_lin)) specs$lags_endog_lin else NA,
+    lags_criterion = specs$lags_criterion,
+    max_lags = specs$max_lags,
+    trend = specs$trend,
+    shock_type = specs$shock_type,
+    confint = names(specs$confint),  # Extract confidence level name
+    hor = specs$hor,
+    use_nw = specs$use_nw,
+    nw_prewhite = specs$nw_prewhite,
+    adjust_se = specs$adjust_se,
+    use_twosls = specs$use_twosls,
+    model_type = specs$model_type,
+    starts = specs$starts,
+    ends = specs$ends,
+    column_names = paste(specs$column_names, collapse = ", "),  # Convert vector to a single string
+    endog = specs$endog,
+    stringsAsFactors = FALSE  # Prevent automatic factor conversion
+  )
+  
+  return(df_specs)
 }
 
 makeLogColumns <- function(lista, data) {
