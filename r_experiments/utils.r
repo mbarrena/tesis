@@ -135,7 +135,7 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
   )
 
   if (cumulative) {
-    for (i in 1:dim(results_lin$irf_lin_mean)[3]) {
+    for (i in 1:seq_len(dim(results_lin$irf_lin_mean)[3])) {
       # Cumsum mean IRFs
       results_lin$irf_lin_mean[,,i] <- t(apply(results_lin$irf_lin_mean[,,i], 1, cumsum))
       
@@ -161,9 +161,9 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
     # Process and print results with cumulative option
     pretty_results_lin(results_lin = results_lin, endog_vars = endog)
   } else {
-    plotlp_nl(results_lin, endog = endog, title_text = title_text, unique_count = unique_count, horizon_count = horizons+1)
+    pretty_results_nl(results_lin = results_lin, endog_vars = endog, unique_count)
     # Process and print results with cumulative option
-    #pretty_results_nl(results_lin = results_lin, endog_vars = endog, unique_count)
+    plotlp_nl(results_lin, endog = endog, title_text = title_text, count_sections = unique_count)
   }
 
   return(results_lin)
@@ -185,55 +185,77 @@ plotlp_lin <- function(results_lin, endog, title_text) {
   return(final_plot)
 }
 
-plotlp_nl <- function(results_lin, endog, title_text, unique_count, horizon_count) {
-  # Generate plots
+plotlp_nl <- function(results_lin, endog, title_text, count_sections,
+                     plot_base_width = 5, plot_height = 4) {
+  # Get the linear plots
+  plot_width <- plot_base_width * count_sections
   linear_plots <- plot_nl(results_lin)
-  display_html(title_text)
+  n_sections <- length(linear_plots)
   
-  # Flatten the linear_plots object manually using lapply to avoid unlist() confusion
-  lin_plots_all <- lapply(1:unique_count, function(j) {
-    # Extract all horizons for each gg_sN
-    plot_list <- linear_plots[[paste0("gg_s", j)]]
+  # Create list to store plots
+  all_plots <- list()
+  
+  # Set up the graphics device for notebook display
+  # This needs to happen BEFORE creating plots
+  options(repr.plot.width = plot_width, repr.plot.height = plot_height)
+  
+  # Loop through each variable pair
+  for (i in seq_along(linear_plots[[1]])) {
+    # Extract all sections' plots for this pair
+    plot_list <- lapply(linear_plots, function(section) section[[i]])
     
-    # Ensure that each gg_sN has horizons, e.g., gg_s1h1, gg_s1h2, etc.
-    print(paste("Structure of gg_s", j, ":", str(plot_list)))
-    
-    # Return the list of plots for each group (e.g., gg_s1, gg_s2, ...)
-    return(plot_list)
-  })
-  
-  # Create a list to hold the plots for each impulse-response pair
-  final_plots <- list()
-  
-  # Arrange the plots for each impulse-response pair side by side
-  for (i in 1:length(endog)) {
-    # Collect the ith plot from each gg_sN for all horizons
-    plots_for_pair <- lapply(1:unique_count, function(j) {
-      # Loop over horizons (h1, h2, ...) for each gg_sN
-      plots_for_horizon <- lin_plots_all[[j]]
-      
-      # Ensure that the index i corresponds to the correct horizon (e.g., i = 1, 2, ...)
-      plot <- plots_for_horizon[[i]]  # Extract the ith plot for this group
-      
-      return(plot)  # Return the plot for the ith index
+    # Expand plot widths by modifying the theme
+    plot_list <- lapply(plot_list, function(p) {
+      p + theme(
+        plot.margin = margin(5, 20, 5, 20),  # Add margins (top, right, bottom, left)
+        aspect.ratio = NULL,  # Remove aspect ratio constraints
+        panel.spacing = unit(2, "cm")  # Increase spacing between panels if faceted
+      )
     })
     
-    # Flatten the list of plots for each impulse-response pair to avoid nested lists
-    plots_for_pair <- unlist(plots_for_pair, recursive = TRUE)
+    # Combine horizontally with dynamic width
+    combined_plot <- cowplot::plot_grid(
+      plotlist = plot_list,
+      nrow = 1,
+      labels = paste("Section", 1:n_sections),
+      label_size = 10,
+      rel_widths = rep(1, n_sections),  # Equal width for each section
+      align = "h"  # Align horizontally
+    )
+    all_plots[[i]] <- combined_plot
+  }
+  
+  # Print each plot
+  for (i in seq_along(all_plots)) {
+    if (!missing(title_text) && i == 1) {
+      title_plot <- cowplot::ggdraw() +
+        cowplot::draw_label(title_text, fontface = 'bold', size = 14)
+      
+      final_plot <- cowplot::plot_grid(
+        title_plot,
+        all_plots[[i]],
+        ncol = 1,
+        rel_heights = c(0.1, 1)
+      )
+    } else {
+      final_plot <- all_plots[[i]]
+    }
     
-    # Dynamically set ncol to the unique_count for side-by-side plots
-    final_plots[[i]] <- do.call(marrangeGrob, c(list(grobs = plots_for_pair), 
-                                               list(nrow = 1, ncol = unique_count, 
-                                                    top = grid::textGrob(paste(title_text, "Impulse-Response Pair", i), 
-                                                                         gp = grid::gpar(fontsize = 14, fontface = "bold")))))
+    # Force specific dimensions for display
+    if (requireNamespace("gridExtra", quietly = TRUE)) {
+      # gridExtra approach for better control
+      grid::grid.newpage()
+      g <- gridExtra::grid.arrange(final_plot, 
+                                  widths = unit(plot_width, "in"), 
+                                  heights = unit(plot_height, "in"))
+      invisible(g)
+    } else {
+      # Regular print if gridExtra not available
+      print(final_plot)
+    }
   }
   
-  # Print each final plot (side-by-side layout for each impulse-response pair)
-  for (plot in final_plots) {
-    print(plot)
-  }
-  
-  return(final_plots)
+  invisible(all_plots)
 }
 
 
@@ -269,7 +291,6 @@ pretty_results_lin <- function(results_lin, endog_vars) {
     upper_bound = upper_values
   )
 
-
   # Exclude rows where impulse == response
   irf_df <- subset(irf_df, impulse != response)
 
@@ -292,6 +313,106 @@ pretty_results_lin <- function(results_lin, endog_vars) {
   # Print all dataframes in the list
   lapply(irf_list, display)
   return(irf_named_df)
+}
+
+pretty_results_nl <- function(results_lin, endog_vars, count_sections) {
+  # Create a list to store results for each section
+  all_sections_dfs <- list()
+  
+  # Process each section
+  for (section in 1:count_sections) {
+    # Extract IRF values, lower and upper bounds for this section
+    irf_array <- results_lin[[paste0("irf_s", section, "_mean")]]
+    lower_bound_array <- results_lin[[paste0("irf_s", section, "_low")]]
+    upper_bound_array <- results_lin[[paste0("irf_s", section, "_up")]]
+    
+    # Get dimensions
+    dims <- dim(irf_array)
+    n_endog <- dims[1]  # Number of endogenous variables (responses)
+    n_horizons <- dims[2]  # Number of horizons
+    n_impulses <- dims[3]  # Number of impulses
+    
+    # Ensure the array is flattened correctly
+    irf_values <- as.vector(aperm(irf_array, c(3, 1, 2)))  # Reorder to match impulse-response-horizon
+    lower_values <- as.vector(aperm(lower_bound_array, c(3, 1, 2)))
+    upper_values <- as.vector(aperm(upper_bound_array, c(3, 1, 2)))
+    
+    # Create index grid with correctly ordered impulse, response, and horizon
+    indices <- expand.grid(
+      impulse = 1:n_impulses,  # third dimension
+      response = 1:n_endog,    # first dimension
+      horizon = 1:n_horizons   # second dimension
+    )
+    
+    # Create the data frame with corrected order
+    irf_df <- data.frame(
+      indices,
+      section = paste("Section", section),
+      irf_value = irf_values,
+      lower_bound = lower_values,
+      upper_bound = upper_values
+    )
+    
+    # Exclude rows where impulse == response
+    irf_df <- subset(irf_df, impulse != response)
+    
+    # Order by impulse, response, then horizon
+    irf_df <- irf_df[order(irf_df$impulse, irf_df$response, irf_df$horizon), ]
+    
+    # Remove row names (drop index numbers)
+    row.names(irf_df) <- NULL
+    
+    # Map impulse and response numbers to names
+    irf_df$impulse <- endog_vars[irf_df$impulse]
+    irf_df$response <- endog_vars[irf_df$response]
+    
+    # Add to the list of all sections
+    all_sections_dfs[[section]] <- irf_df
+  }
+  
+  # Combine all sections into one data frame
+  combined_df <- do.call(rbind, all_sections_dfs)
+  
+  # Group by impulse-response pair (regardless of section)
+  var_pairs <- unique(combined_df[, c("impulse", "response")])
+  
+  # For each variable pair, create a multi-index dataframe with all sections
+  for (i in 1:nrow(var_pairs)) {
+    impulse_var <- var_pairs$impulse[i]
+    response_var <- var_pairs$response[i]
+    
+    # Filter data for this variable pair
+    pair_data <- combined_df[combined_df$impulse == impulse_var & 
+                             combined_df$response == response_var, ]
+    
+    # Create a wider format with sections as columns
+    # First pivot for irf_value
+    wide_irf <- reshape(pair_data, 
+                        idvar = "horizon",
+                        timevar = "section", 
+                        direction = "wide",
+                        v.names = c("irf_value", "lower_bound", "upper_bound"))
+    
+    # Sort by horizon
+    wide_irf <- wide_irf[order(wide_irf$horizon), ]
+    
+    # Display the header
+    header_html <- paste("<h3>Impulse:", impulse_var, "-> Response:", response_var, "</h3>")
+    display_html(header_html)
+    
+    # Rename columns to be more readable
+    names(wide_irf) <- gsub("irf_value.Section ", "IRF S", names(wide_irf))
+    names(wide_irf) <- gsub("lower_bound.Section ", "Lower S", names(wide_irf))
+    names(wide_irf) <- gsub("upper_bound.Section ", "Upper S", names(wide_irf))
+    
+    # Remove redundant columns
+    wide_irf <- wide_irf[, !names(wide_irf) %in% c("impulse", "response")]
+    
+    # Display the multi-section dataframe
+    display(wide_irf)
+  }
+  
+  return(combined_df)
 }
 
 lag_summary <- function(res, endog_vars) {
