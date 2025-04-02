@@ -135,13 +135,32 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
   )
 
   if (cumulative) {
-    for (i in 1:seq_len(dim(results_lin$irf_lin_mean)[3])) {
+    if (is_null(threshold_var)) {
+      for (i in 1:dim(results_lin$irf_lin_mean)[3]) {
+        # Cumsum mean IRFs
+        results_lin$irf_lin_mean[,,i] <- t(apply(results_lin$irf_lin_mean[,,i], 1, cumsum))
+        
+        # Cumsum error bands to match cumulative mean
+        results_lin$irf_lin_low[,,i] <- t(apply(results_lin$irf_lin_low[,,i], 1, cumsum))
+        results_lin$irf_lin_up[,,i]  <- t(apply(results_lin$irf_lin_up[,,i], 1, cumsum))
+      }
+    } else {
+      for (i in 1:dim(results_lin$irf_s1_mean)[3]) {
       # Cumsum mean IRFs
-      results_lin$irf_lin_mean[,,i] <- t(apply(results_lin$irf_lin_mean[,,i], 1, cumsum))
+      results_lin$irf_s1_mean[,,i] <- t(apply(results_lin$irf_s1_mean[,,i], 1, cumsum))
       
       # Cumsum error bands to match cumulative mean
-      results_lin$irf_lin_low[,,i] <- t(apply(results_lin$irf_lin_low[,,i], 1, cumsum))
-      results_lin$irf_lin_up[,,i]  <- t(apply(results_lin$irf_lin_up[,,i], 1, cumsum))
+      results_lin$irf_s1_low[,,i] <- t(apply(results_lin$irf_s1_low[,,i], 1, cumsum))
+      results_lin$irf_s1_up[,,i]  <- t(apply(results_lin$irf_s1_up[,,i], 1, cumsum))
+    }
+    for (i in 1:dim(results_lin$irf_s2_mean)[3]) {
+      # Cumsum mean IRFs
+      results_lin$irf_s2_mean[,,i] <- t(apply(results_lin$irf_s2_mean[,,i], 1, cumsum))
+      
+      # Cumsum error bands to match cumulative mean
+      results_lin$irf_s2_low[,,i] <- t(apply(results_lin$irf_s2_low[,,i], 1, cumsum))
+      results_lin$irf_s2_up[,,i]  <- t(apply(results_lin$irf_s2_up[,,i], 1, cumsum))
+    }
     }
   }
 
