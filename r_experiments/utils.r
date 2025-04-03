@@ -54,7 +54,7 @@ library(purrr)
 #' }
 #'
 #' @export
-run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC', newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, trend = 0, cumulative = FALSE, threshold_var = NULL) {
+run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC', fixed_lags = NA, newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, trend = 0, cumulative = FALSE, threshold_var = NULL) {
   # Map confidence levels to the corresponding values
   confint_map <- c("0.95" = 1.96, "0.68" = 1)
 
@@ -66,10 +66,19 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
   if (!is.null(exog)) {
     exog_data <- data[, exog, drop = FALSE]
     if (is.null(lags_exog)) {
+      if  (!is.na(fixed_lags)) {
+        lags_exog=fixed_lags
+      } else {
         lags_exog = max_lags
+      }
     }
   } else {
     exog_data = NULL
+  }
+
+  if (!is.na(fixed_lags)) {
+    max_lags = NA
+    lags_criterion = NaN
   }
 
   # Select endogenous variables
@@ -85,9 +94,9 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
     results_lin <- lp_lin(
       endog_data, 
       exog_data      = exog_data,
-      lags_criterion = 'AIC',
+      lags_criterion = lags_criterion,
       max_lags = max_lags,
-      lags_endog_lin = NA,
+      lags_endog_lin = fixed_lags,
       trend          = trend,  
       shock_type     = 1,  
       confint        = confint_map[as.character(signif)], 
@@ -110,7 +119,7 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
     results_lin <- lp_nl(
       endog_data, 
       exog_data      = exog_data,
-      lags_criterion = 'AIC',
+      lags_criterion = lags_criterion,
       max_lags = max_lags,
       lags_endog_lin = NA,
       lags_endog_nl = NA,
@@ -472,6 +481,7 @@ specs_summary <- function(res) {
     lags_endog_lin = if (!is.null(specs$lags_endog_lin)) specs$lags_endog_lin else NA,
     lags_criterion = specs$lags_criterion,
     max_lags = specs$max_lags,
+    lags_exog = if (!is.null(specs$lags_exog)) specs$lags_exog else NA,
     trend = specs$trend,
     shock_type = specs$shock_type,
     confint = names(specs$confint),  # Extract confidence level name
