@@ -54,7 +54,34 @@ library(purrr)
 #' }
 #'
 #' @export
-run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC', fixed_lags = NA, newey_lags = NULL, horizons = 10, signif, lags_exog = NULL, trend = 0, cumulative = FALSE, threshold_var = NULL) {
+run_lp_model <- function(
+    df, 
+    endog, 
+    exog=NULL, 
+    max_lags, 
+    lags_criterion = 'AIC', 
+    fixed_lags = NA, 
+    newey_lags = NULL, 
+    horizons = 10, 
+    signif, 
+    lags_exog = NULL, 
+    trend = 0, 
+    cumulative = FALSE, 
+    threshold_var = NULL,
+    upper_threshold = 0.80,
+    lower_threshold = NULL,#0.20,
+    discard_threshold = NULL#or 'upper' #or 'lower'   
+  ) {
+  
+  data <- df
+  dummy <- NULL
+
+  if (!is_null(threshold_var)) {
+    res <- prepare_threshold_dummy(df, threshold_var, upper_threshold, lower_threshold, discard_threshold)
+    data <- res$df
+    dummy <- res$dummy
+  }
+
   # Map confidence levels to the corresponding values
   confint_map <- c("0.95" = 1.96, "0.68" = 1)
 
@@ -83,7 +110,7 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
 
   # Select endogenous variables
   endog_data <- data[, endog, drop = FALSE]
-  
+
   # Convert to numeric (ensure proper model fitting)
   endog_data <- data.frame(lapply(endog_data, as.numeric))
   results_lin <- NULL
@@ -106,13 +133,11 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
       lags_exog = lags_exog
     )
   } else {
-    switching <- data[, threshold_var, drop = TRUE]
+    switching <- dummy
     use_logistic <- TRUE
-    if (all(switching %in% c(0, 1))) {
-      display_html("Threshold var is binary: will not use logistic decomposition")
-      use_logistic <- FALSE
-    } else {
-      display_html("Threshold var is not binary: using logistic decomposition")
+    if (!all(switching %in% c(0, 1))) {
+      display_html("Dummy variable must have only 0 and 1 values")
+      stop()
     }
     unique_count <- length(unique(switching))
 
@@ -122,7 +147,7 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
       lags_criterion = lags_criterion,
       max_lags = max_lags,
       lags_endog_lin = NA,
-      lags_endog_nl = NA,
+      lags_endog_nl = fixed_lags,
       trend          = trend,  
       shock_type     = 1,  
       confint        = confint_map[as.character(signif)], 
@@ -131,7 +156,7 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
       hor            = horizons,
       lags_exog = lags_exog,
       switching = switching,
-      use_logistic = use_logistic,
+      use_logistic = FALSE,
       use_hp = FALSE
     )
   }
@@ -195,6 +220,57 @@ run_lp_model <- function(data, endog, exog=NULL, max_lags, lags_criterion = 'AIC
   }
 
   return(results_lin)
+}
+
+prepare_threshold_dummy <- function(df, threshold_var, upper_threshold, lower_threshold, discard_threshold) {
+  data <- df
+  if (is.null(upper_threshold) && is.null(lower_threshold)) {
+    display_html("Si se va a usar un umbral, especificar límite superior (con upper_threshold) o inferior (con lower_threshold)")
+    stop()
+  }
+  if (! is.null(discard_threshold)) {
+    # Caso thresholds descartando datos a partir de uno de ellos
+    if (is.null(upper_threshold) || is.null(lower_threshold)) {
+      display_html("Si se va a descartar datos en base a umbrales (discard_threshold = NULL), especificar tanto límite superior (con upper_threshold) como inferior (con lower_threshold)")
+      stop()
+    }
+    upper_p <- quantile(data[[threshold_var]], upper_threshold, na.rm = TRUE)
+    lower_p <- quantile(data[[threshold_var]], lower_threshold, na.rm = TRUE)
+
+    df$above_upper_p <- ifelse(df[[threshold_var]] > upper_p, 1, 0)
+    df$not_below_lower_p <- ifelse(df[[threshold_var]] < lower_p, 0, 1)
+    if (discard_threshold == 'upper') {
+      display_html("Se descartan los datos por arriba del umbral superior")
+      data <- df[df$above_upper_p == 0, ]
+      rownames(data) <- NULL
+      dummy <- ifelse(data[[threshold_var]] < lower_p, 0, 1)
+    } else if (discard_threshold == 'lower') {
+      display_html("Se descartan los datos por debajo del umbral inferior")
+      data <- df[df$not_below_lower_p == 1, ]
+      rownames(data) <- NULL
+      dummy <- ifelse(data[[threshold_var]] > upper_p, 1, 0)
+    } else {
+      display_html("discard_threshold debe ser 'upper' o 'lower'")
+      stop()
+    }
+  } else {
+    # Caso thresholds sin descartar datos
+    if (! is.null(upper_threshold)) {
+      upper_p <- quantile(data[[threshold_var]], upper_threshold, na.rm = TRUE)
+      data$above_upper_p <- ifelse(data[[threshold_var]] > upper_p, 1, 0)
+      dummy <- data$above_upper_p
+      lower_threshold <- NULL
+    }
+    else if (! is.null(lower_threshold)) {
+      lower_p <- quantile(data[[threshold_var]], lower_threshold, na.rm = TRUE)
+      data$not_below_lower_p <- ifelse(data[[threshold_var]] < lower_p, 0, 1)
+      dummy <- data$not_below_lower_p
+      upper_threshold <- NULL
+    }
+  }
+  
+  plot_thresholds(df, threshold_var=threshold_var, upper_threshold=upper_threshold, lower_threshold=lower_threshold, discard_threshold=discard_threshold)
+  return(list(df = data, dummy = dummy))
 }
 
 plotlp_lin <- function(results_lin, endog, title_text) {
@@ -479,6 +555,7 @@ specs_summary <- function(res) {
   # Create a one-row dataframe
   df_specs <- data.frame(
     lags_endog_lin = if (!is.null(specs$lags_endog_lin)) specs$lags_endog_lin else NA,
+    lags_endog_nl = if (!is.null(specs$lags_endog_nl)) specs$lags_endog_nl else NA,
     lags_criterion = specs$lags_criterion,
     max_lags = specs$max_lags,
     lags_exog = if (!is.null(specs$lags_exog)) specs$lags_exog else NA,
@@ -570,4 +647,45 @@ validate_pretty_results <- function(results_lin, endog_vars) {
   } else {
     print("❌ No matching row found!")
   }
+}
+
+plot_thresholds <- function(df, threshold_var, upper_threshold=NULL, lower_threshold=NULL, discard_threshold=NULL) {
+  par(bg = "white") # mar increases bottom margin for taller labels
+
+  # Create a line plot of ipc with x-axis as the dataframe index
+  plot(df$ipc, type = "l", col = "black", lwd = 2,
+      xlab = "Time (Year + Quarter)", ylab = "IPC", main = "IPC with thresholds", xaxt = "n")
+
+  # Add custom x-axis labels
+  ticks <- seq(4, nrow(df), by = 4)
+  axis(1, at = ticks, labels = paste(df$año[ticks], df$trimestre[ticks]), las = 2, cex.axis = 0.7)
+
+  if (is.null(discard_threshold)) {
+    color_upper = "blue"
+    color_lower = "blue"
+  } else {
+    remove_lower = discard_threshold == 'lower'
+    color_upper = ifelse(remove_lower, "green", "red")
+    color_lower = ifelse(remove_lower, "red", "green")
+  }
+
+  legend = c('IPC')
+  colors = c("black")
+  # Calculate the 80th percentile and plot
+  if (!is.null(upper_threshold)) {
+    upper_p <- quantile(df[[threshold_var]], upper_threshold, na.rm = TRUE)
+    abline(h = upper_p, col = color_upper, lwd = 2, lty = 2)
+    legend <- append(legend,  paste0(upper_threshold*100,"th Percentile (", round(upper_p, 4), ")"))
+    colors <- append(colors, color_upper)
+  }
+  if (!is.null(lower_threshold)) {
+    lower_p <- quantile(df[[threshold_var]], lower_threshold, na.rm = TRUE)
+    abline(h = lower_p, col = color_lower, lwd = 2, lty = 2)
+    legend <- append(legend,  paste0(lower_threshold*100,"th Percentile (", round(lower_p, 4), ")"))
+    colors <- append(colors, color_lower)
+  }
+
+  # Add a legend to the plot
+  legend("topright", legend = legend,
+        col = colors, lty = c(1, 2, 2), lwd = 2)
 }
