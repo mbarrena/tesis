@@ -675,17 +675,55 @@ plot_thresholds <- function(df, threshold_var, upper_threshold=NULL, lower_thres
   if (!is.null(upper_threshold)) {
     upper_p <- quantile(df[[threshold_var]], upper_threshold, na.rm = TRUE)
     abline(h = upper_p, col = color_upper, lwd = 2, lty = 2)
-    legend <- append(legend,  paste0(upper_threshold*100,"th Percentile (", round(upper_p, 4), ")"))
+    legend <- append(legend, paste0(upper_threshold*100,"th Percentile (", round(upper_p, 4), ")"))
     colors <- append(colors, color_upper)
+    
+    # Add shading for upper threshold if it's the discard threshold
+    if (!is.null(discard_threshold) && discard_threshold == 'upper') {
+      # Get plot limits
+      y_lim <- par("usr")[3:4]
+      x_lim <- par("usr")[1:2]
+      
+      # Create polygon coordinates for the area above the threshold
+      x_coords <- c(x_lim[1], x_lim[2], x_lim[2], x_lim[1])
+      y_coords <- c(upper_p, upper_p, y_lim[2], y_lim[2])
+      
+      # Add semi-transparent red polygon
+      polygon(x_coords, y_coords, col = rgb(1, 0, 0, 0.2), border = NA)
+      
+      # Add to legend
+      legend <- append(legend, "Discarded Region")
+      colors <- append(colors, rgb(1, 0, 0, 0.2))
+    }
   }
+  
   if (!is.null(lower_threshold)) {
     lower_p <- quantile(df[[threshold_var]], lower_threshold, na.rm = TRUE)
     abline(h = lower_p, col = color_lower, lwd = 2, lty = 2)
-    legend <- append(legend,  paste0(lower_threshold*100,"th Percentile (", round(lower_p, 4), ")"))
+    legend <- append(legend, paste0(lower_threshold*100,"th Percentile (", round(lower_p, 4), ")"))
     colors <- append(colors, color_lower)
+    
+    # Add shading for lower threshold if it's the discard threshold
+    if (!is.null(discard_threshold) && discard_threshold == 'lower') {
+      # Get plot limits
+      y_lim <- par("usr")[3:4]
+      x_lim <- par("usr")[1:2]
+      
+      # Create polygon coordinates for the area below the threshold
+      x_coords <- c(x_lim[1], x_lim[2], x_lim[2], x_lim[1])
+      y_coords <- c(y_lim[1], y_lim[1], lower_p, lower_p)
+      
+      # Add semi-transparent red polygon
+      polygon(x_coords, y_coords, col = rgb(1, 0, 0, 0.2), border = NA)
+      
+      # Add to legend
+      legend <- append(legend, "Discarded Region")
+      colors <- append(colors, rgb(1, 0, 0, 0.2))
+    }
   }
 
   # Add a legend to the plot
   legend("topright", legend = legend,
-        col = colors, lty = c(1, 2, 2), lwd = 2)
+        col = colors, lty = c(1, rep(2, length(colors)-2), NA), lwd = c(2, rep(2, length(colors)-2), NA), 
+        fill = c(NA, rep(NA, length(colors)-2), rgb(1, 0, 0, 0.2)))
 }
