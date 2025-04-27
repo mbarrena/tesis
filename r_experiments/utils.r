@@ -16,6 +16,7 @@ library(purrr)
 #'
 #' @param data A data frame containing the time series data.
 #' @param endog A character vector specifying the names of endogenous variables.
+#' @param fixed_lags An integer indicated a fixed number of lags. If specified, superseeds max_lags and lags_criterion.
 #' @param max_lags An integer indicating the maximum number of lags for lags_crterion.
 #' @param signif A numeric value (0.95 or 0.68) specifying the confidence level.
 #' @param lags_criterion (optional) A string indicating the lag length criterion ('AICc', 'AIC' or 'BIC') (default: 'AIC')
@@ -146,7 +147,7 @@ run_lp_model <- function(
       exog_data      = exog_data,
       lags_criterion = lags_criterion,
       max_lags = max_lags,
-      lags_endog_lin = NA,
+      lags_endog_lin = 0,
       lags_endog_nl = fixed_lags,
       trend          = trend,  
       shock_type     = 1,  
