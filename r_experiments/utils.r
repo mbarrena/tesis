@@ -147,7 +147,7 @@ run_lp_model <- function(
       exog_data      = exog_data,
       lags_criterion = lags_criterion,
       max_lags = max_lags,
-      lags_endog_lin = NA,
+      lags_endog_lin = fixed_lags,
       lags_endog_nl = fixed_lags,
       trend          = trend,  
       shock_type     = 1,  
