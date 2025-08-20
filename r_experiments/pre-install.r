@@ -1,0 +1,8 @@
+install.packages("lpirfs",repos='http://cran.us.r-project.org')
+install.packages("gridExtra",repos='http://cran.us.r-project.org')
+install.packages("ggplot2",repos='http://cran.us.r-project.org')
+install.packages("readxl",repos='http://cran.us.r-project.org')
+install.packages("httr",repos='http://cran.us.r-project.org')
+install.packages("reshape2",repos='http://cran.us.r-project.org')
+install.packages("purrr",repos='http://cran.us.r-project.org')
+install.packages("cowplot",repos='http://cran.us.r-project.org')
