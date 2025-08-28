@@ -1,4 +1,4 @@
-from visualization import plotIrfWithSignifLP
+from scripts.visualization import plotIrfWithSignifLP
 from scipy.stats import chi2
 from statsmodels.stats.diagnostic import acorr_ljungbox
 import pandas as pd

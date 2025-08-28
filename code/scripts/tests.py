@@ -1,7 +1,7 @@
 from statsmodels.tools.sm_exceptions import InterpolationWarning
 from statsmodels.tsa.stattools import range_unit_root_test, zivot_andrews, kpss
 from sklearn.metrics import mean_squared_error
-from utilities import *
+from scripts.utilities import *
 import warnings
 import numpy as np
 import pandas as pd

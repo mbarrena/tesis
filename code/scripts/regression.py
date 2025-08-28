@@ -6,10 +6,10 @@ from statsmodels.tsa.stattools import adfuller
 from scipy import stats
 import warnings
 
-from variable_preprocessing import *
-from utilities import *
-from visualization import *
-from LocalProjection import LPResults
+from scripts.variable_preprocessing import *
+from scripts.utilities import *
+from scripts.visualization import *
+from scripts.LocalProjection import LPResults
 
 # Para elegir que modelo usar para regresión, descomentar la línea con el modelo
 # que se quiera usar y comentar las otras dos. Despues correr la celda
@@ -109,6 +109,7 @@ def prepare_vars(endog, data, exog, rModel):
 def run_test_select_order(endog, data, exog=[], rModel=None, estacionalidad=True):
     if rModel is None:
         rModel = REGRESS_MODEL
+    assert rModel=="VAR", "Only implemented for VAR"
     print(f"!!!! Modelo seleccionado: {rModel}")
     datos, X_exog, Y_endog = prepare_vars(endog, data, exog, rModel)
 
