@@ -653,9 +653,9 @@ validate_pretty_results <- function(results_lin, endog_vars) {
 plot_thresholds <- function(df, threshold_var, upper_threshold=NULL, lower_threshold=NULL, discard_threshold=NULL) {
   par(bg = "white") # mar increases bottom margin for taller labels
 
-  # Create a line plot of ipc with x-axis as the dataframe index
-  plot(df$ipc, type = "l", col = "black", lwd = 2,
-      xlab = "Time (Year + Quarter)", ylab = "IPC", main = "IPC with thresholds", xaxt = "n")
+  # Create a line plot of threshold_var with x-axis as the dataframe index
+  plot(df[[threshold_var]], type = "l", col = "black", lwd = 2,
+      xlab = "Time (Year + Quarter)", ylab = threshold_var, main = paste0(threshold_var, " with thresholds"), xaxt = "n")
 
   # Add custom x-axis labels
   ticks <- seq(4, nrow(df), by = 4)
@@ -670,7 +670,7 @@ plot_thresholds <- function(df, threshold_var, upper_threshold=NULL, lower_thres
     color_lower = ifelse(remove_lower, "red", "green")
   }
 
-  legend = c('IPC')
+  legend = c(threshold_var)
   colors = c("black")
   # Calculate the 80th percentile and plot
   if (!is.null(upper_threshold)) {
