@@ -70,15 +70,15 @@ fit_generic_sstvar <- function(
     identification = "heteroskedasticity"
   )
 
-  saveRDS(fit_struct, paste0("models/", "structured", "_", filename))
+  saveRDS(fit_struct, paste0("../models/", "structured", "_", filename))
   cat("========= Structured fitted model (heteroskedasticity) ==========\n")
   summary(fit_struct)
 
-  return(fit_struct)
+  return(c(tvar_model, fit_struct))
 }
 
-load_trained_model <- function(filename) {
-  return(readRDS(paste0("models/", filename)))
+load_trained_model <- function(filename, structured = TRUE) {
+  return(readRDS(paste0("models/", ifelse(structured, paste0("structured", "_"), ""), filename)))
 }
 
 run_threshold_tvar <- function(
@@ -96,7 +96,8 @@ run_threshold_tvar <- function(
   irf_horizons = NULL, # Max periods after to look to in IRF (default 2 years)
   irf_shocks = 1, # Shocks unitarios irf (default 1)
   diagnostic_plots = FALSE, # Print diagnostic plots?
-  nrounds = 500
+  nrounds = 500,
+  load_presaved = FALSE
 ) {
   weight_function <- "threshold"
   filename <- paste0(
@@ -107,19 +108,26 @@ run_threshold_tvar <- function(
     ".rds"
   )
 
-  fit_struct <- fit_generic_sstvar(
-    data,
-    endog,
-    feature_lag,
-    n_regimes,
-    weight_function,
-    thr_var,
-    thr_lag,
-    filename,
-    nrounds = 500,
-    seeds = NULL,
-    estim_method = "two-phase",
-  )
+  tvar_model <- NULL
+  fit_struct <- NULL
+  if (load_presaved) {
+    tvar_model <- load_trained_model(filename, structured = FALSE)
+    fit_struct <- load_trained_model(filename, structured = TRUE)
+  } else {
+    fit_models <- fit_generic_sstvar(
+      data,
+      endog,
+      feature_lag,
+      n_regimes,
+      weight_function,
+      thr_var,
+      thr_lag,
+      filename,
+      nrounds = nrounds
+    )
+    tvar_model <- fit_models[1]
+    fit_struct <- fit_models[2]
+  }
 
   shock_var_idx <- which(colnames(fit_struct$data) == shock_var)
   response_vars_idx <- which(colnames(fit_struct$data) %in% response_vars)
@@ -134,12 +142,12 @@ run_threshold_tvar <- function(
 
   if (run_tests) {
     Portmanteau_test(tvar_model) # autocorrelación
-    LR_test(tvar_model) # lineal vs no lineal
-    GFEVD(fit_struct, nstep = irf_horizons)
+    # LR_test(fit_struct) # lineal vs no lineal
     hist_decomp(fit_struct)
   }
 
   if (diagnostic_plots) {
+    cat(" >>> DIAGNOSTIC PLOTS\n")
     plot(fit_struct)
     diagnostic_plot(tvar_model, type = "series", resid_type = "standardized", maxlag = irf_horizons)
   }
@@ -157,14 +165,19 @@ run_threshold_tvar <- function(
   irf_response <- list(regimes = list())
 
   for (i in 1:n_regimes) {
-    cat("+++++++++ REGIMEN ", i, "+++++++++\n")
-    cat(" >>> GIRF")
+    cat("+++++++++ RÉGIMEN ", i, "+++++++++\n")
+    if (diagnostic_plots) {
+      cat(" >>> GFEVD\n")
+      GFEVD(fit_struct, N = irf_horizons, shock_size = irf_shocks, which_cumulative = cumulative_idx, init_regime = i)
+    }
+
+    cat(" >>> GIRF\n")
     girf_erpt <- GIRF(
       fit_struct,
       N = irf_horizons, # horizonte
       which_shocks = shock_var_idx, # shock al Tipo de Cambio (variable 2)
       which_cumulative = cumulative_idx, # acumula la respuesta de inflación (variable 3)
-      init_regime = 2,
+      init_regime = i,
       scale = scale_matrix,
       scale_type = "instant"
     )
@@ -174,7 +187,7 @@ run_threshold_tvar <- function(
     irf_struct <- linear_IRF(
       fit_struct,
       N = irf_horizons, # horizonte de 8 periodos
-      regime = n_regimes,
+      regime = i,
       which_cumulative = cumulative_idx, # acumula las respuestas de la inflación (variable 3)
       scale = scale_matrix,
       ncores = 2
