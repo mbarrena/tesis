@@ -46,7 +46,8 @@ fit_generic_sstvar <- function(
   estim_method = "two-phase"
 ) {
   Y <- data[, endog]
-  seeds <- 1:nrounds
+  seeds <- if (is.null(seeds)) 1:nrounds else seeds
+  estim_method <- if (is.null(estim_method)) "two-phase" else estim_method
   thr_params <- c(which(colnames(Y) == thr_var), thr_lag)
 
   tvar_model <- fitSTVAR(
@@ -60,6 +61,7 @@ fit_generic_sstvar <- function(
     estim_method = estim_method
   )
 
+
   cat("========= Unstructured fitted model ==========\n")
   summary(tvar_model)
 
@@ -67,6 +69,10 @@ fit_generic_sstvar <- function(
     stvar = tvar_model,
     identification = "heteroskedasticity"
   )
+
+
+  cat("========= Structured fitted model (heteroskedasticity) ==========\n")
+  summary(fit_struct)
 
   tryCatch(
     {
@@ -78,17 +84,7 @@ fit_generic_sstvar <- function(
       cat("!!! No se pudo guardar modelos pre-estimados. GUARDAR MANUALMENTE corriendo save_trained_models(models, models/", filename, "). Error: ", e$message, "\n")
     }
   )
-  cat("========= Structured fitted model (heteroskedasticity) ==========\n")
-  tryCatch(
-    {
-      summary(fit_struct)
-    },
-    error = function(e) {
-      cat("!!! No se pudo obtener summary del modelo estructurado. Error: ", e$message, "\n")
-    }
-  )
-
-  return(c(tvar_model, fit_struct))
+  return(list(tvar_model = tvar_model, fit_struct = fit_struct))
 }
 
 load_trained_model <- function(filename, structured = TRUE) {
@@ -99,6 +95,44 @@ save_trained_models <- function(models, filename) {
   saveRDS(models[[1]], paste0("models/", filename))
   saveRDS(models[[2]], paste0("models/", "structured", "_", filename))
   cat("Modelos guardados exitosamente en carpeta models/.")
+}
+
+run_tests_sstvar <- function(models, response_vars, cumulative, irf_horizons = NULL, irf_shocks = 1, nrounds = 500) {
+  tvar_model <- models$tvar_model
+  fit_struct <- models$fit_struct
+
+  if (cumulative) {
+    cumulative_idx <- which(response_vars %in% response_vars)
+  } else {
+    cumulative_idx <- NULL
+  }
+
+  if (is.null(irf_horizons)) {
+    if (periodicity == "trimestral") {
+      irf_horizons <- 8
+    } else if (periodicity == "anual") {
+      irf_horizons <- 2
+    }
+  }
+
+  cat(" >>> Portmanteau\n")
+  port_res <- Portmanteau_test(tvar_model) # autocorrelación
+  print(port_res)
+  cat("\n\n")
+  # LR_test(fit_struct) # lineal vs no lineal
+  cat(" >>> Historical Decomposition\n")
+  decomp_res <- hist_decomp(fit_struct)
+  print(decomp_res)
+  cat("\n\n")
+  cat(" >>> GFEVD\n")
+  gefvd_res <- suppressMessages(GFEVD(
+    fit_struct,
+    N = irf_horizons,
+    shock_size = irf_shocks,
+    which_cumulative = cumulative_idx,
+    R1 = nrounds
+  ))
+  print(gefvd_res)
 }
 
 run_sstvar_fit_tests_irf <- function(
@@ -149,8 +183,14 @@ run_sstvar_fit_tests_irf <- function(
       filename,
       nrounds = nrounds
     )
-    tvar_model <- fit_models[1]
-    fit_struct <- fit_models[2]
+    tvar_model <- fit_models$tvar_model
+    fit_struct <- fit_models$fit_struct
+  }
+
+  if (run_tests) {
+    cat("\n >>> TESTS\n")
+    cat("PARA CORRER LOS TESTS CORRER LA SIGUIENTE FUNCION:\n")
+    cat("run_tests_sstvar(res, c('", response_vars, "'),", cumulative, ",", ifelse(is.null(irf_horizons), "NULL", irf_horizons), ",", irf_shocks, ",", nrounds, ")\n")
   }
 
   shock_var_idx <- which(colnames(fit_struct$data) == shock_var)
@@ -174,30 +214,8 @@ run_sstvar_fit_tests_irf <- function(
     }
   }
 
-  if (run_tests) {
-    cat(" >>> Portmanteau\n")
-    port_res <- Portmanteau_test(tvar_model) # autocorrelación
-    print(port_res)
-    cat("\n\n")
-    # LR_test(fit_struct) # lineal vs no lineal
-    cat(" >>> Historical Decomposition\n")
-    decomp_res <- hist_decomp(fit_struct)
-    print(decomp_res)
-    cat("\n\n")
-    cat(" >>> GFEVD\n")
-    gefvd_res <- suppressMessages(GFEVD(
-      fit_struct,
-      N = irf_horizons,
-      shock_size = irf_shocks,
-      which_cumulative = cumulative_idx,
-      R1 = nrounds
-    ))
-    print(gefvd_res)
-    cat("\n\n")
-  }
-
   if (diagnostic_plots) {
-    cat(" >>> DIAGNOSTIC PLOTS\n")
+    cat("\n >>> DIAGNOSTIC PLOTS\n")
     plot(fit_struct)
     diagnostic_plot(tvar_model, type = "series", resid_type = "standardized", maxlag = irf_horizons)
   }
