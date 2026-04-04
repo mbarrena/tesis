@@ -60,8 +60,6 @@ fit_generic_sstvar <- function(
     estim_method = estim_method
   )
 
-  cat("Saving trained models to models/ folder\n")
-  saveRDS(tvar_model, paste0("models/", filename))
   cat("========= Unstructured fitted model ==========\n")
   summary(tvar_model)
 
@@ -70,15 +68,173 @@ fit_generic_sstvar <- function(
     identification = "heteroskedasticity"
   )
 
-  saveRDS(fit_struct, paste0("../models/", "structured", "_", filename))
+  tryCatch(
+    {
+      cat("Saving trained models to models/ folder\n")
+      saveRDS(tvar_model, paste0("models/", filename))
+      saveRDS(fit_struct, paste0("models/", "structured", "_", filename))
+    },
+    error = function(e) {
+      cat("!!! No se pudo guardar modelos pre-estimados. GUARDAR MANUALMENTE corriendo save_trained_models(models, models/", filename, "). Error: ", e$message, "\n")
+    }
+  )
   cat("========= Structured fitted model (heteroskedasticity) ==========\n")
-  summary(fit_struct)
+  tryCatch(
+    {
+      summary(fit_struct)
+    },
+    error = function(e) {
+      cat("!!! No se pudo obtener summary del modelo estructurado. Error: ", e$message, "\n")
+    }
+  )
 
   return(c(tvar_model, fit_struct))
 }
 
 load_trained_model <- function(filename, structured = TRUE) {
   return(readRDS(paste0("models/", ifelse(structured, paste0("structured", "_"), ""), filename)))
+}
+
+save_trained_models <- function(models, filename) {
+  saveRDS(models[[1]], paste0("models/", filename))
+  saveRDS(models[[2]], paste0("models/", "structured", "_", filename))
+  cat("Modelos guardados exitosamente en carpeta models/.")
+}
+
+run_sstvar_fit_tests_irf <- function(
+  data,
+  endog,
+  weight_function = weight_function,
+  filename = filename,
+  periodicity, # c('trimestral','anual')
+  feature_lag,
+  n_regimes,
+  cumulative,
+  thr_var, # string
+  thr_lag,
+  shock_var, # string
+  response_vars, # list(strings)
+  run_tests = TRUE, # run tests
+  irf_horizons = NULL, # Max periods after to look to in IRF (default 2 years)
+  irf_shocks = 1, # Shocks unitarios irf (default 1)
+  diagnostic_plots = FALSE, # Print diagnostic plots?
+  nrounds = 500,
+  load_presaved = FALSE
+) {
+  # validate_input_cols(data, endog, shock_var, response_vars)
+
+  tvar_model <- NULL
+  fit_struct <- NULL
+  if (load_presaved) {
+    tryCatch(
+      {
+        tvar_model <- load_trained_model(filename, structured = FALSE)
+        fit_struct <- load_trained_model(filename, structured = TRUE)
+        cat("Se cargó exitosamente modelos preguardados ", filename, " de la carpeta models\n")
+      },
+      error = function(e) {
+        cat("!!! No se pudo cargar modelo pre-estimado. Correr de nuevo con load_presaved = FALSE. Error: ", e$message, "\n")
+        return(NULL)
+      }
+    )
+  } else {
+    fit_models <- fit_generic_sstvar(
+      data,
+      endog,
+      feature_lag,
+      n_regimes,
+      weight_function,
+      thr_var,
+      thr_lag,
+      filename,
+      nrounds = nrounds
+    )
+    tvar_model <- fit_models[1]
+    fit_struct <- fit_models[2]
+  }
+
+  shock_var_idx <- which(colnames(fit_struct$data) == shock_var)
+  response_vars_idx <- which(colnames(fit_struct$data) %in% response_vars)
+
+  scale_matrix <- sapply(response_vars_idx, function(x) {
+    c(shock_var_idx, x, irf_shocks)
+  })
+
+  if (cumulative) {
+    cumulative_idx <- which(response_vars %in% response_vars)
+  } else {
+    cumulative_idx <- NULL
+  }
+
+  if (is.null(irf_horizons)) {
+    if (periodicity == "trimestral") {
+      irf_horizons <- 8
+    } else if (periodicity == "anual") {
+      irf_horizons <- 2
+    }
+  }
+
+  if (run_tests) {
+    cat(" >>> Portmanteau\n")
+    port_res <- Portmanteau_test(tvar_model) # autocorrelación
+    print(port_res)
+    cat("\n\n")
+    # LR_test(fit_struct) # lineal vs no lineal
+    cat(" >>> Historical Decomposition\n")
+    decomp_res <- hist_decomp(fit_struct)
+    print(decomp_res)
+    cat("\n\n")
+    cat(" >>> GFEVD\n")
+    gefvd_res <- suppressMessages(GFEVD(
+      fit_struct,
+      N = irf_horizons,
+      shock_size = irf_shocks,
+      which_cumulative = cumulative_idx,
+      R1 = nrounds
+    ))
+    print(gefvd_res)
+    cat("\n\n")
+  }
+
+  if (diagnostic_plots) {
+    cat(" >>> DIAGNOSTIC PLOTS\n")
+    plot(fit_struct)
+    diagnostic_plot(tvar_model, type = "series", resid_type = "standardized", maxlag = irf_horizons)
+  }
+
+  irf_response <- list(regimes = list())
+
+  for (i in 1:n_regimes) {
+    cat("+++++++++ RÉGIMEN ", i, "+++++++++\n")
+    cat(" >>> GIRF\n")
+    girf_erpt <- GIRF(
+      fit_struct,
+      N = irf_horizons, # horizonte
+      which_shocks = shock_var_idx, # shock al Tipo de Cambio (variable 2)
+      which_cumulative = cumulative_idx, # acumula la respuesta de inflación (variable 3)
+      init_regime = i,
+      scale = scale_matrix,
+      scale_type = "instant",
+      R1 = nrounds
+    )
+    plot(girf_erpt)
+
+    cat(" >>> Linear IRF (1 shock)")
+    irf_struct <- linear_IRF(
+      fit_struct,
+      N = irf_horizons, # horizonte de 8 periodos
+      regime = i,
+      which_cumulative = cumulative_idx, # acumula las respuestas de la inflación (variable 3)
+      scale = scale_matrix,
+      ncores = 2
+    )
+    plot(irf_struct)
+
+    reg_irfs <- list(girf = girf_erpt, lirf = irf_struct)
+    irf_response$regimes[[i]] <- reg_irfs
+  }
+
+  return(irf_response)
 }
 
 run_threshold_tvar <- function(
@@ -108,95 +264,82 @@ run_threshold_tvar <- function(
     ".rds"
   )
 
-  tvar_model <- NULL
-  fit_struct <- NULL
-  if (load_presaved) {
-    tvar_model <- load_trained_model(filename, structured = FALSE)
-    fit_struct <- load_trained_model(filename, structured = TRUE)
-  } else {
-    fit_models <- fit_generic_sstvar(
-      data,
-      endog,
-      feature_lag,
-      n_regimes,
-      weight_function,
-      thr_var,
-      thr_lag,
-      filename,
-      nrounds = nrounds
-    )
-    tvar_model <- fit_models[1]
-    fit_struct <- fit_models[2]
-  }
+  run_sstvar_fit_tests_irf(
+    data = data,
+    endog = endog,
+    weight_function = weight_function,
+    filename = filename,
+    periodicity = periodicity,
+    feature_lag = feature_lag,
+    n_regimes = n_regimes,
+    cumulative = cumulative,
+    thr_var = thr_var,
+    thr_lag = thr_lag,
+    shock_var = shock_var,
+    response_vars = response_vars,
+    run_tests = run_tests,
+    irf_horizons = irf_horizons,
+    irf_shocks = irf_shocks,
+    diagnostic_plots = diagnostic_plots,
+    nrounds = nrounds,
+    load_presaved = load_presaved
+  )
+}
 
-  shock_var_idx <- which(colnames(fit_struct$data) == shock_var)
-  response_vars_idx <- which(colnames(fit_struct$data) %in% response_vars)
 
-  if (is.null(irf_horizons)) {
-    if (periodicity == "trimestral") {
-      irf_horizons <- 8
-    } else if (periodicity == "anual") {
-      irf_horizons <- 2
-    }
-  }
+run_vlstar <- function(
+  data,
+  endog,
+  periodicity, # c('trimestral','anual')
+  feature_lag,
+  n_regimes,
+  cumulative,
+  thr_var, # string
+  thr_lag,
+  shock_var, # string
+  response_vars, # list(strings)
+  run_tests = TRUE, # run tests
+  irf_horizons = NULL, # Max periods after to look to in IRF (default 2 years)
+  irf_shocks = 1, # Shocks unitarios irf (default 1)
+  diagnostic_plots = FALSE, # Print diagnostic plots?
+  nrounds = 500,
+  load_presaved = FALSE
+) {
+  weight_function <- "logistic"
+  filename <- paste0(
+    "vlstar_",
+    thr_var, "_",
+    thr_lag, "_",
+    nrounds,
+    ".rds"
+  )
 
-  if (run_tests) {
-    Portmanteau_test(tvar_model) # autocorrelación
-    # LR_test(fit_struct) # lineal vs no lineal
-    hist_decomp(fit_struct)
-  }
+  run_sstvar_fit_tests_irf(
+    data = data,
+    endog = endog,
+    weight_function = weight_function,
+    filename = filename,
+    periodicity = periodicity,
+    feature_lag = feature_lag,
+    n_regimes = n_regimes,
+    cumulative = cumulative,
+    thr_var = thr_var,
+    thr_lag = thr_lag,
+    shock_var = shock_var,
+    response_vars = response_vars,
+    run_tests = run_tests,
+    irf_horizons = irf_horizons,
+    irf_shocks = irf_shocks,
+    diagnostic_plots = diagnostic_plots,
+    nrounds = nrounds,
+    load_presaved = load_presaved
+  )
+}
 
-  if (diagnostic_plots) {
-    cat(" >>> DIAGNOSTIC PLOTS\n")
-    plot(fit_struct)
-    diagnostic_plot(tvar_model, type = "series", resid_type = "standardized", maxlag = irf_horizons)
-  }
+print_irf <- function(res) {
+  print(res$regimes[[1]]$lirf)
+}
 
-  if (cumulative) {
-    cumulative_idx <- which(response_vars %in% response_vars)
-  } else {
-    cumulative_idx <- NULL
-  }
-
-  scale_matrix <- t(sapply(response_vars_idx, function(x) {
-    c(shock_var_idx, x, irf_shocks)
-  }))
-
-  irf_response <- list(regimes = list())
-
-  for (i in 1:n_regimes) {
-    cat("+++++++++ RÉGIMEN ", i, "+++++++++\n")
-    if (diagnostic_plots) {
-      cat(" >>> GFEVD\n")
-      GFEVD(fit_struct, N = irf_horizons, shock_size = irf_shocks, which_cumulative = cumulative_idx, init_regime = i)
-    }
-
-    cat(" >>> GIRF\n")
-    girf_erpt <- GIRF(
-      fit_struct,
-      N = irf_horizons, # horizonte
-      which_shocks = shock_var_idx, # shock al Tipo de Cambio (variable 2)
-      which_cumulative = cumulative_idx, # acumula la respuesta de inflación (variable 3)
-      init_regime = i,
-      scale = scale_matrix,
-      scale_type = "instant"
-    )
-    plot(girf_erpt)
-
-    cat(" >>> Linear IRF (1 shock)")
-    irf_struct <- linear_IRF(
-      fit_struct,
-      N = irf_horizons, # horizonte de 8 periodos
-      regime = i,
-      which_cumulative = cumulative_idx, # acumula las respuestas de la inflación (variable 3)
-      scale = scale_matrix,
-      ncores = 2
-    )
-    plot(irf_struct)
-
-    reg_irfs <- c(girf_erpt, irf_struct)
-    irf_response$regimes[[i]] <- reg_irfs
-  }
-
-  return(irf_response)
+print_girf <- function(res) {
+  print(res$regimes[[1]]$girf)
 }
