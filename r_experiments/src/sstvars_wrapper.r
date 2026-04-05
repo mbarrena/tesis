@@ -110,8 +110,8 @@ run_tests_sstvar <- function(models, response_vars, cumulative, irf_horizons = N
   if (is.null(irf_horizons)) {
     if (periodicity == "trimestral") {
       irf_horizons <- 8
-    } else if (periodicity == "anual") {
-      irf_horizons <- 2
+    } else if (periodicity == "mensual") {
+      irf_horizons <- 24
     }
   }
 
@@ -218,6 +218,7 @@ run_sstvar_fit_tests_irf <- function(
     cat("\n >>> DIAGNOSTIC PLOTS\n")
     plot(fit_struct)
     diagnostic_plot(tvar_model, type = "series", resid_type = "standardized", maxlag = irf_horizons)
+    plot.new()
   }
 
   irf_response <- list(regimes = list())
@@ -236,6 +237,7 @@ run_sstvar_fit_tests_irf <- function(
       R1 = nrounds
     )
     plot(girf_erpt)
+    plot.new()
 
     cat(" >>> Linear IRF (1 shock)")
     irf_struct <- linear_IRF(
@@ -247,6 +249,7 @@ run_sstvar_fit_tests_irf <- function(
       ncores = 2
     )
     plot(irf_struct)
+    plot.new()
 
     reg_irfs <- list(girf = girf_erpt, lirf = irf_struct)
     irf_response$regimes[[i]] <- reg_irfs
