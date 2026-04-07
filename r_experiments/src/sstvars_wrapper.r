@@ -1,5 +1,6 @@
 library(tsDyn)
 library(sstvars)
+library(digest)
 
 #' Run Local Projection Model
 #'
@@ -58,7 +59,8 @@ fit_generic_sstvar <- function(
     weightfun_pars = thr_params,
     nrounds = nrounds,
     seeds = seeds,
-    estim_method = estim_method
+    estim_method = estim_method,
+    ncores = 6
   )
 
 
@@ -82,6 +84,7 @@ fit_generic_sstvar <- function(
     },
     error = function(e) {
       cat("!!! No se pudo guardar modelos pre-estimados. GUARDAR MANUALMENTE corriendo save_trained_models(models, models/", filename, "). Error: ", e$message, "\n")
+      return(NULL)
     }
   )
   return(list(tvar_model = tvar_model, fit_struct = fit_struct))
@@ -160,17 +163,9 @@ run_sstvar_fit_tests_irf <- function(
   tvar_model <- NULL
   fit_struct <- NULL
   if (load_presaved) {
-    tryCatch(
-      {
-        tvar_model <- load_trained_model(filename, structured = FALSE)
-        fit_struct <- load_trained_model(filename, structured = TRUE)
-        cat("Se cargó exitosamente modelos preguardados ", filename, " de la carpeta models\n")
-      },
-      error = function(e) {
-        cat("!!! No se pudo cargar modelo pre-estimado. Correr de nuevo con load_presaved = FALSE. Error: ", e$message, "\n")
-        return(NULL)
-      }
-    )
+    tvar_model <- load_trained_model(filename, structured = FALSE)
+    fit_struct <- load_trained_model(filename, structured = TRUE)
+    cat("Se cargó exitosamente modelos preguardados ", filename, " de la carpeta models\n")
   } else {
     fit_models <- fit_generic_sstvar(
       data,
@@ -225,7 +220,7 @@ run_sstvar_fit_tests_irf <- function(
 
   for (i in 1:n_regimes) {
     cat("+++++++++ RÉGIMEN ", i, "+++++++++\n")
-    cat(" >>> GIRF\n")
+    cat(" >>> GIRF (", irf_shocks, " shock units)\n")
     girf_erpt <- GIRF(
       fit_struct,
       N = irf_horizons, # horizonte
@@ -234,19 +229,20 @@ run_sstvar_fit_tests_irf <- function(
       init_regime = i,
       scale = scale_matrix,
       scale_type = "instant",
-      R1 = nrounds
+      R1 = nrounds,
+      ncores = 6
     )
     plot(girf_erpt)
     plot.new()
 
-    cat(" >>> Linear IRF (1 shock)")
+    cat(" >>> Linear IRF (", irf_shocks, " shock units)\n")
     irf_struct <- linear_IRF(
       fit_struct,
       N = irf_horizons, # horizonte de 8 periodos
       regime = i,
       which_cumulative = cumulative_idx, # acumula las respuestas de la inflación (variable 3)
       scale = scale_matrix,
-      ncores = 2
+      ncores = 6
     )
     plot(irf_struct)
     plot.new()
@@ -277,11 +273,16 @@ run_threshold_tvar <- function(
   load_presaved = FALSE
 ) {
   weight_function <- "threshold"
+  include_params <- c("data","endog","periodicity","feature_lag","n_regimes","thr_var","thr_lag","nrounds")
+  params_to_hash <- as.list(environment())
+  params_to_hash <- params_to_hash[names(params_to_hash) %in% include_params]
+
   filename <- paste0(
     "threshold_tvar_",
-    thr_var, "_",
-    thr_lag, "_",
-    nrounds,
+    feature_lag, "_",
+    n_regimes, "_",
+    nrounds, "_",
+    digest(params_to_hash),
     ".rds"
   )
 
@@ -327,11 +328,16 @@ run_vlstar <- function(
   load_presaved = FALSE
 ) {
   weight_function <- "logistic"
+  include_params <- c("data","endog","periodicity","feature_lag","n_regimes","thr_var","thr_lag","nrounds")
+  params_to_hash <- as.list(environment())
+  params_to_hash <- params_to_hash[names(params_to_hash) %in% include_params]
+
   filename <- paste0(
     "vlstar_",
-    thr_var, "_",
-    thr_lag, "_",
-    nrounds,
+    feature_lag, "_",
+    n_regimes, "_",
+    nrounds, "_",
+    digest(params_to_hash),
     ".rds"
   )
 
