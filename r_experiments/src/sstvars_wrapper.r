@@ -105,7 +105,7 @@ run_tests_sstvar <- function(models, response_vars, cumulative, irf_horizons = N
   fit_struct <- models$fit_struct
 
   if (cumulative) {
-    cumulative_idx <- which(response_vars %in% response_vars)
+    cumulative_idx <- which(colnames(fit_struct$data) %in% response_vars)
   } else {
     cumulative_idx <- NULL
   }
@@ -196,7 +196,7 @@ run_sstvar_fit_tests_irf <- function(
   })
 
   if (cumulative) {
-    cumulative_idx <- which(response_vars %in% response_vars)
+    cumulative_idx <- response_vars_idx
   } else {
     cumulative_idx <- NULL
   }
@@ -364,9 +364,15 @@ run_vlstar <- function(
 }
 
 print_irf <- function(res) {
-  print(res$regimes[[1]]$lirf)
+  for (i in 1:length(res$regimes)) {
+    cat("+++++++++ RÉGIMEN ", i, "+++++++++\n")
+    print(res$regimes[[i]]$lirf)
+  }
 }
 
 print_girf <- function(res) {
-  print(res$regimes[[1]]$girf)
+  for (i in 1:length(res$regimes)) {
+    cat("+++++++++ RÉGIMEN ", i, "+++++++++\n")
+    print(res$regimes[[i]]$girf)
+  }
 }
