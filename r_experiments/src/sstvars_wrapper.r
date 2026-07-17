@@ -113,6 +113,8 @@ run_tests_sstvar <- function(models, response_vars, cumulative, irf_horizons = N
   if (is.null(irf_horizons)) {
     if (periodicity == "trimestral") {
       irf_horizons <- 8
+    } else if (periodicity == "anual") {
+      irf_horizons <- 2
     } else if (periodicity == "mensual") {
       irf_horizons <- 24
     }
@@ -206,6 +208,8 @@ run_sstvar_fit_tests_irf <- function(
       irf_horizons <- 8
     } else if (periodicity == "anual") {
       irf_horizons <- 2
+    } else if (periodicity == "mensual") {
+      irf_horizons <- 24
     }
   }
 
