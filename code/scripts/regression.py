@@ -17,14 +17,17 @@ from scripts.LocalProjection import LPResults
 REGRESS_MODEL = "VAR"
 #REGRESS_MODEL = "VECM"
 #REGRESS_MODEL = "LocalProjections"
+economic_var_candidates = ["emae", "pbird", "PBIcf", "PBIpm"]
 
 def run_irf(resultados, signifs, periods):
     printmd(bold("Impulso-respuesta:"))
-    var_respuesta = ["ipc"] if "ipc" in resultados.names else []
-    var_respuesta += ["E" if "E" in resultados.names else "Ebc"]
-    #var_respuesta += ["E" if "E" in resultados.names else "Efmi"]
-    #var_respuesta = resultados.names #OJO! MUY LENTO! Grafica impulso-respuesta de todas las variables contra todas.
-    #var_respuesta = ['ipc', 'E', 'Ebc', 'emae', 'immp_usa', 'Psoja_USA']:
+    var_respuesta = []
+    if "ipc" in resultados.names:
+        var_respuesta.append("ipc")
+    for tc_cand in ["E", "Ebc", "Efmi"]:
+        if tc_cand in resultados.names:
+            var_respuesta.append(tc_cand)
+            break
 
     for var in resultados.names:
         for var_res in var_respuesta: #Grafica los impulso-respuesta de todas las variables contra ipc y contra E
@@ -35,15 +38,24 @@ def run_irf(resultados, signifs, periods):
                 resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var, response=var_res, periods=periods, orth=True, cumulative=False, figsize=(3,2))
                 resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var, response=var_res, periods=periods, orth=True, cumulative=True, figsize=(3,2))
             
-    vars_contra_emae_o_pbi = ["Psoja_USA","Pmaíz_USA","Ptrigo_USA","tot_04","TOTfmi","impp_usa","E","Ebc", "ipc"]
-    emae_o_pbi = "emae" if "emae" in resultados.names else "pbird"
-    for var_contra in vars_contra_emae_o_pbi: #Para todas las variables de la lista anterior
-        if var_contra in resultados.names: #Si son variables del dataset sobre el que estamos trabajando
-            if resultados.sigma_u is not None:
-                sigma = resultados.sigma_u.loc[var_contra,var_contra]
-                print(f"Sigma {var_contra}: {sigma}")
-            resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=emae_o_pbi, periods=periods, orth=True, cumulative=False, figsize=(3,2))
-            resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=emae_o_pbi, periods=periods, orth=True, cumulative=True, figsize=(3,2))
+    # Buscamos la variable de actividad económica (como "emae", "pbird", "PBIcf", "pbi")
+    economic_var = None
+    for candidate in economic_var_candidates:
+        if candidate in resultados.names:
+            economic_var = candidate
+            break
+
+    if economic_var is not None:
+        vars_contra_economic_var = ["Psoja_USA","Pmaíz_USA","Ptrigo_USA","tot_04","TOTfmi","impp_usa","E","Ebc", "ipc"]
+        for var_contra in vars_contra_economic_var: #Para todas las variables de la lista anterior
+            if var_contra in resultados.names: #Si son variables del dataset sobre el que estamos trabajando
+                if resultados.sigma_u is not None:
+                    sigma = resultados.sigma_u.loc[var_contra,var_contra]
+                    print(f"Sigma {var_contra}: {sigma}")
+                resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=economic_var, periods=periods, orth=True, cumulative=False, figsize=(3,2))
+                resultados.plotIrfWithSignif(resultados, signifs=signifs, impulse=var_contra, response=economic_var, periods=periods, orth=True, cumulative=True, figsize=(3,2))
+    else:
+        raise Exception(f"No se encontro ninguna variable estimadora de actividad económica en el dataset (aceptados: {economic_var_candidates}).")
 
 def fevd(resultados):
     printmd(bold("Resultados descomposición de varianza (FEVD)"))
@@ -61,11 +73,21 @@ def run_other_tests(resultados):
     #print(resultados.test_causality('ipc', ["E", "emae", "impp_usa"], kind='f'))
     printmd(bold("Test causality:"))
     tryrun(lambda: print(resultados.test_causality("ipc", removeInplace(resultados.names, "ipc"), kind='f').summary()))
-    printmd(bold("Test causality:"))
-    tryrun(lambda: print(resultados.test_causality("ipc", "emae", kind='f').summary()))
+    
+    # Buscamos la variable de actividad económica (como "emae", "pbird", "PBIcf", "pbi")
+    economic_var = None
+    for candidate in economic_var_candidates:
+        if candidate in resultados.names:
+            economic_var = candidate
+            break
 
-    printmd(bold("Test causality:"))
-    tryrun(lambda: print(resultados.test_causality("emae", "ipc", kind='f').summary()))
+    if economic_var is not None:
+        printmd(bold("Test causality:"))
+        tryrun(lambda: print(resultados.test_causality("ipc", economic_var, kind='f').summary()))
+        printmd(bold("Test causality:"))
+        tryrun(lambda: print(resultados.test_causality(economic_var, "ipc", kind='f').summary()))
+    else:
+        print(f"!!! No se encontró variables estimadoras de actividad económica. Soportados: {economic_var_candidates}")
 
     printmd(bold("Raíces:"))
     tryrun(lambda: print(resultados.roots))
@@ -178,10 +200,18 @@ def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, 
         print(printRes)
         irf = resultados.irf(periods=max_horizon)
 
+        var_respuesta = []
+        if "ipc" in resultados.names:
+            var_respuesta.append("ipc")
+        for tc_cand in ["E", "Ebc", "Efmi"]:
+            if tc_cand in resultados.names:
+                var_respuesta.append(tc_cand)
+                break
+
         for var in resultados.names:
-                for var_res in ['ipc', 'E']:
-                        irf.plot(orth=True, impulse=var, response=var_res, figsize=(3,2))
-                        irf.plot_cum_effects(orth=True, impulse=var, response=var_res, figsize=(3,2))
+            for var_res in var_respuesta:
+                irf.plot(orth=True, impulse=var, response=var_res, figsize=(3,2))
+                irf.plot_cum_effects(orth=True, impulse=var, response=var_res, figsize=(3,2))
         #fevd = resultados.fevd()
         #fevd.summary()
 
