@@ -118,19 +118,17 @@ def run_test_select_order(endog, data, exog=[], rModel=None, estacionalidad=True
         dates, freq = generatePeriodIndex(data) #primera original
         dummies = generatePeriodDummies(data, index=dates)
         data_exog = pd.concat([X_exog, dummies], axis=1, ignore_index=True)
-        #MA NUEVO 18/06
         if X_exog is not None:
             data_exog.columns = np.concatenate((X_exog.columns.values, dummies.columns.values))
         else:
             data_exog.columns = dummies.columns.values
-        #MA NUEVO 18/06 ES HASTA ACA
     else:
         data_exog = X_exog
         dates=None
         freq=None
 
     print(data_exog)
-    modelo=VAR(Y_endog,data_exog,dates=dates,freq=freq) #ultima original
+    modelo=VAR(Y_endog,data_exog,dates=dates,freq=freq)
     lor = modelo.select_order(maxlags=6)
     print(f"Selected orders are: {lor.selected_orders}")
     display(lor.summary()) #Imprime tabla VAR Order Selection
@@ -189,22 +187,25 @@ def regress(endog, data, exog=[], maxlags=3, newey_lags="horizon", rModel=None, 
 
     elif rModel == "VAR":
         if estacionalidad:
-            dates, freq = generatePeriodIndex(data) #primera original
-            dummies = generatePeriodDummies(data, index=dates)
-            data_exog = pd.concat([X_exog, dummies], axis=1, ignore_index=True)
-            #MA NUEVO 18/06
-            if X_exog is not None:
-                data_exog.columns = np.concatenate((X_exog.columns.values, dummies.columns.values))
+            dates, freq = generatePeriodIndex(data)
+            if freq == "Y":
+                print("No se pueden crear dummies para frecuencia de datos anual. Desactivando estacionalidad.")
+                estacionalidad = False
+                print(f"estacionalidad = {estacionalidad}")
             else:
-                data_exog.columns = dummies.columns.values
-            #MA NUEVO 18/06 ES HASTA ACA
-        else:
+                dummies = generatePeriodDummies(data, index=dates)
+                data_exog = pd.concat([X_exog, dummies], axis=1, ignore_index=True)
+                if X_exog is not None:
+                    data_exog.columns = np.concatenate((X_exog.columns.values, dummies.columns.values))
+                else:
+                    data_exog.columns = dummies.columns.values
+        
+        if not estacionalidad:
             data_exog = X_exog
             dates=None
             freq=None
         print(data_exog)
-        modelo=VAR(Y_endog,data_exog,dates=dates,freq=freq) #ultima original
-        # 27 de ferero - HASTA LA ANTERIOR A ACA
+        modelo=VAR(Y_endog,data_exog,dates=dates,freq=freq)
 
         lor = modelo.select_order(maxlags=6)
 

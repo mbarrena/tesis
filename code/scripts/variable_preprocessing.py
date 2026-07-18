@@ -58,10 +58,12 @@ def generatePeriodIndex(data: pd.DataFrame):
       trim += [i for i in range(1, trim_fin+1)]
       anios += [int(anios_unicos[idx_anio]) for _ in range(len(range(1, trim_fin+1)))]
 
-    return pd.PeriodIndex(year=anios, quarter=trim, freq="Q"), "Q"
+    return pd.PeriodIndex.from_fields(year=anios,quarter=trim,freq="Q"), "Q"
   else:
     if año_k is not None and mes_k is not None:
-      return pd.PeriodIndex(year=data[año_k], month=data[mes_k], freq="M"), "M"
+      return pd.PeriodIndex.from_fields(year=data[año_k].astype(int),month=data[mes_k].astype(int),freq="M"), "M"
+    elif año_k is not None:
+      return pd.PeriodIndex.from_fields(year=data[año_k].astype(int), month=[1]*len(data[año_k]),freq="Y"), "Y"
     else:
       raise NotImplementedError("No se encontro año, mes ni trimestre en el dataset. Asegurese de que las columnas correpsondientes esten bien nombradas.")
 
