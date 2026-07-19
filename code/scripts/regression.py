@@ -95,7 +95,7 @@ def run_other_tests(resultados):
 
 def run_test_whiteness(resultados):
     printmd(bold("Test whiteness:"))
-    tryrun(lambda: print(resultados.test_whiteness(nlags=6, signif=0.05, adjusted=True).summary()))
+    tryrun(lambda: print(resultados.test_whiteness(nlags=7, signif=0.05, adjusted=True).summary()))
     print("")
 
 def prepare_vars(endog, data, exog, rModel):
