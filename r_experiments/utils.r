@@ -7,6 +7,7 @@ library(IRdisplay)
 
 library(reshape2)
 library(purrr) 
+source("plot.r")
 
 #' Run Local Projection Model
 #'
@@ -276,7 +277,7 @@ prepare_threshold_dummy <- function(df, threshold_var, upper_threshold, lower_th
 
 plotlp_lin <- function(results_lin, endog, title_text) {
   # Generate plots
-  linear_plots <- plot_lin(results_lin)
+  linear_plots <- plot_lin_patched(results_lin)
 
   display_html(title_text)
   
@@ -294,7 +295,7 @@ plotlp_nl <- function(results_lin, endog, title_text, count_sections,
                      plot_base_width = 5, plot_height = 4) {
   # Get the linear plots
   plot_width <- plot_base_width * count_sections
-  linear_plots <- plot_nl(results_lin)
+  linear_plots <- plot_nl_patched(results_lin)
   n_sections <- length(linear_plots)
   
   # Create list to store plots
