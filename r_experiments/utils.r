@@ -385,7 +385,7 @@ pretty_results_lin <- function(results_lin, endog_vars) {
   indices <- expand.grid(
     impulse = 1:n_impulses,  # third dimension
     response = 1:n_endog,    # first dimension
-    horizon = 1:n_horizons   # second dimension
+    horizon = 0:(n_horizons-1)   # second dimension
   )
 
   # Create the data frame with corrected order
@@ -446,7 +446,7 @@ pretty_results_nl <- function(results_lin, endog_vars, count_sections) {
     indices <- expand.grid(
       impulse = 1:n_impulses,  # third dimension
       response = 1:n_endog,    # first dimension
-      horizon = 1:n_horizons   # second dimension
+      horizon = 0:(n_horizons-1)   # second dimension
     )
     
     # Create the data frame with corrected order
