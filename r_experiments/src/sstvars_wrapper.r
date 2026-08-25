@@ -380,3 +380,52 @@ print_girf <- function(res) {
     print(res$regimes[[i]]$girf)
   }
 }
+
+
+#' Imprime el pass-through normalizado (respuesta / tamaño del shock inicial),
+#' para todos los horizontes disponibles, tanto de GIRF como de IRF lineal.
+#'
+#' @param res El objeto devuelto por run_threshold_tvar() o run_vlstar()
+#' @param endog El mismo vector de variables endógenas que le pasaste a esa función,
+#'              en el mismo orden (ej. c("Psoja_USA","E","ipc","pbird"))
+#' @param shock_var Nombre de la variable que recibe el shock (default "E")
+#' @param response_var Nombre de la variable de respuesta a normalizar (default "ipc")
+print_passthrough <- function(res, endog, shock_var = "E", response_var = "ipc") {
+  shock_idx    <- which(endog == shock_var)
+  response_idx <- which(endog == response_var)
+
+  if (length(shock_idx) == 0 || length(response_idx) == 0) {
+    stop("shock_var o response_var no están en el vector endog que pasaste")
+  }
+
+  for (i in seq_along(res$regimes)) {
+    cat("+++++++++ RÉGIMEN ", i, "+++++++++\n")
+
+    # --- GIRF ---
+    girf_obj <- res$regimes[[i]]$girf
+    girf_pe  <- girf_obj$girf_res[[1]]$point_est   # matriz: horizonte x variable
+    shock_size_girf <- girf_pe[1, shock_idx]        # fila 1 = horizonte 0 (impacto)
+    girf_response    <- girf_pe[, response_idx]
+    girf_normalized  <- girf_response / shock_size_girf
+
+    cat("\n>>> GIRF normalizada (", response_var, "/ shock inicial de", shock_var, ")\n")
+    print(data.frame(
+      horizonte    = 0:(length(girf_normalized) - 1),
+      pass_through = round(girf_normalized, 4)
+    ))
+
+    # --- Linear IRF ---
+    lirf_obj <- res$regimes[[i]]$lirf
+    lirf_pe  <- lirf_obj$point_est                  # array [variable, shock, horizonte]
+    shock_size_lirf <- lirf_pe[shock_idx, shock_idx, 1]
+    lirf_response    <- lirf_pe[response_idx, shock_idx, ]
+    lirf_normalized  <- lirf_response / shock_size_lirf
+
+    cat("\n>>> IRF lineal normalizada (", response_var, "/ shock inicial de", shock_var, ")\n")
+    print(data.frame(
+      horizonte    = 0:(length(lirf_normalized) - 1),
+      pass_through = round(lirf_normalized, 4)
+    ))
+    cat("\n")
+  }
+}
