@@ -47,6 +47,14 @@ fit_generic_sstvar <- function(
   estim_method = "two-phase"
 ) {
   Y <- data[, endog]
+
+  # --- Escalado por desvío estándar (sobre los datos ya cappeados) ---
+  Y_sd <- sapply(Y, sd, na.rm = TRUE)
+  Y <- sweep(Y, 2, Y_sd, FUN = "/")
+  cat("Desvíos usados para escalar:\n")
+  print(Y_sd)
+  # --------------------------------------------------------------------
+
   seeds <- if (is.null(seeds)) 1:nrounds else seeds
   estim_method <- if (is.null(estim_method)) "two-phase" else estim_method
   thr_params <- c(which(colnames(Y) == thr_var), thr_lag)
@@ -162,6 +170,11 @@ run_sstvar_fit_tests_irf <- function(
 ) {
   # validate_input_cols(data, endog, shock_var, response_vars)
 
+  # Desvíos usados para escalar Y = data[, endog] antes de estimar (mismos que calcula
+  # fit_generic_sstvar internamente). Se recalculan acá para que estén disponibles
+  # incluso cuando load_presaved = TRUE, y para no depender del return de fit_generic_sstvar.
+  scaling_sd <- sapply(data[, endog], sd, na.rm = TRUE)
+
   tvar_model <- NULL
   fit_struct <- NULL
   if (load_presaved) {
@@ -254,6 +267,8 @@ run_sstvar_fit_tests_irf <- function(
     reg_irfs <- list(girf = girf_erpt, lirf = irf_struct)
     irf_response$regimes[[i]] <- reg_irfs
   }
+
+  irf_response$scaling_sd <- scaling_sd
 
   return(irf_response)
 }
@@ -398,6 +413,16 @@ print_passthrough <- function(res, endog, shock_var = "E", response_var = "ipc")
     stop("shock_var o response_var no están en el vector endog que pasaste")
   }
 
+  if (is.null(res$scaling_sd)) {
+    stop("res$scaling_sd no está presente. Volvé a correr run_threshold_tvar()/run_vlstar() con la versión actualizada de sstvars_wrapper.r")
+  }
+
+  # --- Desescalar: volver a las unidades originales antes de normalizar ---
+  sd_shock    <- res$scaling_sd[shock_var]
+  sd_response <- res$scaling_sd[response_var]
+  factor_desescalado <- sd_response / sd_shock
+  # --------------------------------------------------------------------
+
   for (i in seq_along(res$regimes)) {
     cat("+++++++++ RÉGIMEN ", i, "+++++++++\n")
 
@@ -406,9 +431,9 @@ print_passthrough <- function(res, endog, shock_var = "E", response_var = "ipc")
     girf_pe  <- girf_obj$girf_res[[1]]$point_est   # matriz: horizonte x variable
     shock_size_girf <- girf_pe[1, shock_idx]        # fila 1 = horizonte 0 (impacto)
     girf_response    <- girf_pe[, response_idx]
-    girf_normalized  <- girf_response / shock_size_girf
+    girf_normalized  <- (girf_response / shock_size_girf) * factor_desescalado
 
-    cat("\n>>> GIRF normalizada (", response_var, "/ shock inicial de", shock_var, ")\n")
+    cat("\n>>> GIRF normalizada (", response_var, "/ shock inicial de", shock_var, ") - unidades originales\n")
     print(data.frame(
       horizonte    = 0:(length(girf_normalized) - 1),
       pass_through = round(girf_normalized, 4)
@@ -419,9 +444,9 @@ print_passthrough <- function(res, endog, shock_var = "E", response_var = "ipc")
     lirf_pe  <- lirf_obj$point_est                  # array [variable, shock, horizonte]
     shock_size_lirf <- lirf_pe[shock_idx, shock_idx, 1]
     lirf_response    <- lirf_pe[response_idx, shock_idx, ]
-    lirf_normalized  <- lirf_response / shock_size_lirf
+    lirf_normalized  <- (lirf_response / shock_size_lirf) * factor_desescalado
 
-    cat("\n>>> IRF lineal normalizada (", response_var, "/ shock inicial de", shock_var, ")\n")
+    cat("\n>>> IRF lineal normalizada (", response_var, "/ shock inicial de", shock_var, ") - unidades originales\n")
     print(data.frame(
       horizonte    = 0:(length(lirf_normalized) - 1),
       pass_through = round(lirf_normalized, 4)
