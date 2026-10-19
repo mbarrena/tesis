@@ -4,3 +4,10 @@ chowtest/
 __pycache__/
 .python-version
 localprojections/
+*_files/
+*.pdf
+*.html
+*.gif
+*.rds
+*.png
+r_experiments/models
