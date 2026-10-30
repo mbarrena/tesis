@@ -19,6 +19,13 @@ REGRESS_MODEL = "VAR"
 #REGRESS_MODEL = "LocalProjections"
 economic_var_candidates = ["emae", "pbird", "PBIcf", "PBIpm"]
 
+
+warnings.filterwarnings(
+    "ignore",
+    message=".datetime.datetime.utcnow.",
+    category=DeprecationWarning
+)
+
 def run_irf(resultados, signifs, periods):
     printmd(bold("Impulso-respuesta:"))
     var_respuesta = []
