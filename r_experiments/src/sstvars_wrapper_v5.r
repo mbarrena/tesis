@@ -1,4 +1,4 @@
-cat(">>> sstvars_wrapper v2 cargado (res incluye los modelos estimados)\n")
+cat(">>> sstvars_wrapper v5 cargado (ind_Student con identificación por no normalidad)\n")
 library(tsDyn)
 library(sstvars)
 library(digest)
@@ -45,7 +45,9 @@ fit_generic_sstvar <- function(
   filename,
   nrounds,
   seeds = NULL,
-  estim_method = "two-phase"
+  estim_method = "two-phase",
+  cond_dist = "Gaussian",
+  min_obs_coef = 3
 ) {
   Y <- data[, endog]
 
@@ -58,31 +60,57 @@ fit_generic_sstvar <- function(
 
   seeds <- if (is.null(seeds)) 1:nrounds else seeds
   estim_method <- if (is.null(estim_method)) "two-phase" else estim_method
-  thr_params <- c(which(colnames(Y) == thr_var), thr_lag)
+  thr_idx <- which(colnames(Y) == thr_var)
+  # mlogit pide una lista (variables de transición y número de rezagos);
+  # threshold y logistic piden c(variable, rezago)
+  thr_params <- if (identical(weight_function, "mlogit")) {
+    list(vars = thr_idx, lags = thr_lag)
+  } else {
+    c(thr_idx, thr_lag)
+  }
 
-  tvar_model <- fitSTVAR(
+  args_fit <- list(
     data = Y,
     p = feature_lag,
     M = n_regimes,
     weight_function = weight_function, # threshold
     weightfun_pars = thr_params,
+    cond_dist = cond_dist,
     nrounds = nrounds,
     seeds = seeds,
     estim_method = estim_method,
     ncores = 6
   )
+  # min_obs_coef solo actúa en la estimación en tres etapas; se pasa solo en ese caso
+  # (así la estimación en dos etapas queda exactamente igual que en las versiones anteriores)
+  if (identical(estim_method, "three-phase")) args_fit$min_obs_coef <- min_obs_coef
+  tvar_model <- do.call(fitSTVAR, args_fit)
 
 
   cat("========= Unstructured fitted model ==========\n")
   summary(tvar_model)
 
-  fit_struct <- fitSSTVAR(
-    stvar = tvar_model,
-    identification = "heteroskedasticity"
-  )
+  if (cond_dist %in% c("ind_Student", "ind_skewed_t")) {
+    # Con shocks t independientes el modelo ya queda identificado por no normalidad
+    # (Virolainen): no se usa la identificación por heteroscedasticidad.
+    fit_struct <- tryCatch(
+      fitSSTVAR(stvar = tvar_model, identification = "non-Gaussianity"),
+      error = function(e) {
+        message("fitSSTVAR(non-Gaussianity) no corrió (", conditionMessage(e),
+                "); se usa el modelo estimado, que ya está identificado por no normalidad.")
+        m <- tvar_model
+        m$model$identification <- "non-Gaussianity"
+        m
+      })
+    cat("========= Structured fitted model (non-Gaussianity) ==========\n")
+  } else {
+    fit_struct <- fitSSTVAR(
+      stvar = tvar_model,
+      identification = "heteroskedasticity"
+    )
+    cat("========= Structured fitted model (heteroskedasticity) ==========\n")
+  }
 
-
-  cat("========= Structured fitted model (heteroskedasticity) ==========\n")
   summary(fit_struct)
 
   tryCatch(
@@ -167,7 +195,10 @@ run_sstvar_fit_tests_irf <- function(
   irf_shocks = 1, # Shocks unitarios irf (default 1)
   diagnostic_plots = FALSE, # Print diagnostic plots?
   nrounds = 500,
-  load_presaved = FALSE
+  load_presaved = FALSE,
+  cond_dist = "Gaussian",
+  estim_method = "two-phase",
+  min_obs_coef = 3
 ) {
   # validate_input_cols(data, endog, shock_var, response_vars)
 
@@ -192,7 +223,10 @@ run_sstvar_fit_tests_irf <- function(
       thr_var,
       thr_lag,
       filename,
-      nrounds = nrounds
+      nrounds = nrounds,
+      estim_method = estim_method,
+      cond_dist = cond_dist,
+      min_obs_coef = min_obs_coef
     )
     tvar_model <- fit_models$tvar_model
     fit_struct <- fit_models$fit_struct
@@ -295,15 +329,26 @@ run_threshold_tvar <- function(
   irf_shocks = 1, # Shocks unitarios irf (default 1)
   diagnostic_plots = FALSE, # Print diagnostic plots?
   nrounds = 500,
-  load_presaved = FALSE
+  load_presaved = FALSE,
+  cond_dist = "Gaussian",   # "Gaussian" (default) o "Student" (errores t de Student)
+  estim_method = "two-phase",  # "two-phase" (default) o "three-phase"
+  min_obs_coef = 3             # tres etapas: mínimo de observaciones por régimen (ver run_vlstar)
 ) {
   weight_function <- "threshold"
   include_params <- c("data","endog","periodicity","feature_lag","n_regimes","thr_var","thr_lag","nrounds")
+  # cond_dist entra al hash solo si no es gaussiano: así los modelos gaussianos ya guardados
+  # conservan su nombre de archivo y se siguen cargando con load_presaved = TRUE
+  if (cond_dist != "Gaussian") include_params <- c(include_params, "cond_dist")
+  # Igual que cond_dist: solo entran al hash si no son los valores por defecto,
+  # para que los modelos ya guardados conserven su nombre de archivo
+  if (estim_method != "two-phase") include_params <- c(include_params, "estim_method", "min_obs_coef")
   params_to_hash <- as.list(environment())
   params_to_hash <- params_to_hash[names(params_to_hash) %in% include_params]
 
   filename <- paste0(
     "threshold_tvar_",
+    if (cond_dist != "Gaussian") paste0(tolower(cond_dist), "_") else "",
+    if (estim_method != "two-phase") paste0("3fases_moc", min_obs_coef, "_") else "",
     feature_lag, "_",
     n_regimes, "_",
     nrounds, "_",
@@ -329,7 +374,10 @@ run_threshold_tvar <- function(
     irf_shocks = irf_shocks,
     diagnostic_plots = diagnostic_plots,
     nrounds = nrounds,
-    load_presaved = load_presaved
+    load_presaved = load_presaved,
+    cond_dist = cond_dist,
+    estim_method = estim_method,
+    min_obs_coef = min_obs_coef
   )
 }
 
@@ -350,15 +398,26 @@ run_vlstar <- function(
   irf_shocks = 1, # Shocks unitarios irf (default 1)
   diagnostic_plots = FALSE, # Print diagnostic plots?
   nrounds = 500,
-  load_presaved = FALSE
+  load_presaved = FALSE,
+  cond_dist = "Gaussian",   # "Gaussian" (default) o "Student" (errores t de Student)
+  estim_method = "two-phase",  # "two-phase" (default) o "three-phase"
+  min_obs_coef = 3             # tres etapas: mínimo de observaciones por régimen (ver run_vlstar)
 ) {
   weight_function <- "logistic"
   include_params <- c("data","endog","periodicity","feature_lag","n_regimes","thr_var","thr_lag","nrounds")
+  # cond_dist entra al hash solo si no es gaussiano: así los modelos gaussianos ya guardados
+  # conservan su nombre de archivo y se siguen cargando con load_presaved = TRUE
+  if (cond_dist != "Gaussian") include_params <- c(include_params, "cond_dist")
+  # Igual que cond_dist: solo entran al hash si no son los valores por defecto,
+  # para que los modelos ya guardados conserven su nombre de archivo
+  if (estim_method != "two-phase") include_params <- c(include_params, "estim_method", "min_obs_coef")
   params_to_hash <- as.list(environment())
   params_to_hash <- params_to_hash[names(params_to_hash) %in% include_params]
 
   filename <- paste0(
     "vlstar_",
+    if (cond_dist != "Gaussian") paste0(tolower(cond_dist), "_") else "",
+    if (estim_method != "two-phase") paste0("3fases_moc", min_obs_coef, "_") else "",
     feature_lag, "_",
     n_regimes, "_",
     nrounds, "_",
@@ -384,7 +443,10 @@ run_vlstar <- function(
     irf_shocks = irf_shocks,
     diagnostic_plots = diagnostic_plots,
     nrounds = nrounds,
-    load_presaved = load_presaved
+    load_presaved = load_presaved,
+    cond_dist = cond_dist,
+    estim_method = estim_method,
+    min_obs_coef = min_obs_coef
   )
 }
 
@@ -459,4 +521,79 @@ print_passthrough <- function(res, endog, shock_var = "E", response_var = "ipc")
     ))
     cat("\n")
   }
+}
+
+
+# =====================================================================
+# STVAR con función de transición LOGIT MULTINOMIAL ("mlogit")
+# Transición suave que admite 3 o más regímenes (la logística de run_vlstar solo admite 2).
+# El peso de cada régimen depende de thr_var rezagada thr_lag períodos:
+#   alpha_m,t ∝ exp(gamma_m' z_{t-1}),  z_{t-1} = (1, thr_var_{t-1}),  gamma_M = 0.
+# No tiene un umbral c ni un gamma únicos: los puntos donde cambia el régimen dominante
+# se calculan con resumen_modelo() de erpt_historia_v27.R.
+# =====================================================================
+run_mlogit <- function(
+  data,
+  endog,
+  periodicity,
+  feature_lag,
+  n_regimes,
+  cumulative,
+  thr_var,
+  thr_lag,
+  shock_var,
+  response_vars,
+  run_tests = TRUE,
+  irf_horizons = NULL,
+  irf_shocks = 1,
+  diagnostic_plots = FALSE,
+  nrounds = 500,
+  load_presaved = FALSE,
+  cond_dist = "Gaussian",
+  estim_method = "two-phase",
+  min_obs_coef = 3
+) {
+  weight_function <- "mlogit"
+  include_params <- c("data","endog","periodicity","feature_lag","n_regimes","thr_var","thr_lag","nrounds")
+  if (cond_dist != "Gaussian") include_params <- c(include_params, "cond_dist")
+  # Igual que cond_dist: solo entran al hash si no son los valores por defecto,
+  # para que los modelos ya guardados conserven su nombre de archivo
+  if (estim_method != "two-phase") include_params <- c(include_params, "estim_method", "min_obs_coef")
+  params_to_hash <- as.list(environment())
+  params_to_hash <- params_to_hash[names(params_to_hash) %in% include_params]
+
+  filename <- paste0(
+    "mlogit_",
+    if (cond_dist != "Gaussian") paste0(tolower(cond_dist), "_") else "",
+    if (estim_method != "two-phase") paste0("3fases_moc", min_obs_coef, "_") else "",
+    feature_lag, "_",
+    n_regimes, "_",
+    nrounds, "_",
+    digest(params_to_hash),
+    ".rds"
+  )
+
+  run_sstvar_fit_tests_irf(
+    data = data,
+    endog = endog,
+    weight_function = weight_function,
+    filename = filename,
+    periodicity = periodicity,
+    feature_lag = feature_lag,
+    n_regimes = n_regimes,
+    cumulative = cumulative,
+    thr_var = thr_var,
+    thr_lag = thr_lag,
+    shock_var = shock_var,
+    response_vars = response_vars,
+    run_tests = run_tests,
+    irf_horizons = irf_horizons,
+    irf_shocks = irf_shocks,
+    diagnostic_plots = diagnostic_plots,
+    nrounds = nrounds,
+    load_presaved = load_presaved,
+    cond_dist = cond_dist,
+    estim_method = estim_method,
+    min_obs_coef = min_obs_coef
+  )
 }

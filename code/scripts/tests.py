@@ -14,15 +14,16 @@ import matplotlib.pyplot as plt
 # Funciones para hacer que el resultado de los tests RUR, Zivot-Andrews y KPSS sea más legible.
 def formatInterpolationWarning(fun):
   """Catch p-value InterpolationWarning that may arise during root testing and reformats p-value accordingly."""
-  warnings.filterwarnings("error", category=InterpolationWarning)
+  # catch_warnings() restaura los filtros al salir, sin borrar los definidos en la notebook
+  # (warnings.resetwarnings() los borraba todos, incluido el filtro de utcnow).
   try:
-    y = fun()
-    warnings.resetwarnings()
-    return y
+    with warnings.catch_warnings():
+      warnings.filterwarnings("error", category=InterpolationWarning)
+      return fun()
   except InterpolationWarning as err:
-    warnings.filterwarnings("ignore", category=InterpolationWarning)
-    y = list(fun())
-    warnings.resetwarnings()
+    with warnings.catch_warnings():
+      warnings.filterwarnings("ignore", category=InterpolationWarning)
+      y = list(fun())
     if "actual p-value is larger" in str(err):
       y[1] = f">={y[1]}"
     elif "actual p-value is greater" in str(err):
@@ -40,7 +41,7 @@ def _runAndFormatKPSSOutput(datos, var):
       var: nombre de la variable evaluada, para imprimirlo con los resultados.
       fun: la funcion a ejecutar para evaluar la variable.
   """
-  y = formatInterpolationWarning(lambda: kpss(datos[var]))
+  y = formatInterpolationWarning(lambda: kpss(datos[var], result_object=False))
   res = {
       "kpss_stat": y[0],
       "p_value": y[1],

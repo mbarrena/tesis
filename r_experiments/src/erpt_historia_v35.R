@@ -1,4 +1,4 @@
-cat(">>> erpt_historia v25 cargada (marcas en el GIF y GIF de la manta)
+cat(">>> erpt_historia v35 cargada (acotar_para_graficar: solo valores absurdos, con umbral absoluto)
 ")
 # =====================================================================
 # ERPT dependiente del estado: GIRF condicionales a la historia de cada trimestre
@@ -52,7 +52,9 @@ erpt_historia <- function(res,
                           modelo     = NULL,    # si no lo encuentra en 'res', pasalo a mano
                           escalas    = NULL,    # desvíos usados para escalar (se buscan en res$...$scaling_sd)
                           semilla    = 123,
-                          ncores     = max(1, parallel::detectCores() - 1)) {
+                          ncores     = max(1, parallel::detectCores() - 1),
+                          deprec_pct = NULL,     # NULL = shock de 1 desvío; un número = depreciación inicial en %
+                          regimen_shock = 1) {   # régimen en el que se calibra el tamaño y el signo del shock
 
   definicion <- match.arg(definicion)
 
@@ -105,10 +107,11 @@ erpt_historia <- function(res,
   # ---- GIRF condicional a cada historia ----
   # Mismo shock (1 desvío estructural) y misma semilla en todas las historias:
   # la variación entre trimestres refleja solo el estado de la economía.
+  tam <- .tam_shock(modelo, escalas, idx_e, shock_num, deprec_pct, regimen_shock)
   message("Estimando ", K, " GIRFs (una por trimestre), ", R1, " simulaciones cada una...")
   g <- GIRF(modelo,
             which_shocks     = shock_num,
-            shock_size       = 1,
+            shock_size       = tam,
             N                = N,
             R1               = R1,
             R2               = K,            # debe coincidir con dim(init_values)[3]
@@ -139,9 +142,14 @@ erpt_historia <- function(res,
       paste0("régimen ", seq_len(M), " = ", colSums(pesos > 0.9), collapse = " | "), "\n")
   cat("Shock usado:", shock_num, "| Factor de conversión a unidades originales (sd_", resp_var,
       " / sd_", shock_var, "): ", round(sd_p / sd_e, 4), "\n\n", sep = "")
+  cat("Promedio entre trimestres:\n")
   print(round(chequeo, 4))
+  chequeo_mediana <- .chequeo_mediana(erpt, pesos, N)
+  cat("\nMediana entre trimestres (robusta a trimestres con respuestas extremas):\n")
+  print(round(chequeo_mediana, 4))
 
   invisible(list(erpt = erpt, erpt_escalado = erpt_escalado, alpha = alpha,
+                 chequeo_mediana = chequeo_mediana,
                  pesos = pesos, regimen = regimen, M = M, shock_num = shock_num,
                  anio_dec = anio_dec[t_shock], etiqueta = etiqueta[t_shock],
                  N = N, definicion = definicion, chequeo = chequeo,
@@ -160,6 +168,17 @@ erpt_historia <- function(res,
   out
 }
 # Promedio del ERPT en las historias dominadas por cada régimen (peso > 0.9)
+# Mediana del ERPT entre las historias dominadas por cada régimen (robusta a historias extremas)
+.chequeo_mediana <- function(mat, pesos, N) {
+  M <- ncol(pesos)
+  df <- data.frame(horizonte = 0:N)
+  nombres <- if (M == 2) c("reg_bajo_mediana", "reg_alto_mediana") else paste0("reg_", seq_len(M), "_mediana")
+  for (m in seq_len(M)) {
+    sel <- pesos[, m] > 0.9
+    df[[nombres[m]]] <- if (any(sel)) apply(mat[, sel, drop = FALSE], 1, median) else NA
+  }
+  df
+}
 .chequeo_regimenes <- function(mat, pesos, N) {
   M <- ncol(pesos)
   df <- data.frame(horizonte = 0:N)
@@ -211,6 +230,78 @@ erpt_historia <- function(res,
     tipo <- if (all(modelo$transition_weights %in% c(0, 1))) "threshold" else "logistic"
   }
   tipo
+}
+
+# --- Distribución de los errores del modelo ("Gaussian", "Student", ...) ---
+.dist_errores <- function(modelo) {
+  cd <- modelo$model$cond_dist
+  if (is.null(cd)) "Gaussian" else cd
+}
+
+# --- Parámetros de la distribución (grados de libertad) al final de params ---
+.n_param_dist <- function(modelo) {
+  d <- ncol(as.matrix(modelo$data))
+  switch(.dist_errores(modelo), Student = 1, ind_Student = d, ind_skewed_t = 2 * d, 0)
+}
+
+# --- Parámetros de la función de transición, sin los de la distribución ---
+# Orden de params en sstvars: (..., parámetros de transición, parámetros de la distribución)
+.param_transicion <- function(modelo) {
+  pr <- modelo$params
+  nd <- .n_param_dist(modelo)
+  if (nd > 0) pr <- head(pr, length(pr) - nd)
+  M <- modelo$model$M
+  n_w <- switch(.tipo_transicion(modelo),
+                threshold   = M - 1,
+                logistic    = 2,
+                exponential = 2,
+                0)
+  if (identical(.tipo_transicion(modelo), "mlogit")) {
+    wp <- modelo$model$weightfun_pars
+    k  <- if (is.list(wp) && !is.null(wp$vars)) 1 + length(wp$vars) * wp$lags else 2
+    n_w <- (M - 1) * k
+  }
+  tail(pr, n_w)
+}
+
+# --- Grados de libertad de la t de Student (NA si el modelo es gaussiano) ---
+.grados_libertad <- function(modelo) {
+  if (.dist_errores(modelo) != "Student") return(NA)
+  tail(modelo$params, 1)
+}
+
+# --- Cambios de régimen dominante según el valor de la variable de transición ---
+# Para modelos sin umbral explícito (mlogit): ordena los trimestres por la variable
+# de transición (z, unidades originales) y marca dónde cambia el régimen de mayor peso.
+.cruces_empiricos <- function(z, pesos) {
+  o   <- order(z)
+  dom <- apply(pesos[o, , drop = FALSE], 1, which.max)
+  zs  <- z[o]
+  k   <- which(diff(dom) != 0)
+  if (!length(k)) return(data.frame(de = integer(0), a = integer(0), z = numeric(0)))
+  data.frame(de = dom[k], a = dom[k + 1], z = (zs[k] + zs[k + 1]) / 2)
+}
+
+
+# --- Tamaño del shock para las GIRF ---
+# El signo de un shock identificado es arbitrario: se elige el signo que DEPRECIA E en el
+# impacto (régimen 1), para medir siempre el ERPT de una depreciación (en un modelo no lineal,
+# una apreciación no tiene por qué dar lo mismo). Con deprec_pct se elige además el tamaño:
+# el shock que deprecia E en deprec_pct % en el impacto del régimen 1.
+.tam_shock <- function(modelo, escalas, idx_e, shock_num, deprec_pct = NULL, regimen_shock = 1) {
+  imp_e <- linear_IRF(modelo, N = 1, regime = regimen_shock)$point_est[idx_e, shock_num, 1] * unname(escalas[idx_e])
+  tam <- if (is.null(deprec_pct)) 1 else log(1 + deprec_pct / 100) / abs(imp_e)
+  tam <- tam * sign(imp_e)
+  message(sprintf("Shock: %.3f desvíos estructurales%s; en el impacto (régimen %d) deprecia E en %.1f%%.",
+                  abs(tam), if (tam < 0) " con el signo invertido" else "",
+                  regimen_shock, 100 * (exp(abs(tam * imp_e)) - 1)))
+  if (.dist_errores(modelo) %in% c("ind_Student", "ind_skewed_t") && modelo$model$M > 1) {
+    for (m in seq_len(modelo$model$M)) {
+      im <- linear_IRF(modelo, N = 1, regime = m)$point_est[idx_e, shock_num, 1] * unname(escalas[idx_e])
+      message(sprintf("   régimen %d: el mismo shock mueve E en %+.1f%% en el impacto", m, 100 * (exp(tam * im) - 1)))
+    }
+  }
+  tam
 }
 
 # --- PDF con soporte para la letra griega alfa (cairo si está disponible) ---
@@ -338,6 +429,7 @@ graficar_transicion <- function(res, data, endog, trans_var = "ipc",
   if (is.null(regimen_alto)) regimen_alto <- M
   tipo  <- .tipo_transicion(modelo)
   es_umbral <- identical(tipo, "threshold")
+  es_mlogit <- identical(tipo, "mlogit")
   idx   <- match(trans_var, endog)
   sd_z  <- unname(escalas[idx])
   Y     <- as.matrix(modelo$data)
@@ -353,16 +445,26 @@ graficar_transicion <- function(res, data, endog, trans_var = "ipc",
 
   if (es_umbral) {
     # En un TVAR gaussiano, los últimos M-1 parámetros son los umbrales
-    umbrales <- sort(tail(modelo$params, M - 1)) * sd_z
+    umbrales <- sort(.param_transicion(modelo)) * sd_z
     regimen  <- apply(pesos, 1, which.max)
     cat("Umbrales (inflación trimestral de t-1):",
         paste0(round(100 * (exp(umbrales) - 1), 1), "% trimestral (",
                round(100 * (exp(4 * umbrales) - 1), 0), "% anualizada)", collapse = " | "), "\n")
     cat("Trimestres por régimen:", paste0("régimen ", seq_len(M), " = ", tabulate(regimen, M),
                                           collapse = " | "), "\n")
+  } else if (es_mlogit) {
+    regimen <- apply(pesos, 1, which.max)
+    cr <- .cruces_empiricos(z, pesos)
+    umbrales <- cr$z
+    cat("Transición mlogit: cambios de régimen dominante (inflación trimestral de t-1):\n")
+    if (nrow(cr)) print(data.frame(de_regimen = cr$de, a_regimen = cr$a,
+                                   inflacion_trim_pct = round(100 * (exp(cr$z) - 1), 1)),
+                        row.names = FALSE)
+    cat("Trimestres por régimen (mayor peso):", paste0("régimen ", seq_len(M), " = ",
+        tabulate(regimen, M), collapse = " | "), "\n")
   } else {
     if (is.null(c_escalado) || is.null(gamma)) {
-      wp <- tail(modelo$params, 2)
+      wp <- .param_transicion(modelo)
       if (is.null(c_escalado)) c_escalado <- wp[1]
       if (is.null(gamma))      gamma      <- wp[2]
     }
@@ -382,13 +484,15 @@ graficar_transicion <- function(res, data, endog, trans_var = "ipc",
     tk <- .ticks_trim(fecha)
     plot(fecha, z, type = "n", xlab = "", ylab = "Inflación trimestral (t-1)", xaxt = "n",
          main = if (es_umbral) "Variable de transición y umbrales estimados"
+                else if (es_mlogit) "Variable de transición y cambios de régimen dominante"
                 else "Variable de transición y umbral estimado")
     axis(1, at = tk$at, labels = tk$lab)
-    if (es_umbral) {
+    if (es_umbral || es_mlogit) {
       lines(fecha, z, col = "black", lwd = 1.2)
       abline(h = umbrales, col = "firebrick", lty = 2, lwd = 1.5)
       legend("topleft", bty = "n", cex = 0.8,
-             legend = c("Inflación (variable de transición)", "Umbrales"),
+             legend = c("Inflación (variable de transición)",
+                        if (es_mlogit) "Cambio de régimen dominante" else "Umbrales"),
              col = c("black", "firebrick"), lty = c(1, 2), lwd = c(1.2, 1.5))
     } else {
       rect(min(fecha), c_orig - ancho, max(fecha), c_orig + ancho,
@@ -410,6 +514,14 @@ graficar_transicion <- function(res, data, endog, trans_var = "ipc",
       axis(2, at = seq_len(M), labels = seq_len(M), las = 1)
       segments(fecha, 0.5, fecha, regimen, col = adjustcolor(cols[regimen], 0.6), lwd = 2)
       lines(fecha, regimen, type = "s", col = "grey30")
+    } else if (es_mlogit) {
+      cols <- .colores_reg(M)
+      plot(fecha, pesos[, 1], type = "n", ylim = c(0, 1), xlab = "", xaxt = "n",
+           ylab = "Peso", main = "Peso de cada régimen")
+      axis(1, at = tk$at, labels = tk$lab)
+      for (m in seq_len(M)) lines(fecha, pesos[, m], col = cols[m], lwd = 1.5)
+      legend("topleft", bty = "n", cex = 0.8, legend = paste("Régimen", seq_len(M)),
+             col = cols, lwd = 1.5)
     } else {
       plot(fecha, alpha, type = "n", ylim = c(0, 1), xlab = "", xaxt = "n",
            ylab = paste(.letra_alfa(), "régimen alto"), main = "Peso del régimen de alta inflación")
@@ -469,7 +581,8 @@ graficar_girf_original <- function(res, endog, shock_var = "E", shock_num = NULL
                                    acumular = TRUE, archivo = "girf_original",
                                    bandas = c(0.68, 0.95), variables = c("ipc", "pbird"),
                                    modelo = NULL, escalas = NULL, semilla = 1,
-                                   ncores = max(1, parallel::detectCores() - 1)) {
+                                   ncores = max(1, parallel::detectCores() - 1),
+                                   deprec_pct = NULL, regimen_shock = 1) {
   if (is.null(modelo)) {
     modelo <- .buscar(res, function(x) inherits(x, "stvar") &&
                         !identical(x$model$identification, "reduced_form"))
@@ -482,10 +595,11 @@ graficar_girf_original <- function(res, endog, shock_var = "E", shock_num = NULL
   idx_e <- match(shock_var, endog)
   if (is.null(shock_num)) shock_num <- idx_e
 
+  tam <- .tam_shock(modelo, escalas, idx_e, shock_num, deprec_pct, regimen_shock)
   resultados <- list()
   for (r in regimenes) {
     message("GIRF del régimen ", r, "...")
-    g <- GIRF(modelo, which_shocks = shock_num, shock_size = 1, N = N,
+    g <- GIRF(modelo, which_shocks = shock_num, shock_size = tam, N = N,
               R1 = R1, R2 = R2, init_regime = r, which_cumulative = numeric(0),
               seeds = semilla + seq_len(R2), ncores = ncores)
     a <- g$all_girfs[[1]][, seq_len(d), , drop = FALSE]      # [N+1, d, R2], escalado
@@ -687,7 +801,8 @@ graficar_trayectorias <- function(out, trimestres, archivo = "erpt_trayectorias"
 }
 
 # 2) Animación interactiva con barra deslizante (HTML): se mueve el trimestre del shock
-graficar_slider <- function(out, archivo = "erpt_slider", eje_y = "ERPT") {
+graficar_slider <- function(out, archivo = "erpt_slider", eje_y = "ERPT",
+                            ms_por_cuadro = 150) {  # milisegundos por trimestre al apretar Play
   out <- .normalizar_out(out)
   N   <- out$N
   M   <- out$M
@@ -721,7 +836,7 @@ graficar_slider <- function(out, archivo = "erpt_slider", eje_y = "ERPT") {
     layout(title = "ERPT según el trimestre del shock (mové la barra o apretá Play)",
            xaxis = list(title = "Horizonte (trimestres después del shock)", dtick = 1),
            yaxis = list(title = eje_y, range = range(c(out$erpt, unlist(ref$valores)), na.rm = TRUE))) %>%
-    animation_opts(frame = 150, transition = 0, redraw = FALSE) %>%
+    animation_opts(frame = ms_por_cuadro, transition = 0, redraw = FALSE) %>%
     animation_slider(currentvalue = list(prefix = "Trimestre del shock: "))
 
   # Reemplazar los números de cuadro por las etiquetas "1q2002" en la barra
@@ -795,19 +910,31 @@ explorar_optimos <- function(res, thr_var = "ipc", n = 30, regimen_alto = 2) {
     if (is.null(alt)) return(NULL)
     ll <- tryCatch(as.numeric(if (!is.null(alt$loglik)) alt$loglik else logLik(alt)),
                    error = function(e) NA)
-    wp <- tail(alt$params, 2)
-    a  <- alt$transition_weights[, regimen_alto]
+    tipo_j <- .tipo_transicion(alt)
+    wp <- .param_transicion(alt)
+    a  <- alt$transition_weights[, min(regimen_alto, ncol(alt$transition_weights))]
+    dom <- apply(alt$transition_weights, 1, which.max)
+    es_log <- identical(tipo_j, "logistic")
     data.frame(which_largest    = j,
                loglik           = round(ll, 2),
-               umbral_trim_pct  = round(100 * (exp(wp[1] * sd_z) - 1), 1),
-               gamma            = round(wp[2], 2),
+               umbral_trim_pct  = if (es_log) as.character(round(100 * (exp(wp[1] * sd_z) - 1), 1))
+                                  else if (identical(tipo_j, "threshold"))
+                                    paste(round(100 * (exp(sort(wp) * sd_z) - 1), 1), collapse = " / ")
+                                  else NA,
+               gamma            = if (es_log) round(wp[2], 2) else NA,
+               gl_student       = round(.grados_libertad(alt), 1),
+               trim_por_regimen = paste(tabulate(dom, alt$model$M), collapse = "/"),
                trim_reg_alto    = sum(a > 0.9),
                trim_transicion  = sum(a > 0.1 & a < 0.9),
-               raiz_casi_unit   = any(grepl("unit", avisos)))
+               raiz_casi_unit   = any(grepl("unit", avisos)),
+               cov_casi_singular = any(grepl("singular", avisos)),
+               descartar        = length(avisos) > 0)
   })
   tab <- do.call(rbind, filas)
   tab <- tab[!duplicated(tab[, c("loglik", "umbral_trim_pct", "gamma")]), ]
-  cat("umbral_trim_pct: umbral en % de inflación trimestral | raiz_casi_unit: TRUE = descartar\n\n")
+  cat("umbral_trim_pct: umbral(es) en % trimestral (logístico y TVAR; vacío en mlogit) | gamma: solo logístico | gl_student: grados de libertad (solo errores t)\n",
+      "trim_por_regimen: trimestres en que domina cada régimen (1/2/...)\n",
+      "raiz_casi_unit / cov_casi_singular / descartar: TRUE = sstvars avisó un problema; no usar ese óptimo\n\n")
   print(tab, row.names = FALSE)
   invisible(tab)
 }
@@ -818,7 +945,8 @@ explorar_optimos <- function(res, thr_var = "ipc", n = 30, regimen_alto = 2) {
 #    y la celda de gamma (no con print_passthrough()).
 usar_optimo <- function(res, which_largest) {
   alt <- alt_stvar(res$tvar_model, which_largest = which_largest, calc_std_errors = FALSE)
-  est <- fitSSTVAR(stvar = alt, identification = "heteroskedasticity")
+  ident <- if (.dist_errores(alt) %in% c("ind_Student", "ind_skewed_t")) "non-Gaussianity" else "heteroskedasticity"
+  est <- fitSSTVAR(stvar = alt, identification = ident)
   list(fit_struct = est, tvar_model = alt, scaling_sd = res$scaling_sd,
        which_largest = which_largest)
 }
@@ -870,13 +998,27 @@ resumen_modelo <- function(res, data, endog, trans_var = "ipc", modelo = NULL, e
   pct_t <- function(x) round(100 * (exp(x) - 1), 1)
   pct_a <- function(x) round(100 * (exp(4 * x) - 1), 0)
 
-  cat("Modelo:", tipo, "| regímenes:", M, "| rezagos:", p, "\n")
+  cat("Modelo:", tipo, "| regímenes:", M, "| rezagos:", p,
+      "| errores:", .dist_errores(modelo), "\n")
+  if (!is.na(.grados_libertad(modelo)))
+    cat("Grados de libertad de la t de Student:", round(.grados_libertad(modelo), 2), "\n")
   if (identical(tipo, "threshold")) {
-    u <- sort(tail(modelo$params, M - 1)) * sd_z
+    u <- sort(.param_transicion(modelo)) * sd_z
     cat("Umbrales:", paste0(pct_t(u), "% trimestral (", pct_a(u), "% anualizada)",
                              collapse = " | "), "\n")
+  } else if (identical(tipo, "mlogit")) {
+    idx_z <- match(trans_var, endog)
+    tz    <- (p + 1):nrow(modelo$data)
+    z     <- as.matrix(modelo$data)[tz - 1, idx_z] * sd_z
+    cr    <- .cruces_empiricos(z, modelo$transition_weights[tz - p, , drop = FALSE])
+    cat("Transición mlogit (parámetros gamma, escalados):", paste(round(.param_transicion(modelo), 3), collapse = ", "), "\n")
+    cat("Cambios de régimen dominante según la inflación de t-1:\n")
+    if (nrow(cr)) print(data.frame(de_regimen = cr$de, a_regimen = cr$a,
+                                   inflacion_trim_pct = pct_t(cr$z),
+                                   inflacion_anual_pct = pct_a(cr$z)), row.names = FALSE)
+    if (nrow(cr) > M - 1) cat("ATENCIÓN: más cambios que regímenes - 1: los regímenes no están ordenados por inflación.\n")
   } else {
-    wp <- tail(modelo$params, 2)
+    wp <- .param_transicion(modelo)
     cat("Umbral (c):", pct_t(wp[1] * sd_z), "% trimestral (", pct_a(wp[1] * sd_z),
         "% anualizada) | gamma:", round(wp[2], 2), "\n")
   }
@@ -913,20 +1055,57 @@ identificar_shock_cambiario <- function(res, endog, shock_var = "E", resp_var = 
   if (is.null(escalas)) escalas <- .buscar_nombre(res, "scaling_sd")
   if (is.null(escalas)) stop("No encontré los desvíos de escalado en 'res'. Pasalos con escalas = ...")
   d <- length(endog)
-  imp_esc <- linear_IRF(modelo, N = 1, regime = 1)$point_est[, , 1]     # [respuesta, shock], escalado
+  M <- modelo$model$M
+  ie <- match(shock_var, endog); ip <- match(resp_var, endog)
+  no_gauss <- .dist_errores(modelo) %in% c("ind_Student", "ind_skewed_t")
+
+  # Efecto de impacto en cada régimen. Con identificación por heteroscedasticidad, el
+  # impacto de un mismo shock es proporcional entre regímenes; con no normalidad
+  # (ind_Student) cada régimen tiene su propia matriz de impacto B_m.
+  imp_reg <- lapply(seq_len(M), function(m) linear_IRF(modelo, N = 1, regime = m)$point_est[, , 1])
+  part_reg <- sapply(imp_reg, function(x) abs(x[ie, ]) / sqrt(colSums(x^2)))   # [shock, régimen]
+  part_reg <- matrix(part_reg, nrow = d)
+  sug_reg  <- apply(part_reg, 2, which.max)
+
+  imp_esc <- imp_reg[[1]]
   imp <- imp_esc * unname(escalas)                                        # unidades originales
   dimnames(imp) <- list(respuesta = endog, shock = paste0("shock_", seq_len(d)))
-  ie <- match(shock_var, endog); ip <- match(resp_var, endog)
-  # Participación de E en el efecto de impacto de cada shock (en unidades escaladas)
-  part_e <- abs(imp_esc[ie, ]) / sqrt(colSums(imp_esc^2))
+  part_e <- part_reg[, 1]
   sugerido <- which.max(part_e)
 
-  cat("Efecto de impacto de cada shock (unidades originales):\n")
+  cat("Efecto de impacto de cada shock", if (M > 1 && no_gauss) "(régimen 1)" else "", "(unidades originales):\n")
   print(round(imp, 4))
-  cat("\nParticipación de", shock_var, "en el efecto de cada shock:\n")
+  cat("\nParticipación de", shock_var, "en el efecto de cada shock",
+      if (M > 1 && no_gauss) "(régimen 1)" else "", ":\n")
   print(round(setNames(part_e, colnames(imp)), 2))
   cat("\nERPT de impacto de cada shock (", resp_var, "/", shock_var, "):\n", sep = "")
   print(round(imp[ip, ] / imp[ie, ], 3))
+
+  if (M > 1 && no_gauss) {
+    for (m in 2:M) {
+      im <- imp_reg[[m]] * unname(escalas)
+      dimnames(im) <- dimnames(imp)
+      cat("\n--- Régimen", m, "---\nEfecto de impacto (unidades originales):\n"); print(round(im, 4))
+      cat("Participación de", shock_var, ":\n"); print(round(setNames(part_reg[, m], colnames(imp)), 2))
+      cat("ERPT de impacto:\n"); print(round(im[ip, ] / im[ie, ], 3))
+    }
+    signos <- sapply(imp_reg, function(x) sign(x[ie, sug_reg[1]]))
+    if (length(unique(signos)) > 1) {
+      cat("\n!!! ATENCIÓN: el shock", sug_reg[1], "mueve", shock_var, "con signo distinto según el régimen:",
+          paste0("régimen ", seq_len(M), " -> ", ifelse(signos > 0, "+", "-"), collapse = " | "),
+          "\n    El signo de las columnas de B_2, ..., B_M está débilmente identificado: un mismo shock no debería",
+          "\n    depreciar en un régimen y apreciar en otro. No calcular el ERPT hasta estimar el modelo con el",
+          "\n    signo corregido (fitSSTVAR con B_pm_reg, B_perm y B_signs) y comparar la verosimilitud.\n")
+    }
+    if (length(unique(sug_reg)) > 1) {
+      cat("\n!!! ATENCIÓN: el shock con mayor participación de", shock_var, "no es el mismo en todos los regímenes:",
+          paste0("régimen ", seq_len(M), " -> shock ", sug_reg, collapse = " | "),
+          "\n    Con identificación por no normalidad el orden de las columnas de B puede diferir entre regímenes.",
+          "\n    No calcular el ERPT hasta revisar el orden de los shocks (ver reorder_B_columns / fitSSTVAR con B_perm).\n")
+    } else {
+      cat("\nEl mismo shock concentra el efecto sobre", shock_var, "en todos los regímenes.\n")
+    }
+  }
   cat("\n>>> Shock sugerido como cambiario:", sugerido,
       "(confirmalo: debe mover mucho a", shock_var, "y poco a", resp_var, ")\n")
   invisible(sugerido)
@@ -1562,4 +1741,62 @@ guardar_gif_manta <- function(out, archivo = "gif_manta", modo = c("construir", 
     }
   }, gif_file = paste0(archivo, ".gif"), width = ancho, height = alto, delay = segundos_por_cuadro)
   message("GIF guardado en: ", normalizePath(paste0(archivo, ".gif")))
+}
+
+
+# =====================================================================
+# ACOTAR VALORES EXTREMOS SOLO PARA GRAFICAR
+# Los gráficos (superficie 3D, manta, slider, GIF, red, 2D) muestran el ERPT de CADA
+# trimestre, no un promedio ni una mediana: si en un trimestre la depreciación acumulada
+# queda casi en cero, su ERPT se dispara y aplasta el resto del gráfico.
+# Devuelve una copia de 'out' en la que cada valor se compara con los de los trimestres
+# de SU MISMO RÉGIMEN (régimen de mayor peso) en ese horizonte: los que quedan fuera de
+# [Q1 - k*IQR, Q3 + k*IQR] Y además se alejan de la mediana del régimen en más de
+# 'umbral_abs' (en unidades de ERPT; 1 = 100 puntos de traslado) se llevan a ese límite.
+# El umbral absoluto evita tocar diferencias chicas cuando los valores de un régimen están
+# muy concentrados (p. ej. en los primeros horizontes): solo se acotan valores absurdos.
+# NO cambia los resultados: las tablas (promedio y mediana) se calculan con el 'out' original.
+# Uso: graficar_erpt_manta(acotar_para_graficar(out_...), archivo = "...")
+# =====================================================================
+acotar_para_graficar <- function(out, k = 5, umbral_abs = 1, min_trimestres = 8) {
+  out0 <- out
+  outn <- .normalizar_out(out)
+  e <- out$erpt
+  reg <- outn$regimen
+  acotados <- list()
+  for (h in seq_len(nrow(e))) {
+    for (g in sort(unique(reg))) {
+      idx <- which(reg == g)
+      if (length(idx) < min_trimestres) next
+      x  <- e[h, idx]
+      q  <- quantile(x, c(0.25, 0.75), na.rm = TRUE)
+      ri <- q[2] - q[1]
+      if (!is.finite(ri)) next
+      med <- median(x, na.rm = TRUE)
+      li <- min(q[1] - k * ri, med - umbral_abs)
+      ls <- max(q[2] + k * ri, med + umbral_abs)
+      fuera <- which(x < li | x > ls)
+      if (length(fuera)) {
+        acotados[[length(acotados) + 1]] <- data.frame(
+          trimestre = colnames(e)[idx[fuera]], regimen = g, horizonte = h - 1,
+          valor_original = round(x[fuera], 3),
+          valor_graficado = round(pmin(pmax(x[fuera], li), ls), 3))
+        e[h, idx[fuera]] <- pmin(pmax(x[fuera], li), ls)
+      }
+    }
+  }
+  if (length(acotados)) {
+    tab <- do.call(rbind, acotados)
+    tab <- tab[order(tab$trimestre, tab$horizonte), ]
+    cat("Valores acotados SOLO para los gráficos (", nrow(tab), " de ", length(e),
+        "; por régimen y horizonte: fuera de Q1 - ", k, "·IQR / Q3 + ", k,
+        "·IQR y a más de ", umbral_abs, " de la mediana):\n", sep = "")
+    print(tab, row.names = FALSE)
+  } else {
+    cat("No hay valores extremos para acotar (k = ", k, ", umbral_abs = ", umbral_abs, ").\n", sep = "")
+  }
+  out0$erpt <- e
+  if (!is.null(out0$factor) && !is.null(out0$erpt_escalado)) out0$erpt_escalado <- e / out0$factor
+  out0$acotado_para_graficar <- TRUE
+  invisible(out0)
 }

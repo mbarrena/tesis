@@ -22,7 +22,7 @@ economic_var_candidates = ["emae", "pbird", "PBIcf", "PBIpm"]
 
 warnings.filterwarnings(
     "ignore",
-    message=".datetime.datetime.utcnow.",
+    message=r".*utcnow",
     category=DeprecationWarning
 )
 
