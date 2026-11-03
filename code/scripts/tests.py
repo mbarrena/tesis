@@ -75,7 +75,7 @@ def _runAndFormatRUROutput(datos, var):
       var: nombre de la variable evaluada, para imprimirlo con los resultados.
       fun: la funcion a ejecutar para evaluar la variable.
   """
-  y = formatInterpolationWarning(lambda: range_unit_root_test(datos[var]))
+  y = formatInterpolationWarning(lambda: range_unit_root_test(datos[var], result_object=False))
   res = {
       "rur_stat": y[0],
       "p_value": y[1],

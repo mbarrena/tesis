@@ -364,17 +364,21 @@ def correrTestsADF(df, maxlag=None, regression="c", variables=None):
         display(only_na)
         print("===")
 
+    resultados = {}
     for variable in variables:
-        adf = adfuller(df_temp[variable], maxlag=maxlag, regression=regression)
-        df_adf.loc["result",variable] = adf[0]
-        df_adf.loc["1%",variable] = adf[4]["1%"]
-        df_adf.loc["5%",variable] = adf[4]["5%"]
-        df_adf.loc["10%",variable] = adf[4]["10%"]
-        df_adf.loc["rechaza 1%", variable] = adf[0] < adf[4]["1%"]
-        df_adf.loc["rechaza 5%", variable] = adf[0] < adf[4]["5%"]
-        df_adf.loc["rechaza 10%", variable] = adf[0] < adf[4]["10%"]
-        df_adf.loc["pvalue",variable] = adf[1]
-        df_adf.loc["lag",variable] = adf[2]
+        adf = adfuller(df_temp[variable], maxlag=maxlag, regression=regression, result_object=False)
+        resultados[variable] = {
+            "result": adf[0],
+            "1%": adf[4]["1%"],
+            "5%": adf[4]["5%"],
+            "10%": adf[4]["10%"],
+            "rechaza 1%": adf[0] < adf[4]["1%"],
+            "rechaza 5%": adf[0] < adf[4]["5%"],
+            "rechaza 10%": adf[0] < adf[4]["10%"],
+            "pvalue": adf[1],
+            "lag": adf[2],
+        }
+    df_adf = pd.DataFrame(resultados)
     return df_adf
 
 def ADFmultipleLags(df, lags=[0,1,2,None], regression="c", variables=None):
