@@ -22,7 +22,7 @@
 #   persistencia      = depreciación acumulada / depreciación inicial
 #   incremental       = ERPT en h menos ERPT en h-1 (en h = 0, el propio ERPT)
 #
-# Bandas: bootstrap por bloques móviles. Se remuestrean bloques de trimestres consecutivos
+# Bandas: bootstrap por bloques (circular por defecto). Se remuestrean bloques de períodos consecutivos
 # (endógenas, exógenas y la variable de estado juntas), se reestiman las LP y se calculan
 # las mismas medidas. Así las bandas valen también para los cocientes y para las respuestas
 # acumuladas (sumar los límites de cada horizonte, como hace cumulative = TRUE en
@@ -106,11 +106,21 @@ library(ggplot2)
   }
 }
 
-# --- Índices de un bootstrap por bloques móviles ---
-.indices_bloques <- function(n, bloque) {
+# --- Índices de un bootstrap por bloques ---
+# circular = TRUE: bootstrap por bloques circular (Politis y Romano, 1992). La serie se "cierra"
+#   en un círculo, así que todas las observaciones tienen la misma probabilidad de aparecer.
+# circular = FALSE: bloques móviles (Künsch, 1989). Las primeras y últimas observaciones
+#   aparecen mucho menos que las del medio; si hay un año extremo en una punta de la muestra
+#   (por ejemplo 1975 en 1935-1975), las bandas casi no lo reflejan.
+.indices_bloques <- function(n, bloque, circular = TRUE) {
   n_bloques <- ceiling(n / bloque)
-  inicios <- sample.int(n - bloque + 1, n_bloques, replace = TRUE)
-  idx <- unlist(lapply(inicios, function(s) s:(s + bloque - 1)))
+  if (circular) {
+    inicios <- sample.int(n, n_bloques, replace = TRUE)
+    idx <- unlist(lapply(inicios, function(s) ((s:(s + bloque - 1)) - 1) %% n + 1))
+  } else {
+    inicios <- sample.int(n - bloque + 1, n_bloques, replace = TRUE)
+    idx <- unlist(lapply(inicios, function(s) s:(s + bloque - 1)))
+  }
   idx[seq_len(n)]
 }
 
@@ -125,7 +135,9 @@ library(ggplot2)
 #' @param threshold_var, upper_threshold, lower_threshold, discard_threshold
 #'        umbral, igual que en run_lp_model (NULL = modelo lineal)
 #' @param reps réplicas del bootstrap (0 = sin bandas)
-#' @param bloque largo de los bloques en trimestres (por defecto, horizons)
+#' @param bloque largo de los bloques, en períodos (por defecto, 2 * (horizons + fixed_lags)).
+#'        Tiene que ser bastante mayor que horizons: el par (t, t+h) solo se conserva si t y t+h
+#'        caen en el mismo bloque, así que con bloque = horizons el horizonte máximo pierde toda la dinámica.
 #' @param signifs niveles de las bandas
 #' @param semilla semilla del bootstrap
 erpt_lp <- function(df, endog, exog = NULL, fixed_lags, horizons = 8,
@@ -133,7 +145,9 @@ erpt_lp <- function(df, endog, exog = NULL, fixed_lags, horizons = 8,
                     threshold_var = NULL, upper_threshold = 0.80, lower_threshold = NULL,
                     discard_threshold = NULL,
                     reps = 500, bloque = NULL, signifs = c(0.68, 0.95), semilla = 123,
-                    lags_exog = NULL, trend = 0, newey_lags = NULL, mostrar = TRUE) {
+                    lags_exog = NULL, trend = 0, newey_lags = NULL, mostrar = TRUE,
+                    unidad = "trimestres", circular = TRUE) {
+  # unidad: "trimestres" o "años"; solo cambia los textos (mensajes, título y eje del gráfico)
 
   if (!(impulso %in% endog) || !(respuesta %in% endog)) {
     stop("'", impulso, "' y '", respuesta, "' tienen que estar entre las endógenas.")
@@ -188,16 +202,17 @@ erpt_lp <- function(df, endog, exog = NULL, fixed_lags, horizons = 8,
 
   # ---- Bootstrap por bloques ----
   if (reps > 0) {
-    if (is.null(bloque)) bloque <- max(horizons, 4)
+    if (is.null(bloque)) bloque <- 2 * (horizons + fixed_lags)
     n <- nrow(endog_data)
     set.seed(semilla)
     sims <- lapply(med, function(m) array(NA_real_, dim = c(reps, horizons + 1, length(medidas)),
                                           dimnames = list(NULL, NULL, medidas)))
     fallidas <- 0
-    message("Bootstrap por bloques: ", reps, " réplicas, bloques de ", bloque, " trimestres...")
+    message("Bootstrap por bloques", if (circular) " circular" else " móviles", ": ", reps,
+            " réplicas, bloques de ", bloque, " ", unidad, "...")
     pb <- utils::txtProgressBar(min = 0, max = reps, style = 3)
     for (rr in seq_len(reps)) {
-      idx <- .indices_bloques(n, bloque)
+      idx <- .indices_bloques(n, bloque, circular)
       res_r <- tryCatch({
         e_r <- endog_data[idx, , drop = FALSE]; rownames(e_r) <- NULL
         x_r <- NULL
@@ -241,11 +256,12 @@ erpt_lp <- function(df, endog, exog = NULL, fixed_lags, horizons = 8,
   attr(tabla, "impulso") <- impulso
   attr(tabla, "respuesta") <- respuesta
   attr(tabla, "signifs") <- signifs
+  attr(tabla, "unidad") <- unidad
   attr(tabla, "modelo") <- paste0("LP, ", fixed_lags, " rezagos",
                                    if (!is.null(exog)) paste0(", exógenas: ", paste(exog, collapse = ", ")) else "",
                                    if (umbral) paste0(", umbral: ", threshold_var, " > ",
                                                       formatC(valor_umbral, format = "f", digits = 3, decimal.mark = ","),
-                                                      ", ", sum(switching == 1), " trimestres encima") else "")
+                                                      ", ", sum(switching == 1), " ", unidad, " encima") else "")
   if (umbral) {
     attr(tabla, "umbral") <- c(percentil = p_umbral, valor = valor_umbral,
                                trimestres_debajo = sum(switching == 0), trimestres_encima = sum(switching == 1))
@@ -264,7 +280,9 @@ erpt_lp <- function(df, endog, exog = NULL, fixed_lags, horizons = 8,
 #' Gráfico de ERPT de las LP: relativo al shock y acumulado (y sus incrementales).
 #' Con umbral, los dos regímenes van superpuestos en cada panel.
 graficar_erpt_lp <- function(tabla, incremental = TRUE, titulo = NULL, archivo = NULL,
-                             ancho = 10, alto = NULL, niveles = NULL) {
+                             ancho = 10, alto = NULL, niveles = NULL, unidad = NULL) {
+  # unidad: texto del eje x; por defecto, la unidad con que se estimó en erpt_lp
+  if (is.null(unidad)) unidad <- if (is.null(attr(tabla, "unidad"))) "trimestres" else attr(tabla, "unidad")
   # niveles: qué bandas dibujar, entre las calculadas en erpt_lp (p. ej. niveles = 0.68).
   #          NULL = todas. No hace falta volver a estimar.
   paneles <- c(erpt_relativo_shock = "Relativo al shock",
@@ -353,7 +371,7 @@ graficar_erpt_lp <- function(tabla, incremental = TRUE, titulo = NULL, archivo =
   g <- g +
     facet_wrap(~ panel, ncol = 2, scales = "free_y") +
     scale_x_continuous(breaks = sort(unique(tabla$horizonte))) +
-    labs(title = titulo, x = "Horizonte (trimestres)", y = "ERPT") +
+    labs(title = titulo, x = paste0("Horizonte (", unidad, ")"), y = "ERPT") +
     theme_bw(base_size = 12) +
     theme(legend.position = "top", plot.title = element_text(hjust = 0.5, size = 13),
           strip.background = element_blank(), strip.text = element_text(size = 12))
